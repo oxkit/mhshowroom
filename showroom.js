@@ -6,24 +6,39 @@ function Image({ src, alt, ...props }) { return h('img', { src, alt, ...props })
 function RadioGroup({ title, name, options, value, onChange }) {
   return h('fieldset', null, h('legend', null, title), h('div', { className: 'size-grid', style: { gridTemplateColumns: `repeat(${Math.min(options.length, 4)},1fr)` } }, ...options.map(option => h('label', { key: option, className: `size-option ${value === option ? 'selected' : ''}` }, h('input', { type: 'radio', name, value: option, checked: value === option, onChange: () => onChange(option) }), h('span', null, option)))));
 }
-function CatalogueCard({ product: p, index }) {
-  const [colour, setColour] = useState(p.colourPhotos && index % 2 ? 1 : 0);
+function CatalogueCard({ product: p, index, rotating }) {
+  const variants = p.fabrics;
+  const [colour, setColour] = useState(variants ? Math.floor(Math.random() * variants.length) : 0);
+  const card = useRef(null);
+  useEffect(() => {
+    if (!variants || !rotating) return;
+    let visible = false;
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
+    observer.observe(card.current);
+    const timer = setInterval(() => {
+      if (visible && !document.hidden && !card.current.matches(':hover, :focus-within')) setColour(c => (c + 1 + Math.floor(Math.random() * (variants.length - 1))) % variants.length);
+    }, 5500 + index * 120);
+    return () => { clearInterval(timer); observer.disconnect(); };
+  }, [rotating, variants, index]);
   const tones = ['#e8edf1', '#eee7df', '#e8ece3', '#e4edef', '#e9e6ef', '#e4e8ec', '#f1e5e2'];
-  const variants = p.colourPhotos && p.fabrics;
-  const src = variants ? p.colourPhotos[colour][0] : p.views[0].src;
-  return h('article', { className: 'catalogue-card' },
+  const src = p.colourPhotos ? p.colourPhotos[colour][0] : p.views[0].src;
+  return h('article', { className: 'catalogue-card', ref: card },
     h('a', { href: '#' + p.slug + (variants ? '?fabric=' + colour : ''), 'aria-label': `Explore ${p.name}` },
-      h('div', { className: `card-picture ${p.category === 'Sofas' ? 'sofa-card' : ''}`, style: { backgroundColor: tones[index % tones.length] } }, h(Image, { src, alt: `${p.series} ${p.name}${variants ? ' in ' + p.fabrics[colour].name : ''}`, loading: 'lazy' }), h('span', { className: 'card-category' }, p.category)),
-      h('div', { className: 'card-caption' }, h('div', null, h('span', { className: 'eyebrow' }, p.series), h('h2', null, p.name), h('p', null, p.type)), h(Icon, { type: 'arrow' }))),
-    variants && h('div', { className: 'card-colours', role: 'group', 'aria-label': p.name + ' colours' }, ...p.fabrics.map((f, i) => h('button', { key: f.code, type: 'button', 'aria-label': `Show ${p.name} in ${f.name}`, 'aria-pressed': colour === i, onClick: () => setColour(i) }, h('span', { className: 'card-colour-dot', style: { backgroundColor: i === 0 ? '#e7dfc9' : '#727975' }, 'aria-hidden': true }), f.name))));
+      h('div', { className: 'card-picture', style: { backgroundColor: tones[index % tones.length] } }, h(ProductVisual, { key: colour, src, fabric: p.premium ? variants[colour] : null, alt: `${p.series} ${p.name}${variants ? ' in ' + variants[colour].name : ''}` }), h('span', { className: 'card-category' }, p.category)),
+      h('div', { className: 'card-caption' }, h('div', null, h('span', { className: 'eyebrow' }, p.series), h('h2', null, p.name), h('p', null, p.type), h('strong', {className:'card-price'}, 'From ' + money(p.prices ? Math.min(...Object.values(p.prices)) : p.basePrice))), h(Icon, { type: 'arrow' }))),
+    variants && h('p', { className: 'card-fabric' }, variants[colour].name, h('span', null, p.premium ? 'Colour visualisation' : 'Available finish')));
 }
 function Catalogue() {
   const [category, setCategory] = useState('All products');
+  const [rotating, setRotating] = useState(() => !matchMedia('(prefers-reduced-motion: reduce)').matches);
+  useEffect(() => { const media = matchMedia('(prefers-reduced-motion: reduce)'); const changed = () => { if (media.matches) setRotating(false); }; media.addEventListener('change', changed); return () => media.removeEventListener('change', changed); }, []);
   return h(React.Fragment, null,
     h('section', { className: 'catalogue-hero' }, h('div', null, h('span', { className: 'eyebrow' }, 'The interactive showroom'), h('h1', null, 'Find your', h('br'), 'kind of comfort.'), h('p', null, 'Explore the layers. Feel out the fabrics. Make room for something that feels like you.'), h('a', { className: 'text-link', href: '#luxe' }, 'Try the sofa room planner ', h(Icon, { type: 'arrow' }))),
-      h('a', { className: 'hero-sofa', href: '#luxe', 'aria-label': 'Explore Luxe sofa' }, h(Image, { src: products.find(p => p.slug === 'luxe').views[0].src, alt: 'Luxe sofa in Creamy fabric' }), h('span', null, 'Luxe', h('small', null, 'Room to stretch out.')))),
+      h('a', { className: 'hero-sofa', href: '#luxe', 'aria-label': 'Explore Luxe sofa' }, h(ProductVisual, { src: products.find(p => p.slug === 'luxe').views[0].src, alt: 'Luxe sofa in cream' }), h('span', null, 'Luxe', h('small', null, 'Room to stretch out.')))),
+    h('nav', {className:'package-links', 'aria-label':'Build a package'}, h('a',{href:'#build-your-bed'},h('strong',null,'Build Your Bed'),h('span',null,'Mattress + bed frame →')),h('a',{href:'#soho'},h('strong',null,'The SOHO package'),h('span',null,'Bed set + sofa →'))),
     h('div', { className: 'catalogue-heading' }, h('div', { role: 'group', 'aria-label': 'Product category', className: 'category-tabs' }, ...categories.map(c => h('button', { key: c, type: 'button', 'aria-pressed': category === c, onClick: () => setCategory(c) }, c))), h('span', { className: 'catalogue-count', 'aria-live': 'polite' }, `${products.filter(p => category === 'All products' || p.category === category).length} products`)),
-    h('section', { className: 'catalogue-grid', 'aria-label': 'Products' }, ...products.filter(p => category === 'All products' || p.category === category).map(p => h(CatalogueCard, { key: p.slug, product: p, index: products.indexOf(p) }))));
+    h('div', { className: 'preview-controls' }, h('span', null, 'A few ways to make it yours.'), h('button', { type: 'button', 'aria-pressed': !rotating, onClick: () => setRotating(!rotating) }, rotating ? 'Pause colour previews' : 'Resume colour previews')),
+    h('section', { className: 'catalogue-grid', 'aria-label': 'Products' }, ...products.filter(p => category === 'All products' || p.category === category).map(p => h(CatalogueCard, { key: p.slug, product: p, index: products.indexOf(p), rotating }))));
 }
 function SpringDemo() {
   const [pressed, setPressed] = useState(false);
@@ -60,14 +75,14 @@ function RoomPlanner({ product, orientation, fabric }) {
         onPointerMove: e => { if (!drag.current) return; const point = coordinate(e); setPosition(clampPosition(point.x - drag.current.x, point.y - drag.current.y)); },
         onPointerUp: () => { drag.current = null; }, onPointerCancel: () => { drag.current = null; },
         onKeyDown: e => { const step = { ArrowLeft: [-5, 0], ArrowRight: [5, 0], ArrowUp: [0, -5], ArrowDown: [0, 5] }[e.key]; if (step) { e.preventDefault(); setPosition(clampPosition(pos.x + step[0], pos.y + step[1])); } }
-      }, h('path', { d: shape, fill: fabric === 0 ? '#d0c2a8' : '#727975', stroke: fits ? '#1a2440' : '#a73f30', strokeWidth: 3, strokeLinejoin: 'round' }), h('rect', { x: 7, y: 6, width: width - 14, height: 17, rx: 6, fill: '#ffffff40' }), h('text', { x: width / 2, y: Math.min(base, depth) / 2 + 10, textAnchor: 'middle', fontSize: 14, fill: fabric === 0 ? '#1a2440' : '#fff' }, product.name)),
+      }, h('path', { d: shape, fill: product.fabrics[fabric].hex, stroke: fits ? '#1a2440' : '#a73f30', strokeWidth: 3, strokeLinejoin: 'round' }), h('rect', { x: 7, y: 6, width: width - 14, height: 17, rx: 6, fill: '#ffffff40' }), h('text', { x: width / 2, y: Math.min(base, depth) / 2 + 10, textAnchor: 'middle', fontSize: 14, fill: fabric === 0 ? '#1a2440' : '#fff' }, product.name)),
       h('text', { x: roomWidth / 2, y: -9, textAnchor: 'middle', fill: '#686c78', fontSize: 11 }, `${(roomWidth / 100).toFixed(1)} m`)),
     h('div', { className: `fit-status ${fits ? '' : 'does-not-fit'}`, role: 'status' }, fits ? `Fits within this empty room · ${Math.round(roomWidth - boxW)} cm width and ${Math.round(roomDepth - boxD)} cm depth remaining in total.` : 'The sofa footprint exceeds this room. Increase the room dimensions or rotate it.'),
     h('p', { className: 'small-note' }, 'Schematic plan. Outer dimensions are to scale; internal cushion and chaise shapes are illustrative. Allow space for doors, walking routes and other furniture.'));
 }
 function Product({ product: p }) {
   const query = new URLSearchParams(location.hash.split('?')[1] || '');
-  const bounded = (key, count) => { const n = Number(query.get(key)); return Number.isInteger(n) && n >= 0 && n < count ? n : 0; };
+  const bounded = (key, count) => { const n = query.has(key) ? Number(query.get(key)) : (p.defaultFabric || 0); return Number.isInteger(n) && n >= 0 && n < count ? n : (p.defaultFabric || 0); };
   const [fabric, setFabric] = useState(() => bounded('fabric', p.fabrics?.length || 1));
   const [size, setSize] = useState(() => p.sizes?.includes(query.get('size')) ? query.get('size') : p.sizes ? 'Queen' : '');
   const [orientation, setOrientation] = useState(() => p.orientations?.includes(query.get('orientation')) ? query.get('orientation') : p.orientations?.[0]);
@@ -78,52 +93,60 @@ function Product({ product: p }) {
   const planner = Boolean(p.views[view]?.planner);
   const photo = p.colourPhotos ? p.colourPhotos[fabric][p.orientations ? p.orientations.indexOf(orientation) : p.category === 'Sofas' ? 0 : view] : p.views[view].src;
   const currentPhoto = photo || p.views[0].src;
+  const previewFabric = p.premium && !p.views[view].reference ? selectedFabric : null;
+  const mirrored = Boolean(p.orientations && orientation === 'Right');
   const selectionQuery = new URLSearchParams();
   if (p.fabrics) selectionQuery.set('fabric', fabric);
   if (size) selectionQuery.set('size', size);
   if (orientation) selectionQuery.set('orientation', orientation);
   const selectionUrl = location.href.split('#')[0] + '#' + p.slug + (selectionQuery.size ? '?' + selectionQuery.toString() : '');
-  const selection = `${p.series} ${p.name}\n${size ? 'Size: ' + size + '\n' : ''}${selectedFabric ? `Fabric: ${selectedFabric.name} (${selectedFabric.code})\n` : ''}${orientation ? `Chaise: ${orientation} when facing the sofa\n` : ''}${p.dimensions ? 'Dimensions: ' + p.dimensions.join(' × ') + ' inches (W × D × H)\n' : ''}Price and availability: confirm with MattressHub.\n${selectionUrl}`;
+  const selection = `${p.series} ${p.name}\n${size ? 'Size: ' + size + '\n' : ''}${selectedFabric ? `Fabric: ${selectedFabric.name} (${selectedFabric.code})\n` : ''}${orientation ? `Chaise: ${orientation} when facing the sofa\n` : ''}${p.dimensions ? 'Dimensions: ' + p.dimensions.join(' × ') + ' inches (W × D × H)\n' : ''}Price: ${money(priceFor(p,size,fabric))}. Delivery and availability to confirm.\n${selectionUrl}`;
   useEffect(() => {
     history.replaceState(null, '', selectionUrl);
     setCopied(false); setFallback(false);
   }, [fabric, size, orientation, p.slug]);
   useEffect(() => { document.title = `${p.name} — MattressHub showroom`; }, [p.slug]);
-  async function copy() { try { await navigator.clipboard.writeText(selection); setCopied(true); } catch { setFallback(true); } }
+  async function copy() { try { await navigator.clipboard.writeText(window.mhTranslate(selection)); setCopied(true); } catch { setFallback(true); } }
   return h(React.Fragment, null,
     h('div', { className: 'intro' }, h('a', { href: '#' }, '← All products'), h('span', null, p.series, ' / ', p.name)),
     h('div', { className: 'configurator' },
       h('section', { className: `showroom ${p.category === 'Sofas' ? 'sofa-showroom' : ''}`, 'aria-label': p.name + ' preview' },
         h('div', { className: 'showroom-heading' }, h('span', { className: 'eyebrow' }, p.series + ' / ' + p.type), h('h1', null, p.name, h('span', { className: 'gold-dot' }, '.')), h('p', { className: 'stage-headline' }, p.headline)),
-        planner ? h(RoomPlanner, { product: p, orientation, fabric }) : h('div', { className: `product-stage ${p.category === 'Sofas' ? 'sofa-stage' : ''} ${view === 1 && p.layers ? 'layer-stage' : ''}` }, h(Image, { key: currentPhoto, className: 'product-image', src: currentPhoto, alt: `${p.name} ${p.referencePhoto ? 'reference photo' : selectedFabric?.name || ''} ${orientation || ''} ${p.views[view].label}` }), h('button', { className: 'zoom-button', type: 'button', onClick: () => dialog.current.showModal(), 'aria-label': 'Enlarge image' }, h(Icon, { type: 'zoom' }))),
+        planner ? h(RoomPlanner, { product: p, orientation, fabric }) : h('div', { className: `product-stage ${p.category === 'Sofas' ? 'sofa-stage' : ''} ${view === 1 && p.layers ? 'layer-stage' : ''}` }, h(ProductVisual, { key: currentPhoto, className: 'product-image', src: currentPhoto, fabric: previewFabric, mirror: mirrored, alt: `${p.name} ${p.referencePhoto ? 'reference photo' : selectedFabric?.name || ''} ${orientation || ''} ${p.views[view].label}` }), h('button', { className: 'zoom-button', type: 'button', onClick: () => dialog.current.showModal(), 'aria-label': 'Enlarge image' }, h(Icon, { type: 'zoom' }))),
         h('div', { className: 'view-toolbar' }, h('div', { role: 'group', 'aria-label': 'Preview mode', className: 'view-buttons' }, ...p.views.map((v, i) => h('button', { key: v.label, type: 'button', 'aria-pressed': view === i, onClick: () => setView(i) }, v.label)))),
-        h('p', { className: 'photo-note' }, p.referencePhoto ? 'Reference photo. Your selected fabric is shown in the swatch and summary.' : p.category === 'Sofas' ? 'Chaise left/right is shown as you face the sofa. Colours are a guide.' : 'Images show design and construction; proportions vary by size.')),
+        h('p', { className: 'photo-note' }, p.premium ? (p.views[view].reference ? 'Cream reference cutout. ' : 'Colour and texture visualisation. Pattern scale is illustrative; confirm an actual swatch. ') + (p.orientations ? 'Right chaise is a mirrored preview, shown as you face the sofa.' : '') : p.category === 'Sofas' ? 'Chaise left/right is shown as you face the sofa. Colours are a guide.' : 'Images show design and construction; proportions vary by size.')),
       h('aside', { className: 'controls', id: 'configure', 'aria-label': 'Product options' }, h('div', { className: 'product-title' }, h('span', { className: 'eyebrow' }, p.category), h('h2', null, p.name + ', your way.'), h('p', null, p.description)),
         p.layers && h('div', { className: 'layer-selector' }, h('div', { className: 'layer-heading' }, h('strong', null, 'Explore the layers'), h('span', null, p.thickness + '″ thick')), ...p.layers.map((layer, i) => h('button', { key: layer, className: 'layer-button', type: 'button', 'aria-pressed': detail === i, onClick: () => { setDetail(i); setView(1); } }, h('span', null, String(i + 1).padStart(2, '0')), layer, h(Icon, { type: 'arrow' }))), h('p', { className: 'small-note', 'aria-live': 'polite' }, `Selected layer ${detail + 1}: ${p.layers[detail]}`)),
         p.fabrics && h('fieldset', { className: 'fabric-options' }, h('legend', null, 'Choose your fabric'), p.fabrics.length > 2 && h('div', { className: 'family-tabs', role: 'group', 'aria-label': 'Fabric family' }, ...['All', 'Lego', 'Reka', 'Costa'].map((f, i) => h('button', { key: f, type: 'button', 'aria-pressed': family === f, onClick: () => setFamily(f) }, f))),
-          h('div', { className: p.fabrics.length > 2 ? 'premium-swatches' : 'swatch-grid' }, ...p.fabrics.map((f, i) => ({ f, i })).filter(({ i }) => family === 'All' || Math.floor(i / 10) === ['Lego', 'Reka', 'Costa'].indexOf(family)).map(({ f, i }) => h('label', { key: f.code, className: `fabric-option ${fabric === i ? 'selected' : ''}`, title: `${f.name} ${f.code}` }, h('input', { type: 'radio', name: 'fabric', checked: fabric === i, onChange: () => setFabric(i) }), h('span', { className: `fabric-swatch ${f.tone || ''}`, style: f.swatch ? { backgroundImage: `url("${f.swatch}")` } : {}, 'aria-hidden': true }, fabric === i && h('span', { className: 'selected-check' }, h(Icon, { type: 'check' }))), h('strong', null, f.name), h('span', { className: 'fabric-code' }, f.code)))),
+          h('div', { className: p.fabrics.length > 2 ? 'premium-swatches' : 'swatch-grid' }, ...p.fabrics.map((f, i) => ({ f, i })).filter(({ f }) => family === 'All' || f.family === family).map(({ f, i }) => h('label', { key: f.code, className: `fabric-option ${fabric === i ? 'selected' : ''}`, title: `${f.name} ${f.code}` }, h('input', { type: 'radio', name: 'fabric', checked: fabric === i, onChange: () => setFabric(i) }), h('span', { className: `fabric-swatch ${f.tone || ''}`, style: f.swatch ? { backgroundImage: `url("${f.swatch}")` } : {}, 'aria-hidden': true }, fabric === i && h('span', { className: 'selected-check' }, h(Icon, { type: 'check' }))), h('strong', null, f.name), h('span', { className: 'fabric-code' }, f.code)))),
           h('p', { className: 'fabric-mood', 'aria-live': 'polite' }, `${selectedFabric.name} · ${selectedFabric.code}`)),
         p.orientations && h(RadioGroup, { title: 'Choose your chaise', name: 'orientation', options: p.orientations, value: orientation, onChange: setOrientation }),
         p.sizes && h(RadioGroup, { title: 'Choose your size', name: 'size', options: p.sizes, value: size, onChange: setSize }),
         p.dimensions && h('div', { className: 'dimension-strip' }, ...['Width', 'Depth', 'Height'].map((label, i) => h('div', { key: label }, h('strong', null, Math.round(p.dimensions[i] * 2.54), h('small', null, ' cm')), h('span', null, label + ' · ' + p.dimensions[i] + '″')))),
+        h('div', { className: 'product-price', 'aria-live':'polite' }, h('strong',null,money(priceFor(p,size,fabric))), h('span',null,p.category==='Sofas' ? (p.includedFabrics.includes(selectedFabric.code) ? 'Creamy / Shadow price' : 'Includes RM 250 fabric upgrade') : size + ' price')),
         h('div', { className: 'selection' }, h('span', { className: 'eyebrow' }, 'Your selection'), h('div', { className: 'selection-line', 'aria-live': 'polite' }, h('strong', null, p.name + (size ? ' · ' + size : '')), h('span', null, [selectedFabric?.code, orientation && orientation + ' chaise'].filter(Boolean).join(' / '))),
           h(Button, { variant: 'solid', full: true, onClick: copy, iconLeft: h(Icon, { type: copied ? 'check' : 'copy' }) }, copied ? 'Selection copied' : 'Copy your selection'),
           p.shop && h('a', { className: 'shop-link', href: p.shop }, 'See price & order on MattressHub ', h(Icon, { type: 'arrow' })),
           h('p', { className: 'small-note', role: 'status' }, copied ? 'Your choices and a link are ready to paste.' : p.shop ? 'Confirm your fabric and orientation again on the store.' : 'Keep your choices handy when asking for a quote.'),
-          fallback && h('label', { className: 'copy-fallback' }, 'Select and copy your choices:', h('textarea', { readOnly: true, value: selection, rows: 7, onFocus: e => e.target.select() }))),
+          fallback && h('label', { className: 'copy-fallback' }, 'Select and copy your choices:', h('textarea', { readOnly: true, value: window.mhTranslate(selection), rows: 7, onFocus: e => e.target.select() }))),
+        h('a', {className:'build-product-link',href:p.category==='Sofas' ? '#soho?sofa='+p.slug+'&sofaFabric='+fabric+'&orientation='+(orientation||'Left') : '#build-your-bed?'+(p.category==='Mattresses'?'mattress=':'bed=')+p.slug+'&size='+encodeURIComponent(size)+'&bedFabric='+(p.category==='Bed frames'?fabric:0)},p.category==='Sofas'?'Add a bed set · build a SOHO package →':'Match it · Build Your Bed →'),
         h('p', { className: 'colour-note' }, p.category === 'Bed frames' ? 'Bed frame only. Mattress sold separately. Confirm fabric using actual swatches.' : p.category === 'Sofas' ? 'Dimensions are overall measurements. Check delivery access and walking space before ordering.' : 'Mattress only. Bed frame sold separately.'),
         p.slug === 'cozy' && fabric === 1 && h('p', { className: 'colour-note' }, 'Grey photographs are colour visualisations based on MX 012.'))),
+    p.category === 'Sofas' && h(SofaScale, {product:p, fabric, orientation}),
+    p.premium && h(PetFabric, { fabric: selectedFabric }),
     (p.firmness || p.feel) && h(FeelGuide, { product: p }),
-    p.features.length > 0 && h('section', { className: 'construction' }, h('div', { className: 'construction-heading' }, h('div', null, h('span', { className: 'eyebrow' }, 'A closer look'), h('h2', null, 'The details make the difference.'))), h('div', { className: 'construction-body' }, h('div', { className: 'feature-list', role: 'group', 'aria-label': 'Construction details' }, ...p.features.map((f, i) => h('button', { key: f.title, type: 'button', className: 'feature-button', 'aria-pressed': detail === i, onClick: () => setDetail(i), 'aria-controls': 'feature-detail' }, h('span', { className: 'feature-number' }, String(i + 1).padStart(2, '0')), h('strong', null, f.title), h(Icon, { type: 'arrow' })))), h('div', { className: 'feature-detail', id: 'feature-detail', 'aria-live': 'polite' }, p.category === 'Sofas' && detail === 0 ? h(SpringDemo) : h(Image, { src: p.features[detail].image, alt: p.features[detail].title }), h('div', null, h('span', { className: 'eyebrow' }, 'Detail ' + String(detail + 1).padStart(2, '0')), h('h3', null, p.features[detail].title), h('p', null, p.features[detail].text))))),
-    h('dialog', { ref: dialog, className: 'image-dialog', 'aria-label': 'Enlarged product image', onClick: e => { if (e.target === dialog.current) dialog.current.close(); } }, h('div', { className: 'dialog-top' }, h('span', null, p.name), h('button', { className: 'dialog-close', type: 'button', onClick: () => dialog.current.close(), 'aria-label': 'Close enlarged image' }, h(Icon, { type: 'close' }))), h(Image, { src: currentPhoto, alt: p.name + ' enlarged product image' })));
+    p.features.length > 0 && h('section', { className: 'construction' }, h('div', { className: 'construction-heading' }, h('div', null, h('span', { className: 'eyebrow' }, 'A closer look'), h('h2', null, 'The details make the difference.'))), h('div', { className: 'construction-body' }, h('div', { className: 'feature-list', role: 'group', 'aria-label': 'Construction details' }, ...p.features.map((f, i) => h('button', { key: f.title, type: 'button', className: 'feature-button', 'aria-pressed': detail === i, onClick: () => setDetail(i), 'aria-controls': 'feature-detail' }, h('span', { className: 'feature-number' }, String(i + 1).padStart(2, '0')), h('strong', null, f.title), h(Icon, { type: 'arrow' })))), h('div', { className: 'feature-detail', id: 'feature-detail', 'aria-live': 'polite' }, p.category === 'Sofas' && detail === 0 ? h(SpringDemo) : h(ProductVisual, { src: p.features[detail].image, alt: p.features[detail].title }), h('div', null, h('span', { className: 'eyebrow' }, 'Detail ' + String(detail + 1).padStart(2, '0')), h('h3', null, p.features[detail].title), h('p', null, p.features[detail].text))))),
+    h('dialog', { ref: dialog, className: 'image-dialog', 'aria-label': 'Enlarged product image', onClick: e => { if (e.target === dialog.current) dialog.current.close(); } }, h('div', { className: 'dialog-top' }, h('span', null, p.name), h('button', { className: 'dialog-close', type: 'button', onClick: () => dialog.current.close(), 'aria-label': 'Close enlarged image' }, h(Icon, { type: 'close' }))), h(ProductVisual, { src: currentPhoto, fabric: previewFabric, mirror: mirrored, alt: p.name + ' enlarged product image' })));
 }
 function Showroom() {
   const [slug, setSlug] = useState(route);
+  const [language,setLanguage] = useState(window.showroomLanguage);
+  const switchLanguage = value => { window.showroomLanguage=value; document.documentElement.lang={en:'en',zh:'zh-Hans',ms:'ms'}[value]; try { localStorage.setItem('mh-language',value); } catch {} setLanguage(value); };
   useEffect(() => { const changed = () => { setSlug(route()); window.scrollTo(0, 0); }; window.addEventListener('hashchange', changed); return () => window.removeEventListener('hashchange', changed); }, []);
   const product = products.find(p => p.slug === slug);
   useEffect(() => { if (!product) document.title = 'MattressHub — The interactive showroom'; }, [product]);
   return h(React.Fragment, null, h('a', { className: 'skip', href: '#main', onClick: e => { e.preventDefault(); document.getElementById('main').focus(); } }, 'Skip to showroom'),
-    h('header', { className: 'header' }, h('a', { href: '#', 'aria-label': 'MattressHub showroom home' }, h(Logo)), h('span', { className: 'header-label' }, 'The interactive showroom'), h('a', { className: 'store-link', href: 'https://mattresshub.co' }, 'Visit the store ', h(Icon, { type: 'arrow' }))),
-    h('main', { id: 'main', tabIndex: -1 }, product ? h(Product, { key: product.slug, product }) : h(Catalogue), h('footer', null, h('strong', null, 'Dealer price for everyone.'), h('a', { href: '#' }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'))));
+    h('header', { className: 'header' }, h('a', { href: '#', 'aria-label': 'MattressHub showroom home' }, h(Logo)), h('span', { className: 'header-label' }, 'The interactive showroom'), h('label',{className:'language-switch'}, h('span',{className:'sr-only'},'Language'),h('select',{'aria-label':'Language',value:language,onChange:e=>switchLanguage(e.target.value)},h('option',{value:'en'},'English'),h('option',{value:'zh'},'中文'),h('option',{value:'ms'},'Melayu'))), h('a', { className: 'store-link', href: 'https://mattresshub.co' }, 'Visit the store ', h(Icon, { type: 'arrow' }))),
+    h('main', { id: 'main', tabIndex: -1 }, slug === 'build-your-bed' || slug === 'soho' ? h(PackageBuilder,{key:slug,soho:slug==='soho'}) : product ? h(Product, { key: product.slug, product }) : h(Catalogue), h('footer', null, h('strong', null, 'Dealer price for everyone.'), h('a', { href: '#' }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'))));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(h(Showroom));

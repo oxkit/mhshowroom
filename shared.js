@@ -1,4 +1,12 @@
-const h = React.createElement;
+function h(type, props, ...children) {
+  const translate = props?.translate === 'no' ? (value => value) : window.mhTranslate || (value => value);
+  if (typeof type === 'string' && props) {
+    props = { ...props };
+    for (const key of ['aria-label','aria-valuetext','title','alt','placeholder']) if (props[key]) props[key] = translate(props[key]);
+  }
+  const text = value => Array.isArray(value) ? value.map(text) : typeof value === 'string' ? translate(value) : value;
+  return React.createElement(type, props, ...children.map(text));
+}
 const { useState, useRef } = React;
 const { Button } = window.MattressHubDesignSystem_7b8009;
 function Icon({ type }) {
@@ -13,5 +21,5 @@ function Logo() {
       h('rect', { x: 17, y: 33, width: 14, height: 8, rx: 4, fill: '#d8a72b' }),
       h('rect', { x: 13, y: 40, width: 44, height: 7, rx: 3.5, fill: '#d8a72b' }),
       h('rect', { x: 13, y: 46, width: 44, height: 9, rx: 3, fill: '#1a2440' })),
-    h('span', null, 'Mattress', h('b', null, 'Hub')));
+    h('span', {translate:'no'}, 'Mattress', h('b', null, 'Hub')));
 }

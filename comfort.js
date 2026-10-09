@@ -27,39 +27,55 @@ function ComfortScene({ product, progress }) {
 }
 function FeelGuide({ product }) {
   const [progress, setProgress] = useState(0);
-  const [playing, setPlaying] = useState(false);
   const [reduced, setReduced] = useState(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const section = useRef(null), introduced = useRef(false), current = useRef(0);
+  const [playing, setPlaying] = useState(() => !matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const [visible, setVisible] = useState(false), [pageVisible, setPageVisible] = useState(!document.hidden);
+  const [manual, setManual] = useState(null);
+  const section = useRef(null), current = useRef(0), cycle = useRef(0);
   current.current = progress;
   React.useEffect(() => {
     const media = matchMedia('(prefers-reduced-motion: reduce)');
     const changed = () => { setReduced(media.matches); if (media.matches) setPlaying(false); };
-    const hidden = () => { if (document.hidden) setPlaying(false); };
+    const hidden = () => setPageVisible(!document.hidden);
     media.addEventListener('change', changed); document.addEventListener('visibilitychange', hidden);
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) setPlaying(false);
-      else if (!introduced.current) { introduced.current = true; if (!media.matches && !document.hidden) setPlaying(true); }
-    }, { threshold: 0.15 });
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: .15 });
     observer.observe(section.current);
     return () => { observer.disconnect(); media.removeEventListener('change', changed); document.removeEventListener('visibilitychange', hidden); };
   }, []);
   React.useEffect(() => {
-    if (!playing || reduced) return;
-    let frame; const start = performance.now(), from = current.current;
-    const tick = now => { const next = Math.min(100, from + (now - start) / 90); setProgress(next); if (next < 100) frame = requestAnimationFrame(tick); else setPlaying(false); };
+    if (!playing || reduced || !visible || !pageVisible) return;
+    let frame, previous = performance.now();
+    const tick = now => {
+      cycle.current = (cycle.current + Math.min(now - previous, 100)) % 8800; previous = now;
+      const t = cycle.current;
+      setProgress(t < 1400 ? t / 1400 * 55 : t < 4400 ? 55 : t < 5800 ? 65 + (t - 4400) / 1400 * 35 : 100);
+      frame = requestAnimationFrame(tick);
+    };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [playing, reduced]);
+  }, [playing, reduced, visible, pageVisible]);
+  React.useEffect(() => {
+    if (!manual || playing) return;
+    const from = current.current >= 88 && manual.to === 55 ? 0 : current.current;
+    cycle.current = manual.to === 55 ? 1400 : 5800;
+    if (reduced) { setProgress(manual.to); return; }
+    let frame; const start = performance.now();
+    const tick = now => { const t = Math.min(1, (now - start) / 1400); setProgress(from + (manual.to - from) * t); if (t < 1) frame = requestAnimationFrame(tick); };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [manual, playing, reduced]);
   const [comparison, setComparison] = useState(product.slug === 'cloud' ? 'durafirm' : 'cloud');
   const candidates = products.filter(p => p.firmness && p.slug !== product.slug);
   const other = candidates.find(p => p.slug === comparison);
   const sofa = Boolean(product.feel);
   const phases = [sofa ? 'Sit down' : 'Lie down', 'Settle in', sofa ? 'Seated comfort' : 'Rest', sofa ? 'Stand up' : 'Get up', 'Surface returns'];
   const phase = progress < 22 ? 0 : progress < 42 ? 1 : progress < 65 ? 2 : progress < 88 ? 3 : 4;
-  return h('section', { ref: section, className: 'feel-guide', 'data-playing': playing, 'aria-label': 'Comfort feel guide' },
+  return h('section', { ref: section, className: 'feel-guide', 'data-playing': playing && visible && pageVisible && !reduced, 'aria-label': 'Comfort feel guide' },
     h('div', { className: 'feel-heading' }, h('div', null, h('span', { className: 'eyebrow' }, 'Get a sense of the feel'), h('h2', null, sofa ? 'A little give. A supportive sit.' : 'See how the feel compares.'), h('p', null, sofa ? 'Cove, Luxe and Oasis all have a medium firm feel, with foam cushioning over a zigzag spring seat.' : 'Watch the same sleeper lie down, settle in and get up. Play both mattresses together to compare.')),
-      h('button', { type: 'button', className: 'settle-button', onClick: () => { if (reduced) { setProgress(progress < 42 ? 55 : 0); return; } if (playing) setPlaying(false); else { if (progress >= 100) setProgress(0); setPlaying(true); } } }, reduced ? (progress < 42 ? 'Show settled pose' : 'Show starting pose') : playing ? 'Pause animation' : progress >= 100 ? 'Replay animation' : 'Play animation')),
-    h('div', { className: 'comfort-timeline' }, h('div', { className: 'comfort-phases', 'aria-hidden': true }, ...phases.map((name, i) => h('span', { key: name, className: i === phase ? 'active' : '' }, name))), h('label', null, 'Explore the movement', h('input', { type: 'range', min: 0, max: 100, step: 0.1, value: progress, 'aria-label': 'Animation progress', 'aria-valuetext': `${phases[phase]}, ${Math.round(progress)} percent`, onChange: e => { setPlaying(false); setProgress(Number(e.target.value)); } })), h('span', { className: 'motion-status', role: 'status' }, phases[phase]), h('small', null, reduced ? 'Reduced motion: use the slider or switch between still poses.' : 'Plays once. Replay or drag the slider to explore.')),
+      h('div', { className: 'comfort-controls' },
+        h('button', { type: 'button', className: 'settle-button', disabled: playing, onClick: () => setManual({ to: progress < 42 || progress >= 88 ? 55 : 100 }) }, progress < 42 || progress >= 88 ? (sofa ? 'Let sitter settle' : 'Let sleeper settle') : (sofa ? 'Lift sitter' : 'Lift sleeper')),
+        h('button', { type: 'button', className: 'motion-toggle', 'aria-label': playing ? 'Pause comfort animation' : 'Play comfort animation', 'aria-pressed': playing, disabled: reduced, onClick: () => { setManual(null); setPlaying(!playing); } }, h('svg', { viewBox: '0 0 24 24', width: 20, height: 20, 'aria-hidden': true }, playing ? h('path', { d: 'M7 5V19M17 5V19', stroke: 'currentColor', strokeWidth: 4 }) : h('path', { d: 'M7 4L20 12L7 20Z', fill: 'currentColor' }))))),
+    h('div', { className: 'comfort-timeline' }, h('div', { className: 'comfort-phases', 'aria-hidden': true }, ...phases.map((name, i) => h('span', { key: name, className: i === phase ? 'active' : '' }, name))), h('label', null, 'Explore the movement', h('input', { type: 'range', min: 0, max: 100, step: 0.1, value: progress, 'aria-label': 'Animation progress', 'aria-valuetext': `${phases[phase]}, ${Math.round(progress)} percent`, onChange: e => { setPlaying(false); setManual(null); const value = Number(e.target.value); setProgress(value); cycle.current = value <= 55 ? value / 55 * 1400 : 4400 + Math.max(0, value - 65) / 35 * 1400; } })), h('span', { className: 'motion-status', role: 'status' }, phases[phase]), h('small', null, reduced ? 'Reduced motion: use the slider or switch between still poses.' : 'Loops with a 3-second rest at each end. Pause to try settle and lift yourself.')),
     !sofa && h('label', { className: 'compare-label' }, 'Compare with', h('select', { 'aria-label': 'Compare with', value: comparison, onChange: e => setComparison(e.target.value) }, ...candidates.map(p => h('option', { key: p.slug, value: p.slug }, `${p.name} · ${p.firmness}/10`)))),
     h('div', { className: `comfort-comparison ${sofa ? 'single' : ''}` }, h(ComfortScene, { product, progress }), other && !sofa && h(ComfortScene, { product: other, progress })),
     h('p', { className: 'feel-note' }, sofa ? 'Feel confirmed by MattressHub. Movement and timing are illustrative, not measured cushion tests. Try the seat in person to judge your comfort.' : 'Firmness ratings supplied by MattressHub; 10 is firmest, like a floor. Movement, timing and sinking are illustrative, not measured pressure or predictions for your body. Your weight and sleeping position affect the feel.'));

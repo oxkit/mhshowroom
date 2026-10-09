@@ -18,7 +18,7 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/signature-series/essential.png"
+        "src": "assets/products/showroom-cutouts/essential.png"
       },
       {
         "label": "Inside layers",
@@ -32,7 +32,13 @@ window.showroomProducts = [
       "7″ Bonnell spring system"
     ],
     "features": [],
-    "shop": null
+    "shop": null,
+    "prices": {
+      "Single": 299,
+      "Super Single": 329,
+      "Queen": 399,
+      "King": 559
+    }
   },
   {
     "slug": "pure",
@@ -53,7 +59,7 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/signature-series/pure.png"
+        "src": "assets/products/showroom-cutouts/pure.png"
       },
       {
         "label": "Inside layers",
@@ -66,7 +72,13 @@ window.showroomProducts = [
       "7″ Durabond™ support core"
     ],
     "features": [],
-    "shop": null
+    "shop": null,
+    "prices": {
+      "Single": 369,
+      "Super Single": 439,
+      "Queen": 599,
+      "King": 729
+    }
   },
   {
     "slug": "plus",
@@ -87,7 +99,7 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/signature-series/plus.png"
+        "src": "assets/products/showroom-cutouts/plus.png"
       },
       {
         "label": "Inside layers",
@@ -101,7 +113,13 @@ window.showroomProducts = [
       "7″ Bonnell spring system"
     ],
     "features": [],
-    "shop": null
+    "shop": null,
+    "prices": {
+      "Single": 369,
+      "Super Single": 439,
+      "Queen": 599,
+      "King": 729
+    }
   },
   {
     "slug": "coolmax",
@@ -122,7 +140,7 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/signature-series/coolmax.png"
+        "src": "assets/products/showroom-cutouts/coolmax.png"
       },
       {
         "label": "Inside layers",
@@ -137,7 +155,13 @@ window.showroomProducts = [
       "Encasement edge support"
     ],
     "features": [],
-    "shop": null
+    "shop": null,
+    "prices": {
+      "Single": 599,
+      "Super Single": 699,
+      "Queen": 899,
+      "King": 1099
+    }
   },
   {
     "slug": "durafirm",
@@ -158,7 +182,7 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/signature-series/durafirm.png"
+        "src": "assets/products/showroom-cutouts/durafirm.png"
       },
       {
         "label": "Inside layers",
@@ -172,7 +196,13 @@ window.showroomProducts = [
       "Poweredge foam box"
     ],
     "features": [],
-    "shop": null
+    "shop": null,
+    "prices": {
+      "Single": 699,
+      "Super Single": 799,
+      "Queen": 999,
+      "King": 1299
+    }
   },
   {
     "slug": "noir",
@@ -193,7 +223,7 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/signature-series/noir.png"
+        "src": "assets/products/showroom-cutouts/noir.png"
       },
       {
         "label": "Inside layers",
@@ -208,7 +238,13 @@ window.showroomProducts = [
       "Poweredge foam box"
     ],
     "features": [],
-    "shop": null
+    "shop": null,
+    "prices": {
+      "Single": 799,
+      "Super Single": 899,
+      "Queen": 1199,
+      "King": 1499
+    }
   },
   {
     "slug": "cloud",
@@ -229,7 +265,7 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/signature-series/cloud.png"
+        "src": "assets/products/showroom-cutouts/cloud.png"
       },
       {
         "label": "Inside layers",
@@ -244,7 +280,13 @@ window.showroomProducts = [
       "EdgeGuard™ foam encasement"
     ],
     "features": [],
-    "shop": null
+    "shop": null,
+    "prices": {
+      "Single": 899,
+      "Super Single": 999,
+      "Queen": 1399,
+      "King": 1699
+    }
   },
   {
     "slug": "cozy",
@@ -252,6 +294,7 @@ window.showroomProducts = [
     "category": "Bed frames",
     "series": "SonoFrame",
     "type": "Upholstered bed frame",
+    "setView": "assets/products/bed-frames/cozy-cream-front.png",
     "headline": "Make room for Cozy.",
     "description": "Soft lines. A padded headboard. A simple place to make your own.",
     "sizes": [
@@ -310,7 +353,13 @@ window.showroomProducts = [
         "image": "assets/products/bed-frames/divan-detail.png"
       }
     ],
-    "shop": null
+    "shop": null,
+    "prices": {
+      "Single": 299,
+      "Super Single": 359,
+      "Queen": 399,
+      "King": 599
+    }
   },
   {
     "slug": "haven",
@@ -326,159 +375,221 @@ window.showroomProducts = [
       "Queen",
       "King"
     ],
+    "setView": "assets/products/bed-frames/haven-front.png",
     "fabrics": [
       {
         "code": "LGE 003",
+        "family": "Lego",
+        "hex": "#c59e68",
         "name": "Mustard",
         "swatch": "assets/fabrics/lge003.jpg"
       },
       {
         "code": "LGE 008",
+        "family": "Lego",
+        "hex": "#bfb9a8",
         "name": "Creamy",
         "swatch": "assets/fabrics/lge008.jpg"
       },
       {
         "code": "LGE 009",
+        "family": "Lego",
+        "hex": "#8a7d6a",
         "name": "Peanut",
         "swatch": "assets/fabrics/lge009.jpg"
       },
       {
         "code": "LGE 004",
+        "family": "Lego",
+        "hex": "#6b9596",
         "name": "Celeste",
         "swatch": "assets/fabrics/lge004.jpg"
       },
       {
         "code": "LGE 005",
+        "family": "Lego",
+        "hex": "#355668",
         "name": "Atlantic",
         "swatch": "assets/fabrics/lge005.jpg"
       },
       {
         "code": "LGE 006",
+        "family": "Lego",
+        "hex": "#8c9692",
         "name": "Sky",
         "swatch": "assets/fabrics/lge006.jpg"
       },
       {
         "code": "LGE 011",
+        "family": "Lego",
+        "hex": "#6d6b62",
         "name": "Anchor",
         "swatch": "assets/fabrics/lge011.jpg"
       },
       {
         "code": "LGE 007",
+        "family": "Lego",
+        "hex": "#1d2329",
         "name": "Lagoon",
         "swatch": "assets/fabrics/lge007.jpg"
       },
       {
         "code": "LGE 010",
+        "family": "Lego",
+        "hex": "#989b90",
         "name": "Clouds",
         "swatch": "assets/fabrics/lge010.jpg"
       },
       {
         "code": "LGE 012",
+        "family": "Lego",
+        "hex": "#4a5050",
         "name": "Shadow",
         "swatch": "assets/fabrics/lge012.jpg"
       },
       {
         "code": "RKE 001",
+        "family": "Reka",
+        "hex": "#c3ccc5",
         "name": "Misty",
         "swatch": "assets/fabrics/rke001.jpg"
       },
       {
         "code": "RKE 002",
+        "family": "Reka",
+        "hex": "#939f97",
         "name": "Graphite",
         "swatch": "assets/fabrics/rke002.jpg"
       },
       {
         "code": "RKE 014",
+        "family": "Reka",
+        "hex": "#77827b",
         "name": "Seal",
         "swatch": "assets/fabrics/rke014.jpg"
       },
       {
         "code": "RKE 004",
+        "family": "Reka",
+        "hex": "#afaa95",
         "name": "Koala",
         "swatch": "assets/fabrics/rke004.jpg"
       },
       {
         "code": "RKE 003",
+        "family": "Reka",
+        "hex": "#7c7e74",
         "name": "Earl Grey",
         "swatch": "assets/fabrics/rke003.jpg"
       },
       {
         "code": "RKE 010",
+        "family": "Reka",
+        "hex": "#8eb3ae",
         "name": "Sky",
         "swatch": "assets/fabrics/rke010.jpg"
       },
       {
         "code": "RKE 011",
+        "family": "Reka",
+        "hex": "#657e83",
         "name": "Blues",
         "swatch": "assets/fabrics/rke011.jpg"
       },
       {
         "code": "RKE 012",
+        "family": "Reka",
+        "hex": "#3c5667",
         "name": "Denim",
         "swatch": "assets/fabrics/rke012.jpg"
       },
       {
         "code": "RKE 013",
+        "family": "Reka",
+        "hex": "#7c8781",
         "name": "Smokey",
         "swatch": "assets/fabrics/rke013.jpg"
       },
       {
         "code": "RKE 015",
+        "family": "Reka",
+        "hex": "#3d4a51",
         "name": "Dawn",
         "swatch": "assets/fabrics/rke015.jpg"
       },
       {
         "code": "CTE 017",
+        "family": "Costa",
+        "hex": "#425361",
         "name": "Marine",
         "swatch": "assets/fabrics/cte017.jpg"
       },
       {
         "code": "CTE 003",
+        "family": "Costa",
+        "hex": "#839090",
         "name": "Mistral",
         "swatch": "assets/fabrics/cte003.jpg"
       },
       {
         "code": "CTE 015",
+        "family": "Costa",
+        "hex": "#7b8e8e",
         "name": "Sky",
         "swatch": "assets/fabrics/cte015.jpg"
       },
       {
         "code": "CTE 013",
+        "family": "Costa",
+        "hex": "#657375",
         "name": "Jungle",
         "swatch": "assets/fabrics/cte013.jpg"
       },
       {
         "code": "CTE 010",
+        "family": "Costa",
+        "hex": "#9f8278",
         "name": "Fog",
         "swatch": "assets/fabrics/cte010.jpg"
       },
       {
         "code": "CTE 001",
+        "family": "Costa",
+        "hex": "#c5c3b5",
         "name": "Oyster",
         "swatch": "assets/fabrics/cte001.jpg"
       },
       {
         "code": "CTE 005",
+        "family": "Costa",
+        "hex": "#ada69a",
         "name": "Board",
         "swatch": "assets/fabrics/cte005.jpg"
       },
       {
         "code": "CTE 006",
+        "family": "Costa",
+        "hex": "#6f665c",
         "name": "Log",
         "swatch": "assets/fabrics/cte006.jpg"
       },
       {
         "code": "CTE 002",
+        "family": "Costa",
+        "hex": "#919588",
         "name": "Pewter",
         "swatch": "assets/fabrics/cte002.jpg"
       },
       {
         "code": "CTE 004",
+        "family": "Costa",
+        "hex": "#3b3f3d",
         "name": "Gray",
         "swatch": "assets/fabrics/cte004.jpg"
       }
     ],
-    "referencePhoto": true,
+    "premium": true,
+    "defaultFabric": 1,
     "views": [
       {
         "label": "Angled view",
@@ -511,7 +622,13 @@ window.showroomProducts = [
         "image": "assets/products/bed-frames/easy-clean-detail.png"
       }
     ],
-    "shop": null
+    "shop": null,
+    "prices": {
+      "Single": 459,
+      "Super Single": 499,
+      "Queen": 599,
+      "King": 899
+    }
   },
   {
     "slug": "aurora",
@@ -527,159 +644,221 @@ window.showroomProducts = [
       "Queen",
       "King"
     ],
+    "setView": "assets/products/showroom-cutouts/aurora-front.png",
     "fabrics": [
       {
         "code": "LGE 003",
+        "family": "Lego",
+        "hex": "#c59e68",
         "name": "Mustard",
         "swatch": "assets/fabrics/lge003.jpg"
       },
       {
         "code": "LGE 008",
+        "family": "Lego",
+        "hex": "#bfb9a8",
         "name": "Creamy",
         "swatch": "assets/fabrics/lge008.jpg"
       },
       {
         "code": "LGE 009",
+        "family": "Lego",
+        "hex": "#8a7d6a",
         "name": "Peanut",
         "swatch": "assets/fabrics/lge009.jpg"
       },
       {
         "code": "LGE 004",
+        "family": "Lego",
+        "hex": "#6b9596",
         "name": "Celeste",
         "swatch": "assets/fabrics/lge004.jpg"
       },
       {
         "code": "LGE 005",
+        "family": "Lego",
+        "hex": "#355668",
         "name": "Atlantic",
         "swatch": "assets/fabrics/lge005.jpg"
       },
       {
         "code": "LGE 006",
+        "family": "Lego",
+        "hex": "#8c9692",
         "name": "Sky",
         "swatch": "assets/fabrics/lge006.jpg"
       },
       {
         "code": "LGE 011",
+        "family": "Lego",
+        "hex": "#6d6b62",
         "name": "Anchor",
         "swatch": "assets/fabrics/lge011.jpg"
       },
       {
         "code": "LGE 007",
+        "family": "Lego",
+        "hex": "#1d2329",
         "name": "Lagoon",
         "swatch": "assets/fabrics/lge007.jpg"
       },
       {
         "code": "LGE 010",
+        "family": "Lego",
+        "hex": "#989b90",
         "name": "Clouds",
         "swatch": "assets/fabrics/lge010.jpg"
       },
       {
         "code": "LGE 012",
+        "family": "Lego",
+        "hex": "#4a5050",
         "name": "Shadow",
         "swatch": "assets/fabrics/lge012.jpg"
       },
       {
         "code": "RKE 001",
+        "family": "Reka",
+        "hex": "#c3ccc5",
         "name": "Misty",
         "swatch": "assets/fabrics/rke001.jpg"
       },
       {
         "code": "RKE 002",
+        "family": "Reka",
+        "hex": "#939f97",
         "name": "Graphite",
         "swatch": "assets/fabrics/rke002.jpg"
       },
       {
         "code": "RKE 014",
+        "family": "Reka",
+        "hex": "#77827b",
         "name": "Seal",
         "swatch": "assets/fabrics/rke014.jpg"
       },
       {
         "code": "RKE 004",
+        "family": "Reka",
+        "hex": "#afaa95",
         "name": "Koala",
         "swatch": "assets/fabrics/rke004.jpg"
       },
       {
         "code": "RKE 003",
+        "family": "Reka",
+        "hex": "#7c7e74",
         "name": "Earl Grey",
         "swatch": "assets/fabrics/rke003.jpg"
       },
       {
         "code": "RKE 010",
+        "family": "Reka",
+        "hex": "#8eb3ae",
         "name": "Sky",
         "swatch": "assets/fabrics/rke010.jpg"
       },
       {
         "code": "RKE 011",
+        "family": "Reka",
+        "hex": "#657e83",
         "name": "Blues",
         "swatch": "assets/fabrics/rke011.jpg"
       },
       {
         "code": "RKE 012",
+        "family": "Reka",
+        "hex": "#3c5667",
         "name": "Denim",
         "swatch": "assets/fabrics/rke012.jpg"
       },
       {
         "code": "RKE 013",
+        "family": "Reka",
+        "hex": "#7c8781",
         "name": "Smokey",
         "swatch": "assets/fabrics/rke013.jpg"
       },
       {
         "code": "RKE 015",
+        "family": "Reka",
+        "hex": "#3d4a51",
         "name": "Dawn",
         "swatch": "assets/fabrics/rke015.jpg"
       },
       {
         "code": "CTE 017",
+        "family": "Costa",
+        "hex": "#425361",
         "name": "Marine",
         "swatch": "assets/fabrics/cte017.jpg"
       },
       {
         "code": "CTE 003",
+        "family": "Costa",
+        "hex": "#839090",
         "name": "Mistral",
         "swatch": "assets/fabrics/cte003.jpg"
       },
       {
         "code": "CTE 015",
+        "family": "Costa",
+        "hex": "#7b8e8e",
         "name": "Sky",
         "swatch": "assets/fabrics/cte015.jpg"
       },
       {
         "code": "CTE 013",
+        "family": "Costa",
+        "hex": "#657375",
         "name": "Jungle",
         "swatch": "assets/fabrics/cte013.jpg"
       },
       {
         "code": "CTE 010",
+        "family": "Costa",
+        "hex": "#9f8278",
         "name": "Fog",
         "swatch": "assets/fabrics/cte010.jpg"
       },
       {
         "code": "CTE 001",
+        "family": "Costa",
+        "hex": "#c5c3b5",
         "name": "Oyster",
         "swatch": "assets/fabrics/cte001.jpg"
       },
       {
         "code": "CTE 005",
+        "family": "Costa",
+        "hex": "#ada69a",
         "name": "Board",
         "swatch": "assets/fabrics/cte005.jpg"
       },
       {
         "code": "CTE 006",
+        "family": "Costa",
+        "hex": "#6f665c",
         "name": "Log",
         "swatch": "assets/fabrics/cte006.jpg"
       },
       {
         "code": "CTE 002",
+        "family": "Costa",
+        "hex": "#919588",
         "name": "Pewter",
         "swatch": "assets/fabrics/cte002.jpg"
       },
       {
         "code": "CTE 004",
+        "family": "Costa",
+        "hex": "#3b3f3d",
         "name": "Gray",
         "swatch": "assets/fabrics/cte004.jpg"
       }
     ],
-    "referencePhoto": true,
+    "premium": true,
+    "defaultFabric": 1,
     "views": [
       {
         "label": "Angled view",
@@ -708,7 +887,13 @@ window.showroomProducts = [
         "image": "assets/products/bed-frames/easy-clean-detail.png"
       }
     ],
-    "shop": null
+    "shop": null,
+    "prices": {
+      "Single": 759,
+      "Super Single": 799,
+      "Queen": 899,
+      "King": 1199
+    }
   },
   {
     "slug": "cove",
@@ -723,20 +908,222 @@ window.showroomProducts = [
       35,
       39
     ],
+    "premium": true,
+    "cutout": "assets/products/showroom-cutouts/cove.png",
     "fabrics": [
       {
         "code": "LGE 008",
+        "family": "Lego",
+        "hex": "#bfb9a8",
         "name": "Creamy",
         "swatch": "assets/fabrics/lge008.jpg"
       },
       {
         "code": "LGE 012",
+        "family": "Lego",
+        "hex": "#4a5050",
         "name": "Shadow",
         "swatch": "assets/fabrics/lge012.jpg"
+      },
+      {
+        "code": "LGE 003",
+        "family": "Lego",
+        "hex": "#c59e68",
+        "name": "Mustard",
+        "swatch": "assets/fabrics/lge003.jpg"
+      },
+      {
+        "code": "LGE 009",
+        "family": "Lego",
+        "hex": "#8a7d6a",
+        "name": "Peanut",
+        "swatch": "assets/fabrics/lge009.jpg"
+      },
+      {
+        "code": "LGE 004",
+        "family": "Lego",
+        "hex": "#6b9596",
+        "name": "Celeste",
+        "swatch": "assets/fabrics/lge004.jpg"
+      },
+      {
+        "code": "LGE 005",
+        "family": "Lego",
+        "hex": "#355668",
+        "name": "Atlantic",
+        "swatch": "assets/fabrics/lge005.jpg"
+      },
+      {
+        "code": "LGE 006",
+        "family": "Lego",
+        "hex": "#8c9692",
+        "name": "Sky",
+        "swatch": "assets/fabrics/lge006.jpg"
+      },
+      {
+        "code": "LGE 011",
+        "family": "Lego",
+        "hex": "#6d6b62",
+        "name": "Anchor",
+        "swatch": "assets/fabrics/lge011.jpg"
+      },
+      {
+        "code": "LGE 007",
+        "family": "Lego",
+        "hex": "#1d2329",
+        "name": "Lagoon",
+        "swatch": "assets/fabrics/lge007.jpg"
+      },
+      {
+        "code": "LGE 010",
+        "family": "Lego",
+        "hex": "#989b90",
+        "name": "Clouds",
+        "swatch": "assets/fabrics/lge010.jpg"
+      },
+      {
+        "code": "RKE 001",
+        "family": "Reka",
+        "hex": "#c3ccc5",
+        "name": "Misty",
+        "swatch": "assets/fabrics/rke001.jpg"
+      },
+      {
+        "code": "RKE 002",
+        "family": "Reka",
+        "hex": "#939f97",
+        "name": "Graphite",
+        "swatch": "assets/fabrics/rke002.jpg"
+      },
+      {
+        "code": "RKE 014",
+        "family": "Reka",
+        "hex": "#77827b",
+        "name": "Seal",
+        "swatch": "assets/fabrics/rke014.jpg"
+      },
+      {
+        "code": "RKE 004",
+        "family": "Reka",
+        "hex": "#afaa95",
+        "name": "Koala",
+        "swatch": "assets/fabrics/rke004.jpg"
+      },
+      {
+        "code": "RKE 003",
+        "family": "Reka",
+        "hex": "#7c7e74",
+        "name": "Earl Grey",
+        "swatch": "assets/fabrics/rke003.jpg"
+      },
+      {
+        "code": "RKE 010",
+        "family": "Reka",
+        "hex": "#8eb3ae",
+        "name": "Sky",
+        "swatch": "assets/fabrics/rke010.jpg"
+      },
+      {
+        "code": "RKE 011",
+        "family": "Reka",
+        "hex": "#657e83",
+        "name": "Blues",
+        "swatch": "assets/fabrics/rke011.jpg"
+      },
+      {
+        "code": "RKE 012",
+        "family": "Reka",
+        "hex": "#3c5667",
+        "name": "Denim",
+        "swatch": "assets/fabrics/rke012.jpg"
+      },
+      {
+        "code": "RKE 013",
+        "family": "Reka",
+        "hex": "#7c8781",
+        "name": "Smokey",
+        "swatch": "assets/fabrics/rke013.jpg"
+      },
+      {
+        "code": "RKE 015",
+        "family": "Reka",
+        "hex": "#3d4a51",
+        "name": "Dawn",
+        "swatch": "assets/fabrics/rke015.jpg"
+      },
+      {
+        "code": "CTE 017",
+        "family": "Costa",
+        "hex": "#425361",
+        "name": "Marine",
+        "swatch": "assets/fabrics/cte017.jpg"
+      },
+      {
+        "code": "CTE 003",
+        "family": "Costa",
+        "hex": "#839090",
+        "name": "Mistral",
+        "swatch": "assets/fabrics/cte003.jpg"
+      },
+      {
+        "code": "CTE 015",
+        "family": "Costa",
+        "hex": "#7b8e8e",
+        "name": "Sky",
+        "swatch": "assets/fabrics/cte015.jpg"
+      },
+      {
+        "code": "CTE 013",
+        "family": "Costa",
+        "hex": "#657375",
+        "name": "Jungle",
+        "swatch": "assets/fabrics/cte013.jpg"
+      },
+      {
+        "code": "CTE 010",
+        "family": "Costa",
+        "hex": "#9f8278",
+        "name": "Fog",
+        "swatch": "assets/fabrics/cte010.jpg"
+      },
+      {
+        "code": "CTE 001",
+        "family": "Costa",
+        "hex": "#c5c3b5",
+        "name": "Oyster",
+        "swatch": "assets/fabrics/cte001.jpg"
+      },
+      {
+        "code": "CTE 005",
+        "family": "Costa",
+        "hex": "#ada69a",
+        "name": "Board",
+        "swatch": "assets/fabrics/cte005.jpg"
+      },
+      {
+        "code": "CTE 006",
+        "family": "Costa",
+        "hex": "#6f665c",
+        "name": "Log",
+        "swatch": "assets/fabrics/cte006.jpg"
+      },
+      {
+        "code": "CTE 002",
+        "family": "Costa",
+        "hex": "#919588",
+        "name": "Pewter",
+        "swatch": "assets/fabrics/cte002.jpg"
+      },
+      {
+        "code": "CTE 004",
+        "family": "Costa",
+        "hex": "#3b3f3d",
+        "name": "Gray",
+        "swatch": "assets/fabrics/cte004.jpg"
       }
     ],
     "orientations": null,
-    "colourPhotos": [
+    "referencePhotos": [
       [
         "photos/cove-cream.png"
       ],
@@ -746,12 +1133,17 @@ window.showroomProducts = [
     ],
     "views": [
       {
-        "label": "Product view",
-        "src": "photos/cove-cream.png"
+        "label": "Fabric preview",
+        "src": "assets/products/showroom-cutouts/cove.png"
       },
       {
         "label": "Room planner",
         "planner": true
+      },
+      {
+        "label": "Cream reference",
+        "src": "assets/products/showroom-cutouts/cove.png",
+        "reference": true
       }
     ],
     "features": [
@@ -761,18 +1153,24 @@ window.showroomProducts = [
         "image": "assets/products/sofa-cove-detail.png"
       },
       {
-        "title": "Premium Lego fabric",
-        "text": "Pet-friendly upholstery in Creamy LGE 008 or Shadow LGE 012. Check an actual swatch before ordering.",
+        "title": "Pet-friendly premium fabric",
+        "text": "Choose from 30 Lego, Reka and Costa fabrics. Scratch resistant, easy to clean and water repellent. Confirm your choice and any colour surcharge before ordering.",
         "image": "assets/fabrics/lge008.jpg"
       },
       {
         "title": "Tufted comfort",
         "text": "A tufted backrest and slim arms.",
-        "image": "photos/cove-cream.png"
+        "image": "assets/products/showroom-cutouts/cove.png"
       }
     ],
     "shop": "https://mattresshub.co/products/cove-sofa",
-    "feel": "Medium firm"
+    "feel": "Medium firm",
+    "basePrice": 999,
+    "includedFabrics": [
+      "LGE 008",
+      "LGE 012"
+    ],
+    "fabricAddon": 250
   },
   {
     "slug": "luxe",
@@ -787,23 +1185,225 @@ window.showroomProducts = [
       60,
       39
     ],
+    "premium": true,
+    "cutout": "assets/products/showroom-cutouts/luxe.png",
     "fabrics": [
       {
         "code": "LGE 008",
+        "family": "Lego",
+        "hex": "#bfb9a8",
         "name": "Creamy",
         "swatch": "assets/fabrics/lge008.jpg"
       },
       {
         "code": "LGE 012",
+        "family": "Lego",
+        "hex": "#4a5050",
         "name": "Shadow",
         "swatch": "assets/fabrics/lge012.jpg"
+      },
+      {
+        "code": "LGE 003",
+        "family": "Lego",
+        "hex": "#c59e68",
+        "name": "Mustard",
+        "swatch": "assets/fabrics/lge003.jpg"
+      },
+      {
+        "code": "LGE 009",
+        "family": "Lego",
+        "hex": "#8a7d6a",
+        "name": "Peanut",
+        "swatch": "assets/fabrics/lge009.jpg"
+      },
+      {
+        "code": "LGE 004",
+        "family": "Lego",
+        "hex": "#6b9596",
+        "name": "Celeste",
+        "swatch": "assets/fabrics/lge004.jpg"
+      },
+      {
+        "code": "LGE 005",
+        "family": "Lego",
+        "hex": "#355668",
+        "name": "Atlantic",
+        "swatch": "assets/fabrics/lge005.jpg"
+      },
+      {
+        "code": "LGE 006",
+        "family": "Lego",
+        "hex": "#8c9692",
+        "name": "Sky",
+        "swatch": "assets/fabrics/lge006.jpg"
+      },
+      {
+        "code": "LGE 011",
+        "family": "Lego",
+        "hex": "#6d6b62",
+        "name": "Anchor",
+        "swatch": "assets/fabrics/lge011.jpg"
+      },
+      {
+        "code": "LGE 007",
+        "family": "Lego",
+        "hex": "#1d2329",
+        "name": "Lagoon",
+        "swatch": "assets/fabrics/lge007.jpg"
+      },
+      {
+        "code": "LGE 010",
+        "family": "Lego",
+        "hex": "#989b90",
+        "name": "Clouds",
+        "swatch": "assets/fabrics/lge010.jpg"
+      },
+      {
+        "code": "RKE 001",
+        "family": "Reka",
+        "hex": "#c3ccc5",
+        "name": "Misty",
+        "swatch": "assets/fabrics/rke001.jpg"
+      },
+      {
+        "code": "RKE 002",
+        "family": "Reka",
+        "hex": "#939f97",
+        "name": "Graphite",
+        "swatch": "assets/fabrics/rke002.jpg"
+      },
+      {
+        "code": "RKE 014",
+        "family": "Reka",
+        "hex": "#77827b",
+        "name": "Seal",
+        "swatch": "assets/fabrics/rke014.jpg"
+      },
+      {
+        "code": "RKE 004",
+        "family": "Reka",
+        "hex": "#afaa95",
+        "name": "Koala",
+        "swatch": "assets/fabrics/rke004.jpg"
+      },
+      {
+        "code": "RKE 003",
+        "family": "Reka",
+        "hex": "#7c7e74",
+        "name": "Earl Grey",
+        "swatch": "assets/fabrics/rke003.jpg"
+      },
+      {
+        "code": "RKE 010",
+        "family": "Reka",
+        "hex": "#8eb3ae",
+        "name": "Sky",
+        "swatch": "assets/fabrics/rke010.jpg"
+      },
+      {
+        "code": "RKE 011",
+        "family": "Reka",
+        "hex": "#657e83",
+        "name": "Blues",
+        "swatch": "assets/fabrics/rke011.jpg"
+      },
+      {
+        "code": "RKE 012",
+        "family": "Reka",
+        "hex": "#3c5667",
+        "name": "Denim",
+        "swatch": "assets/fabrics/rke012.jpg"
+      },
+      {
+        "code": "RKE 013",
+        "family": "Reka",
+        "hex": "#7c8781",
+        "name": "Smokey",
+        "swatch": "assets/fabrics/rke013.jpg"
+      },
+      {
+        "code": "RKE 015",
+        "family": "Reka",
+        "hex": "#3d4a51",
+        "name": "Dawn",
+        "swatch": "assets/fabrics/rke015.jpg"
+      },
+      {
+        "code": "CTE 017",
+        "family": "Costa",
+        "hex": "#425361",
+        "name": "Marine",
+        "swatch": "assets/fabrics/cte017.jpg"
+      },
+      {
+        "code": "CTE 003",
+        "family": "Costa",
+        "hex": "#839090",
+        "name": "Mistral",
+        "swatch": "assets/fabrics/cte003.jpg"
+      },
+      {
+        "code": "CTE 015",
+        "family": "Costa",
+        "hex": "#7b8e8e",
+        "name": "Sky",
+        "swatch": "assets/fabrics/cte015.jpg"
+      },
+      {
+        "code": "CTE 013",
+        "family": "Costa",
+        "hex": "#657375",
+        "name": "Jungle",
+        "swatch": "assets/fabrics/cte013.jpg"
+      },
+      {
+        "code": "CTE 010",
+        "family": "Costa",
+        "hex": "#9f8278",
+        "name": "Fog",
+        "swatch": "assets/fabrics/cte010.jpg"
+      },
+      {
+        "code": "CTE 001",
+        "family": "Costa",
+        "hex": "#c5c3b5",
+        "name": "Oyster",
+        "swatch": "assets/fabrics/cte001.jpg"
+      },
+      {
+        "code": "CTE 005",
+        "family": "Costa",
+        "hex": "#ada69a",
+        "name": "Board",
+        "swatch": "assets/fabrics/cte005.jpg"
+      },
+      {
+        "code": "CTE 006",
+        "family": "Costa",
+        "hex": "#6f665c",
+        "name": "Log",
+        "swatch": "assets/fabrics/cte006.jpg"
+      },
+      {
+        "code": "CTE 002",
+        "family": "Costa",
+        "hex": "#919588",
+        "name": "Pewter",
+        "swatch": "assets/fabrics/cte002.jpg"
+      },
+      {
+        "code": "CTE 004",
+        "family": "Costa",
+        "hex": "#3b3f3d",
+        "name": "Gray",
+        "swatch": "assets/fabrics/cte004.jpg"
       }
     ],
     "orientations": [
       "Left",
       "Right"
     ],
-    "colourPhotos": [
+    "referencePhotos": [
       [
         "photos/luxe-cream-left.png",
         "photos/luxe-cream-right.png"
@@ -815,12 +1415,17 @@ window.showroomProducts = [
     ],
     "views": [
       {
-        "label": "Product view",
-        "src": "photos/luxe-cream-left.png"
+        "label": "Fabric preview",
+        "src": "assets/products/showroom-cutouts/luxe.png"
       },
       {
         "label": "Room planner",
         "planner": true
+      },
+      {
+        "label": "Cream reference",
+        "src": "assets/products/showroom-cutouts/luxe.png",
+        "reference": true
       }
     ],
     "features": [
@@ -830,18 +1435,24 @@ window.showroomProducts = [
         "image": "assets/products/sofa-luxe-detail.png"
       },
       {
-        "title": "Premium Lego fabric",
-        "text": "Pet-friendly upholstery in Creamy LGE 008 or Shadow LGE 012. Check an actual swatch before ordering.",
+        "title": "Pet-friendly premium fabric",
+        "text": "Choose from 30 Lego, Reka and Costa fabrics. Scratch resistant, easy to clean and water repellent. Confirm your choice and any colour surcharge before ordering.",
         "image": "assets/fabrics/lge008.jpg"
       },
       {
         "title": "Stretch-out chaise",
         "text": "A wide chaise and plush pillow armrests.",
-        "image": "photos/luxe-cream-left.png"
+        "image": "assets/products/showroom-cutouts/luxe.png"
       }
     ],
     "shop": "https://mattresshub.co/products/luxe-sofa",
-    "feel": "Medium firm"
+    "feel": "Medium firm",
+    "basePrice": 1099,
+    "includedFabrics": [
+      "LGE 008",
+      "LGE 012"
+    ],
+    "fabricAddon": 250
   },
   {
     "slug": "oasis",
@@ -856,23 +1467,225 @@ window.showroomProducts = [
       66,
       39
     ],
+    "premium": true,
+    "cutout": "assets/products/showroom-cutouts/oasis.png",
     "fabrics": [
       {
         "code": "LGE 008",
+        "family": "Lego",
+        "hex": "#bfb9a8",
         "name": "Creamy",
         "swatch": "assets/fabrics/lge008.jpg"
       },
       {
         "code": "LGE 012",
+        "family": "Lego",
+        "hex": "#4a5050",
         "name": "Shadow",
         "swatch": "assets/fabrics/lge012.jpg"
+      },
+      {
+        "code": "LGE 003",
+        "family": "Lego",
+        "hex": "#c59e68",
+        "name": "Mustard",
+        "swatch": "assets/fabrics/lge003.jpg"
+      },
+      {
+        "code": "LGE 009",
+        "family": "Lego",
+        "hex": "#8a7d6a",
+        "name": "Peanut",
+        "swatch": "assets/fabrics/lge009.jpg"
+      },
+      {
+        "code": "LGE 004",
+        "family": "Lego",
+        "hex": "#6b9596",
+        "name": "Celeste",
+        "swatch": "assets/fabrics/lge004.jpg"
+      },
+      {
+        "code": "LGE 005",
+        "family": "Lego",
+        "hex": "#355668",
+        "name": "Atlantic",
+        "swatch": "assets/fabrics/lge005.jpg"
+      },
+      {
+        "code": "LGE 006",
+        "family": "Lego",
+        "hex": "#8c9692",
+        "name": "Sky",
+        "swatch": "assets/fabrics/lge006.jpg"
+      },
+      {
+        "code": "LGE 011",
+        "family": "Lego",
+        "hex": "#6d6b62",
+        "name": "Anchor",
+        "swatch": "assets/fabrics/lge011.jpg"
+      },
+      {
+        "code": "LGE 007",
+        "family": "Lego",
+        "hex": "#1d2329",
+        "name": "Lagoon",
+        "swatch": "assets/fabrics/lge007.jpg"
+      },
+      {
+        "code": "LGE 010",
+        "family": "Lego",
+        "hex": "#989b90",
+        "name": "Clouds",
+        "swatch": "assets/fabrics/lge010.jpg"
+      },
+      {
+        "code": "RKE 001",
+        "family": "Reka",
+        "hex": "#c3ccc5",
+        "name": "Misty",
+        "swatch": "assets/fabrics/rke001.jpg"
+      },
+      {
+        "code": "RKE 002",
+        "family": "Reka",
+        "hex": "#939f97",
+        "name": "Graphite",
+        "swatch": "assets/fabrics/rke002.jpg"
+      },
+      {
+        "code": "RKE 014",
+        "family": "Reka",
+        "hex": "#77827b",
+        "name": "Seal",
+        "swatch": "assets/fabrics/rke014.jpg"
+      },
+      {
+        "code": "RKE 004",
+        "family": "Reka",
+        "hex": "#afaa95",
+        "name": "Koala",
+        "swatch": "assets/fabrics/rke004.jpg"
+      },
+      {
+        "code": "RKE 003",
+        "family": "Reka",
+        "hex": "#7c7e74",
+        "name": "Earl Grey",
+        "swatch": "assets/fabrics/rke003.jpg"
+      },
+      {
+        "code": "RKE 010",
+        "family": "Reka",
+        "hex": "#8eb3ae",
+        "name": "Sky",
+        "swatch": "assets/fabrics/rke010.jpg"
+      },
+      {
+        "code": "RKE 011",
+        "family": "Reka",
+        "hex": "#657e83",
+        "name": "Blues",
+        "swatch": "assets/fabrics/rke011.jpg"
+      },
+      {
+        "code": "RKE 012",
+        "family": "Reka",
+        "hex": "#3c5667",
+        "name": "Denim",
+        "swatch": "assets/fabrics/rke012.jpg"
+      },
+      {
+        "code": "RKE 013",
+        "family": "Reka",
+        "hex": "#7c8781",
+        "name": "Smokey",
+        "swatch": "assets/fabrics/rke013.jpg"
+      },
+      {
+        "code": "RKE 015",
+        "family": "Reka",
+        "hex": "#3d4a51",
+        "name": "Dawn",
+        "swatch": "assets/fabrics/rke015.jpg"
+      },
+      {
+        "code": "CTE 017",
+        "family": "Costa",
+        "hex": "#425361",
+        "name": "Marine",
+        "swatch": "assets/fabrics/cte017.jpg"
+      },
+      {
+        "code": "CTE 003",
+        "family": "Costa",
+        "hex": "#839090",
+        "name": "Mistral",
+        "swatch": "assets/fabrics/cte003.jpg"
+      },
+      {
+        "code": "CTE 015",
+        "family": "Costa",
+        "hex": "#7b8e8e",
+        "name": "Sky",
+        "swatch": "assets/fabrics/cte015.jpg"
+      },
+      {
+        "code": "CTE 013",
+        "family": "Costa",
+        "hex": "#657375",
+        "name": "Jungle",
+        "swatch": "assets/fabrics/cte013.jpg"
+      },
+      {
+        "code": "CTE 010",
+        "family": "Costa",
+        "hex": "#9f8278",
+        "name": "Fog",
+        "swatch": "assets/fabrics/cte010.jpg"
+      },
+      {
+        "code": "CTE 001",
+        "family": "Costa",
+        "hex": "#c5c3b5",
+        "name": "Oyster",
+        "swatch": "assets/fabrics/cte001.jpg"
+      },
+      {
+        "code": "CTE 005",
+        "family": "Costa",
+        "hex": "#ada69a",
+        "name": "Board",
+        "swatch": "assets/fabrics/cte005.jpg"
+      },
+      {
+        "code": "CTE 006",
+        "family": "Costa",
+        "hex": "#6f665c",
+        "name": "Log",
+        "swatch": "assets/fabrics/cte006.jpg"
+      },
+      {
+        "code": "CTE 002",
+        "family": "Costa",
+        "hex": "#919588",
+        "name": "Pewter",
+        "swatch": "assets/fabrics/cte002.jpg"
+      },
+      {
+        "code": "CTE 004",
+        "family": "Costa",
+        "hex": "#3b3f3d",
+        "name": "Gray",
+        "swatch": "assets/fabrics/cte004.jpg"
       }
     ],
     "orientations": [
       "Left",
       "Right"
     ],
-    "colourPhotos": [
+    "referencePhotos": [
       [
         "photos/oasis-cream-left.png",
         "photos/oasis-cream-right.png"
@@ -884,12 +1697,17 @@ window.showroomProducts = [
     ],
     "views": [
       {
-        "label": "Product view",
-        "src": "photos/oasis-cream-left.png"
+        "label": "Fabric preview",
+        "src": "assets/products/showroom-cutouts/oasis.png"
       },
       {
         "label": "Room planner",
         "planner": true
+      },
+      {
+        "label": "Cream reference",
+        "src": "assets/products/showroom-cutouts/oasis.png",
+        "reference": true
       }
     ],
     "features": [
@@ -899,17 +1717,24 @@ window.showroomProducts = [
         "image": "assets/products/sofa-oasis-detail.png"
       },
       {
-        "title": "Premium Lego fabric",
-        "text": "Pet-friendly upholstery in Creamy LGE 008 or Shadow LGE 012. Check an actual swatch before ordering.",
+        "title": "Pet-friendly premium fabric",
+        "text": "Choose from 30 Lego, Reka and Costa fabrics. Scratch resistant, easy to clean and water repellent. Confirm your choice and any colour surcharge before ordering.",
         "image": "assets/fabrics/lge008.jpg"
       },
       {
         "title": "Adjustable backrests",
         "text": "Adjustable backrests and a deep chaise.",
-        "image": "photos/oasis-cream-left.png"
+        "image": "assets/products/showroom-cutouts/oasis.png"
       }
     ],
     "shop": "https://mattresshub.co/products/oasis-sofa",
-    "feel": "Medium firm"
+    "feel": "Medium firm",
+    "basePrice": 1599,
+    "includedFabrics": [
+      "LGE 008",
+      "LGE 012"
+    ],
+    "fabricAddon": 250
   }
 ];
+window.showroomImageMeta = {"assets/products/showroom-cutouts/cloud.png":{"width":1774,"height":887,"bounds":[49,195,1673,545]},"assets/products/showroom-cutouts/coolmax.png":{"width":2020,"height":779,"bounds":[41,45,1938,618]},"assets/products/showroom-cutouts/cove.png":{"width":1774,"height":887,"bounds":[90,115,1603,757]},"assets/products/showroom-cutouts/durafirm.png":{"width":1774,"height":887,"bounds":[36,213,1699,543]},"assets/products/showroom-cutouts/essential.png":{"width":1536,"height":1024,"bounds":[28,253,1477,565]},"assets/products/showroom-cutouts/luxe.png":{"width":1254,"height":1254,"bounds":[29,398,1209,569]},"assets/products/showroom-cutouts/noir.png":{"width":1774,"height":887,"bounds":[23,109,1720,674]},"assets/products/showroom-cutouts/oasis.png":{"width":1536,"height":1024,"bounds":[34,259,1471,643]},"assets/products/showroom-cutouts/plus.png":{"width":1536,"height":1024,"bounds":[23,225,1484,575]},"assets/products/showroom-cutouts/pure.png":{"width":2146,"height":733,"bounds":[63,104,2016,534]},"assets/products/bed-frames/cozy-cream-side.png":{"width":799,"height":666,"bounds":[22,54,763,550]},"assets/products/bed-frames/cozy-cream-front.png":{"width":800,"height":533,"bounds":[51,25,699,470]},"assets/products/bed-frames/cozy-grey-side.png":{"width":1374,"height":1145,"bounds":[35,88,1319,955]},"assets/products/bed-frames/cozy-grey-front.png":{"width":1536,"height":1024,"bounds":[92,41,1352,915]},"assets/products/bed-frames/haven-side.png":{"width":799,"height":666,"bounds":[23,44,763,556]},"assets/products/bed-frames/haven-front.png":{"width":800,"height":533,"bounds":[38,22,724,470]},"assets/products/bed-frames/aurora-side.png":{"width":799,"height":666,"bounds":[29,89,753,485]},"assets/products/showroom-cutouts/aurora-front.png":{"width":1536,"height":1024,"bounds":[108,52,1320,915]}};
