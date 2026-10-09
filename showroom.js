@@ -8,12 +8,12 @@ function routeQuery() { return new URLSearchParams(staticRoute === undefined ? l
 function showroomUrl(slug = '', query = '') {
   const suffix = String(query) ? '?' + query : '';
   if (staticRoute === undefined) return location.href.split('#')[0] + '#' + slug + suffix;
-  const path = !slug ? '' : ['soho', 'build-your-bed', 'room-tour'].includes(slug) ? slug + '/' : 'products/' + slug + '/';
+  const path = !slug ? '' : ['soho', 'build-your-bed', 'room-tour', 'your-space'].includes(slug) ? slug + '/' : 'products/' + slug + '/';
   return new URL(path + suffix, document.baseURI).href;
 }
 function redirectLegacy() {
   const [slug, query = ''] = location.hash.slice(1).split('?');
-  if (staticRoute !== undefined && (products.some(p => p.slug === slug) || ['soho', 'build-your-bed'].includes(slug))) {
+  if (staticRoute !== undefined && (products.some(p => p.slug === slug) || ['soho', 'build-your-bed', 'your-space'].includes(slug))) {
     location.replace(showroomUrl(slug, query));
     return true;
   }
@@ -50,15 +50,14 @@ function Catalogue() {
   const [rotating, setRotating] = useState(() => !matchMedia('(prefers-reduced-motion: reduce)').matches);
   useEffect(() => { const media = matchMedia('(prefers-reduced-motion: reduce)'); const changed = () => { if (media.matches) setRotating(false); }; media.addEventListener('change', changed); return () => media.removeEventListener('change', changed); }, []);
   return h(React.Fragment, null,
-    h('section', { className: 'catalogue-hero' }, h('div', null, h('span', { className: 'eyebrow' }, 'The interactive showroom'), h('h1', null, 'Find your', h('br'), 'kind of comfort.'), h('p', null, 'Explore the layers. Feel out the fabrics. Make room for something that feels like you.'), h('a', { className: 'text-link', href: showroomUrl('luxe') }, 'Try the sofa room planner ', h(Icon, { type: 'arrow' }))),
-      h('a', { className: 'hero-sofa', href: showroomUrl('luxe'), 'aria-label': 'Explore Luxe sofa' }, h(ProductVisual, { src: products.find(p => p.slug === 'luxe').views[0].src, alt: 'Luxe sofa in cream' }), h('span', null, 'Luxe', h('small', null, 'Room to stretch out.')))),
-    h('nav', {className:'package-links', 'aria-label':'Build a package'}, h('a',{href:showroomUrl('build-your-bed')},h('strong',null,'Build Your Bed'),h('span',null,'Mattress + bed frame →')),h('a',{href:showroomUrl('soho')},h('strong',null,'The SOHO package'),h('span',null,'Bed set + sofa →'))),
-    h('div', { className: 'catalogue-heading' }, h('div', { role: 'group', 'aria-label': 'Product category', className: 'category-tabs' }, ...categories.map(c => h('button', { key: c, type: 'button', 'aria-pressed': category === c, onClick: () => setCategory(c) }, c))), h('span', { className: 'catalogue-count', 'aria-live': 'polite' }, `${products.filter(p => category === 'All products' || p.series === category).length} products`)),
+    h(window.mhValueRoom.Teaser),
+    h('div', { className: 'catalogue-heading', id:'catalogue' }, h('div', { role: 'group', 'aria-label': 'Product category', className: 'category-tabs' }, ...categories.map(c => h('button', { key: c, type: 'button', 'aria-pressed': category === c, onClick: () => setCategory(c) }, c))), h('span', { className: 'catalogue-count', 'aria-live': 'polite' }, `${products.filter(p => category === 'All products' || p.series === category).length} products`)),
     h('div', { className: 'preview-controls' }, h('span', null, 'A few ways to make it yours.'), h('button', { type: 'button', 'aria-pressed': !rotating, onClick: () => setRotating(!rotating) }, rotating ? 'Pause colour previews' : 'Resume colour previews')),
     ...categories.slice(1).filter(c => category === 'All products' || c === category).map(c => h('section', { key:c, className:'collection-section', 'aria-label':c },
       h('div',{className:'collection-heading'},h('h2',null,c),h('span',null,products.find(p=>p.series===c).category)),
       h('div', { className: 'catalogue-grid' }, ...products.filter(p => p.series === c).map(p => h(CatalogueCard, { key: p.slug, product: p, index: products.indexOf(p), rotating }))))),
     // A still preview only: the tour itself loads on its own page.
+    h('nav', {className:'package-links', 'aria-label':'Build a package'}, h('a',{href:showroomUrl('build-your-bed')},h('strong',null,'Build Your Bed'),h('span',null,'Mattress + bed frame →')),h('a',{href:showroomUrl('soho')},h('strong',null,'The SOHO package'),h('span',null,'Bed set + sofa →'))),
     h('a', { className: 'room-tour-card', href: showroomUrl('room-tour') }, h('img', { src: 'room-tour/preview.jpg', alt: 'The Quiet Room with the Cove sofa, Haven bed frame and Cloud mattress', width: 1200, height: 675, loading: 'lazy' }),
       h('div', null, h('span', { className: 'eyebrow' }, 'Room studies'), h('h2', null, 'Explore the Room'), h('p', null, 'See Cove, Haven and Cloud together in one room. Move between four viewpoints, then make it yours.'), h('span', { className: 'text-link' }, 'Step inside the room ', h(Icon, { type: 'arrow' })))));
 }
@@ -184,6 +183,6 @@ function Showroom() {
   useEffect(() => { if (!product && staticRoute === undefined) document.title = 'MattressHub | The interactive showroom'; }, [product]);
   return h(React.Fragment, null, h('a', { className: 'skip', href: '#main', onClick: e => { e.preventDefault(); document.getElementById('main').focus(); } }, 'Skip to showroom'),
     h('header', { className: 'header' }, h('a', { href: showroomUrl(), 'aria-label': 'MattressHub showroom home' }, h(Logo)), h('span', { className: 'header-label' }, 'The interactive showroom'), h('label',{className:'language-switch'}, h('span',{className:'sr-only'},'Language'),h('select',{'aria-label':'Language',value:language,onChange:e=>switchLanguage(e.target.value)},h('option',{value:'en'},'English'),h('option',{value:'zh'},'中文'),h('option',{value:'ms'},'Melayu'))), h('a', { className: 'store-link', href: 'https://mattresshub.co' }, 'Visit the store ', h(Icon, { type: 'arrow' }))),
-    h('main', { id: 'main', tabIndex: -1 }, slug === 'build-your-bed' || slug === 'soho' ? h(PackageBuilder,{key:slug,soho:slug==='soho'}) : product ? h(Product, { key: product.slug, product }) : h(Catalogue), product && productFacts && h('details', {className:'product-facts', lang:'en', dangerouslySetInnerHTML:{__html:productFacts}}), h('footer', null, h('strong', null, 'Dealer price for everyone.'), h('a', { href: showroomUrl() }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'))));
+    h('main', { id: 'main', tabIndex: -1 }, slug === 'your-space' ? h(window.mhValueRoom.Room,{language}) : slug === 'build-your-bed' || slug === 'soho' ? h(PackageBuilder,{key:slug,soho:slug==='soho'}) : product ? h(Product, { key: product.slug, product }) : h(Catalogue), product && productFacts && h('details', {className:'product-facts', lang:'en', dangerouslySetInnerHTML:{__html:productFacts}}), h('footer', null, h('strong', null, 'Dealer price for everyone.'), h('a', { href: showroomUrl() }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'))));
 }
 if (!redirectLegacy()) ReactDOM.createRoot(document.getElementById('root')).render(h(Showroom));
