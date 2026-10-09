@@ -1,11 +1,11 @@
-function ProductVisual({ src, fabric, alt, className = '', mirror = false, fit = 'xMidYMid meet' }) {
+function ProductVisual({ src, fabric, alt, className = '', mirror = false, fit = 'xMidYMid meet', bounds, placement = {} }) {
   const id = React.useId().replaceAll(':', '');
   const meta = window.showroomImageMeta?.[src];
   if (!meta) return h('img', { src, alt, className });
   const rgb = (fabric?.hex || '#bfb9a8').slice(1).match(/../g).map(v => parseInt(v, 16) / 255);
   // A swatch-based colour/texture impression, not a calibrated photograph of a manufactured variant.
   const matrix = rgb.map(c => `${.2126 * c / .72} ${.7152 * c / .72} ${.0722 * c / .72} 0 0`).join(' ') + ' 0 0 0 1 0';
-  return h('svg', { className: `product-visual ${className}`, viewBox: meta.bounds.join(' '), role: 'img', 'aria-label': alt, 'data-src': src, 'data-fabric': fabric?.code || '', preserveAspectRatio: fit },
+  return h('svg', { className: `product-visual ${className}`, viewBox: (bounds || meta.bounds).join(' '), role: 'img', 'aria-label': alt, 'data-src': src, 'data-fabric': fabric?.code || '', preserveAspectRatio: fit, ...placement },
     h('defs', null, h('filter', { id: id + 'tone', colorInterpolationFilters: 'sRGB' }, h('feColorMatrix', { type: 'matrix', values: matrix })),
       h('mask', { id: id + 'mask', maskUnits: 'userSpaceOnUse', x: 0, y: 0, width: meta.width, height: meta.height, style: { maskType: 'alpha' } }, h('image', { href: src, width: meta.width, height: meta.height })),
       fabric && h('pattern', { id: id + 'weave', width: 100, height: 100, patternUnits: 'userSpaceOnUse' }, h('image', { href: fabric.swatch, x: -10, y: -10, width: 120, height: 120, preserveAspectRatio: 'xMidYMid slice' }))),

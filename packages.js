@@ -3,9 +3,30 @@ function priceFor(product, size = 'Queen', fabric = 0) {
   return product.prices ? product.prices[size] : product.basePrice + (product.includedFabrics.includes(product.fabrics[fabric].code) ? 0 : product.fabricAddon);
 }
 function BedSetVisual({ bed, mattress, fabric, size }) {
-  return h('div', { className: 'bed-set-visual', 'data-bed': bed.slug, 'data-mattress': mattress.slug, style: { '--bed-width': size === 'Single' ? '.72' : size === 'Super Single' ? '.8' : size === 'King' ? '1' : '.92' } },
-    h('div', { className: 'bed-set-frame' }, h(ProductVisual, { src: bed.setView, fabric: bed.premium ? bed.fabrics[fabric] : fabric === 1 ? { hex: '#777b7b', swatch: bed.fabrics[1].swatch } : null, alt: bed.name + ' bed frame' })),
-    h('div', { className: 'bed-set-mattress' }, h(ProductVisual, { src: mattress.views[0].src, fit: 'none', alt: mattress.name + ' mattress on ' + bed.name })));
+  // Photo landmarks: rear deck, front deck and rear/front perspective scale, not physical dimensions.
+  const [rear, front, perspective] = { cozy: [247,375,.715], haven: [242,367,.706], aurora: [493,727,.77] }[bed.slug];
+  const seam = { essential:610, pure:365, plus:530, coolmax:310, durafirm:480, noir:480, cloud:425 }[mattress.slug];
+  const frame = window.showroomImageMeta[bed.setView].bounds;
+  const source = mattress.views[0].src, mat = window.showroomImageMeta[source].bounds;
+  const tone = bed.premium ? bed.fabrics[fabric] : fabric === 1 ? { hex:'#777b7b', swatch:bed.fabrics[1].swatch } : null;
+  const scale = 3, floor = 430, width = ({ Single:105, 'Super Single':120, Queen:163, King:193 })[size] * scale;
+  // shortcut: photo perspective and footprints are approximate; replace with measured 3D assets when available.
+  const deckDepth = 92, baseTop = floor - bed.baseHeightCm * scale, rearDeck = baseTop - deckDepth;
+  const headTop = rearDeck - (bed.headboardHeightCm - bed.baseHeightCm) * scale * perspective;
+  const frontTop = baseTop - mattress.thickness * 2.54 * scale;
+  const rearTop = rearDeck - mattress.thickness * 2.54 * scale * perspective;
+  const band = (key, src, bounds, y, height, fabric) => h(ProductVisual, { key, src, bounds, fabric, alt:key, fit:'none', placement:{ x:(700-width)/2, y, width, height, 'data-band':key, overflow:'hidden' } });
+  return h('div', { className:'bed-set-visual', 'data-bed':bed.slug, 'data-mattress':mattress.slug },
+    h('svg', { className:'bed-set-composite', viewBox:'0 0 700 460', role:'img', 'aria-label':mattress.name + ' mattress on ' + bed.name },
+      band('headboard',bed.setView,[frame[0],frame[1],frame[2],rear-frame[1]],headTop,rearDeck-headTop,tone),
+      band('deck',bed.setView,[frame[0],rear,frame[2],front-rear],rearDeck,deckDepth,tone),
+      band('base',bed.setView,[frame[0],front,frame[2],frame[1]+frame[3]-front],baseTop,floor-baseTop,tone),
+      band('mattress-top',source,[mat[0],mat[1],mat[2],seam-mat[1]],rearTop,frontTop-rearTop),
+      band('mattress-front',source,[mat[0],seam,mat[2],mat[1]+mat[3]-seam],frontTop,baseTop-frontTop)),
+    h('div',{className:'bed-set-measurements'},
+      h('span',null,'Headboard · floor to top',h('strong',null,bed.headboardHeightCm+' cm')),
+      h('span',null,'Divan base',h('strong',null,'8″ · 20.32 cm')),
+      h('span',null,'Mattress',h('strong',null,mattress.thickness+'″ · '+(mattress.thickness*2.54).toFixed(2)+' cm'))));
 }
 function RoomIllustration({ sofa, fabric, bed, mattress, bedFabric, size = 'Queen', orientation = 'Left', tv = 55 }) {
   const roomW = bed ? 560 : 400, roomD = bed ? 480 : 350;
@@ -34,7 +55,7 @@ function RoomIllustration({ sofa, fabric, bed, mattress, bedFabric, size = 'Quee
     box('arm1', x, y, 12, regularDepth, 63, tone, 9),
     box('arm2', x+width-12, y, 12, regularDepth, 63, tone, 9),
     ...[0,1,2].map(i => box('back'+i,x+i*width/3,y+regularDepth-18,width/3-1,18,height,tone,9)),
-    bed && h('g', null, box('bedbase', 345, 45, size === 'King' ? 193 : size === 'Single' ? 105 : size === 'Super Single' ? 120 : 163, 210, 27, bed.fabrics[bedFabric].hex || (bedFabric ? '#777b7b' : '#d8cdb7')), box('headboard', 345, 40, size === 'King' ? 193 : size === 'Single' ? 105 : size === 'Super Single' ? 120 : 163, 12, 112, bed.fabrics[bedFabric].hex || (bedFabric ? '#777b7b' : '#d8cdb7')), box('mattress', 350, 54, size === 'King' ? 183 : size === 'Single' ? 95 : size === 'Super Single' ? 110 : 153, 198, 27 + mattress.thickness*2.54, ['noir','durafirm','cloud','plus','coolmax'].includes(mattress.slug) ? '#44474d' : '#e7e6df',27)),
+    bed && h('g', null, box('bedbase', 345, 45, size === 'King' ? 193 : size === 'Single' ? 105 : size === 'Super Single' ? 120 : 163, 210, bed.baseHeightCm, bed.fabrics[bedFabric].hex || (bedFabric ? '#777b7b' : '#d8cdb7')), box('headboard', 345, 40, size === 'King' ? 193 : size === 'Single' ? 105 : size === 'Super Single' ? 120 : 163, 12, bed.headboardHeightCm, bed.fabrics[bedFabric].hex || (bedFabric ? '#777b7b' : '#d8cdb7')), box('mattress', 350, 54, size === 'King' ? 183 : size === 'Single' ? 95 : size === 'Super Single' ? 110 : 153, 198, bed.baseHeightCm + mattress.thickness*2.54, ['noir','durafirm','cloud','plus','coolmax'].includes(mattress.slug) ? '#44474d' : '#e7e6df',bed.baseHeightCm)),
     h('text', { x: project(roomW/2,roomD+35)[0], y: project(roomW/2,roomD+35)[1], textAnchor: 'middle', fontSize: 12, fill: '#68716a' }, `${(roomW/100).toFixed(1)} m × ${(roomD/100).toFixed(1)} m example room`));
 }
 function SofaScale({ product, fabric, orientation }) {
@@ -62,7 +83,7 @@ function PackageBuilder({ soho = false }) {
   const select = (label,value,change,choices) => h('label',{className:'builder-select'},label,h('select',{'aria-label':label,value,onChange:e=>change(e.target.value)},...choices.map(([value,label])=>h('option',{key:value,value},label))));
   return h(React.Fragment,null,h('div',{className:'intro'},h('a',{href:'#'},'← All products'),h('span',null,soho?'SOHO package':'Full bed set')),
     h('div',{className:'builder-heading'},h('span',{className:'eyebrow'},soho?'One room. Your way.':'Made for each other'),h('h1',null,soho?'Build your SOHO.':'Build Your Bed.'),h('p',null,soho?'A place to rest, lounge and live. Bring your bed set and sofa together.':'Match a SonoFlex mattress with a SonoFrame bed. One size, your fabric, a clear total.'),h('a',{className:'text-link',href:'#'+(soho?'build-your-bed':'soho')+'?'+params},soho?'Build a bed set only →':'Add a sofa · explore SOHO →')),
-    h('div',{className:'package-layout'},h('section',{className:'package-preview','aria-label':'Package preview'},soho?h(RoomIllustration,{sofa,fabric:sofaFabric,bed,mattress,bedFabric,size,orientation}):h(BedSetVisual,{bed,mattress,fabric:bedFabric,size}),h('p',{className:'photo-note'},soho?'Room concept illustration. Bed footprint is approximate; sofa dimensions are scaled. TV, console, rug and table are styling references, not included.':'Assembled colour visualisation. Proportions and mattress thickness are illustrative; confirm the finished set in store.'),soho&&h('div',{className:'package-product-previews'},h(BedSetVisual,{bed,mattress,fabric:bedFabric,size}),h(ProductVisual,{src:sofa.cutout,fabric:sofa.fabrics[sofaFabric],mirror:orientation==='Right',alt:sofa.name}))),
+    h('div',{className:'package-layout'},h('section',{className:'package-preview','aria-label':'Package preview'},soho?h(RoomIllustration,{sofa,fabric:sofaFabric,bed,mattress,bedFabric,size,orientation}):h(BedSetVisual,{bed,mattress,fabric:bedFabric,size}),h('p',{className:'photo-note'},soho?'Room concept illustration. Bed footprint is approximate; sofa dimensions are scaled. TV, console, rug and table are styling references, not included.':'Heights use the supplied measurements. Perspective, footprint and fabric colours are approximate; confirm the finished set in store.'),soho&&h('div',{className:'package-product-previews'},h(BedSetVisual,{bed,mattress,fabric:bedFabric,size}),h(ProductVisual,{src:sofa.cutout,fabric:sofa.fabrics[sofaFabric],mirror:orientation==='Right',alt:sofa.name}))),
       h('aside',{className:'package-options','aria-label':'Package options'},h(RadioGroup,{title:'Choose your size',name:'package-size',options:mattress.sizes,value:size,onChange:setSize}),
         select('Mattress',mattressSlug,setMattress,mattresses.map(p=>[p.slug,`${p.name} · ${p.firmness}/10 · ${money(priceFor(p,size))}`])),
         select('Bed frame',bedSlug,v=>{setBed(v);setBedFabric(beds.find(p=>p.slug===v).defaultFabric||0);},beds.map(p=>[p.slug,`${p.name} · ${money(priceFor(p,size))}`])),

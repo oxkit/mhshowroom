@@ -152,7 +152,9 @@ Match a SonoFlex mattress with a SonoFrame bed. One size, your fabric, a clear t
 Build a bed set only|只搭配床组|Bina set katil sahaja
 Add a sofa · explore SOHO|添加沙发 · 探索 SOHO|Tambah sofa · terokai SOHO
 Room concept illustration. Bed footprint is approximate; sofa dimensions are scaled. TV, console, rug and table are styling references, not included.|房间概念示意。床组占地为估算，沙发尺寸按比例。电视、电视柜、地毯和茶几为布置参考，不包含在配套内。|Ilustrasi konsep bilik. Tapak katil adalah anggaran; dimensi sofa mengikut skala. TV, konsol, permaidani dan meja ialah rujukan hiasan, tidak termasuk.
-Assembled colour visualisation. Proportions and mattress thickness are illustrative; confirm the finished set in store.|组合颜色效果示意。比例及床垫厚度仅供参考；请到店确认实际搭配。|Visualisasi warna set dipasang. Nisbah dan ketebalan tilam adalah ilustrasi; sahkan set sebenar di kedai.
+Heights use the supplied measurements. Perspective, footprint and fabric colours are approximate; confirm the finished set in store.|高度依据所提供的尺寸。透视、占地及布料颜色仅供参考；请到店确认实际搭配。|Ketinggian mengikut ukuran yang diberikan. Perspektif, keluasan tapak dan warna fabrik adalah anggaran; sahkan set sebenar di kedai.
+Headboard · floor to top|床头板 · 地面至顶部|Kepala katil · lantai ke atas
+Divan base|床座|Tapak divan
 Mattress|床垫|Tilam
 Bed frame|床架|Rangka katil
 Bed fabric|床架面料|Fabrik katil

@@ -354,6 +354,8 @@ window.showroomProducts = [
       }
     ],
     "shop": null,
+    "baseHeightCm": 20.32,
+    "headboardHeightCm": 112,
     "prices": {
       "Single": 299,
       "Super Single": 359,
@@ -623,6 +625,8 @@ window.showroomProducts = [
       }
     ],
     "shop": null,
+    "baseHeightCm": 20.32,
+    "headboardHeightCm": 117,
     "prices": {
       "Single": 459,
       "Super Single": 499,
@@ -888,6 +892,8 @@ window.showroomProducts = [
       }
     ],
     "shop": null,
+    "baseHeightCm": 20.32,
+    "headboardHeightCm": 117,
     "prices": {
       "Single": 759,
       "Super Single": 799,
