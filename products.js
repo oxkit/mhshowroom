@@ -18,11 +18,11 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/showroom-cutouts/essential.png"
+        "src": "assets/products/showroom-cutouts/essential.webp"
       },
       {
         "label": "Inside layers",
-        "src": "assets/products/signature-series/essential-layers-transparent.png"
+        "src": "assets/products/signature-series/essential-layers-transparent.webp"
       }
     ],
     "layers": [
@@ -59,11 +59,11 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/showroom-cutouts/pure.png"
+        "src": "assets/products/showroom-cutouts/pure.webp"
       },
       {
         "label": "Inside layers",
-        "src": "assets/products/signature-series/pure-layers-transparent.png"
+        "src": "assets/products/signature-series/pure-layers-transparent.webp"
       }
     ],
     "layers": [
@@ -99,11 +99,11 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/showroom-cutouts/plus.png"
+        "src": "assets/products/showroom-cutouts/plus.webp"
       },
       {
         "label": "Inside layers",
-        "src": "assets/products/signature-series/plus-layers-transparent.png"
+        "src": "assets/products/signature-series/plus-layers-transparent.webp"
       }
     ],
     "layers": [
@@ -140,11 +140,11 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/showroom-cutouts/coolmax.png"
+        "src": "assets/products/showroom-cutouts/coolmax.webp"
       },
       {
         "label": "Inside layers",
-        "src": "assets/products/signature-series/coolmax-layers-transparent.png"
+        "src": "assets/products/signature-series/coolmax-layers-transparent.webp"
       }
     ],
     "layers": [
@@ -182,11 +182,11 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/showroom-cutouts/durafirm.png"
+        "src": "assets/products/showroom-cutouts/durafirm.webp"
       },
       {
         "label": "Inside layers",
-        "src": "assets/products/signature-series/durafirm-layers-transparent.png"
+        "src": "assets/products/signature-series/durafirm-layers-transparent.webp"
       }
     ],
     "layers": [
@@ -223,11 +223,11 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/showroom-cutouts/noir.png"
+        "src": "assets/products/showroom-cutouts/noir.webp"
       },
       {
         "label": "Inside layers",
-        "src": "assets/products/signature-series/noir-layers-transparent.png"
+        "src": "assets/products/signature-series/noir-layers-transparent.webp"
       }
     ],
     "layers": [
@@ -265,11 +265,11 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Product view",
-        "src": "assets/products/showroom-cutouts/cloud.png"
+        "src": "assets/products/showroom-cutouts/cloud.webp"
       },
       {
         "label": "Inside layers",
-        "src": "assets/products/signature-series/cloud-layers-transparent.png"
+        "src": "assets/products/signature-series/cloud-layers-transparent.webp"
       }
     ],
     "layers": [
@@ -294,7 +294,7 @@ window.showroomProducts = [
     "category": "Bed frames",
     "series": "SonoFrame",
     "type": "Upholstered bed frame",
-    "setView": "assets/products/bed-frames/cozy-cream-front.png",
+    "setView": "assets/products/bed-frames/cozy-cream-front.webp",
     "headline": "Make room for Cozy.",
     "description": "Soft lines. A padded headboard. A simple place to make your own.",
     "sizes": [
@@ -319,21 +319,21 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Angled view",
-        "src": "assets/products/bed-frames/cozy-cream-side.png"
+        "src": "assets/products/bed-frames/cozy-cream-side.webp"
       },
       {
         "label": "Front view",
-        "src": "assets/products/bed-frames/cozy-cream-front.png"
+        "src": "assets/products/bed-frames/cozy-cream-front.webp"
       }
     ],
     "colourPhotos": [
       [
-        "assets/products/bed-frames/cozy-cream-side.png",
-        "assets/products/bed-frames/cozy-cream-front.png"
+        "assets/products/bed-frames/cozy-cream-side.webp",
+        "assets/products/bed-frames/cozy-cream-front.webp"
       ],
       [
-        "assets/products/bed-frames/cozy-grey-side.png",
-        "assets/products/bed-frames/cozy-grey-front.png"
+        "assets/products/bed-frames/cozy-grey-side.webp",
+        "assets/products/bed-frames/cozy-grey-front.webp"
       ]
     ],
     "features": [
@@ -377,7 +377,7 @@ window.showroomProducts = [
       "Queen",
       "King"
     ],
-    "setView": "assets/products/bed-frames/haven-front.png",
+    "setView": "assets/products/bed-frames/haven-front.webp",
     "fabrics": [
       {
         "code": "LGE 003",
@@ -595,11 +595,11 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Angled view",
-        "src": "assets/products/bed-frames/haven-side.png"
+        "src": "assets/products/bed-frames/haven-side.webp"
       },
       {
         "label": "Front view",
-        "src": "assets/products/bed-frames/haven-front.png"
+        "src": "assets/products/bed-frames/haven-front.webp"
       }
     ],
     "features": [
@@ -648,7 +648,7 @@ window.showroomProducts = [
       "Queen",
       "King"
     ],
-    "setView": "assets/products/showroom-cutouts/aurora-front.png",
+    "setView": "assets/products/showroom-cutouts/aurora-front.webp",
     "fabrics": [
       {
         "code": "LGE 003",
@@ -866,7 +866,7 @@ window.showroomProducts = [
     "views": [
       {
         "label": "Angled view",
-        "src": "assets/products/bed-frames/aurora-side.png"
+        "src": "assets/products/bed-frames/aurora-side.webp"
       }
     ],
     "features": [
@@ -915,7 +915,7 @@ window.showroomProducts = [
       39
     ],
     "premium": true,
-    "cutout": "assets/products/showroom-cutouts/cove.png",
+    "cutout": "assets/products/showroom-cutouts/cove.webp",
     "fabrics": [
       {
         "code": "LGE 008",
@@ -1131,16 +1131,16 @@ window.showroomProducts = [
     "orientations": null,
     "referencePhotos": [
       [
-        "photos/cove-cream.png"
+        "photos/cove-cream.webp"
       ],
       [
-        "photos/cove-grey.png"
+        "photos/cove-grey.webp"
       ]
     ],
     "views": [
       {
         "label": "Fabric preview",
-        "src": "assets/products/showroom-cutouts/cove.png"
+        "src": "assets/products/showroom-cutouts/cove.webp"
       },
       {
         "label": "Room planner",
@@ -1148,7 +1148,7 @@ window.showroomProducts = [
       },
       {
         "label": "Cream reference",
-        "src": "assets/products/showroom-cutouts/cove.png",
+        "src": "assets/products/showroom-cutouts/cove.webp",
         "reference": true
       }
     ],
@@ -1156,7 +1156,7 @@ window.showroomProducts = [
       {
         "title": "Zigzag spring seat",
         "text": "High-resilience foam and a zigzag spring seat support your everyday sitting comfort.",
-        "image": "assets/products/sofa-cove-detail.png"
+        "image": "assets/products/sofa-cove-detail.webp"
       },
       {
         "title": "Pet-friendly premium fabric",
@@ -1166,7 +1166,7 @@ window.showroomProducts = [
       {
         "title": "Tufted comfort",
         "text": "A tufted backrest and slim arms.",
-        "image": "assets/products/showroom-cutouts/cove.png"
+        "image": "assets/products/showroom-cutouts/cove.webp"
       }
     ],
     "shop": "https://mattresshub.co/products/cove-sofa",
@@ -1192,7 +1192,7 @@ window.showroomProducts = [
       39
     ],
     "premium": true,
-    "cutout": "assets/products/showroom-cutouts/luxe.png",
+    "cutout": "assets/products/showroom-cutouts/luxe.webp",
     "fabrics": [
       {
         "code": "LGE 008",
@@ -1411,18 +1411,18 @@ window.showroomProducts = [
     ],
     "referencePhotos": [
       [
-        "photos/luxe-cream-left.png",
-        "photos/luxe-cream-right.png"
+        "photos/luxe-cream-left.webp",
+        "photos/luxe-cream-right.webp"
       ],
       [
-        "photos/luxe-grey-left.png",
-        "photos/luxe-grey-right.png"
+        "photos/luxe-grey-left.webp",
+        "photos/luxe-grey-right.webp"
       ]
     ],
     "views": [
       {
         "label": "Fabric preview",
-        "src": "assets/products/showroom-cutouts/luxe.png"
+        "src": "assets/products/showroom-cutouts/luxe.webp"
       },
       {
         "label": "Room planner",
@@ -1430,7 +1430,7 @@ window.showroomProducts = [
       },
       {
         "label": "Cream reference",
-        "src": "assets/products/showroom-cutouts/luxe.png",
+        "src": "assets/products/showroom-cutouts/luxe.webp",
         "reference": true
       }
     ],
@@ -1438,7 +1438,7 @@ window.showroomProducts = [
       {
         "title": "Zigzag spring seat",
         "text": "High-resilience foam and a zigzag spring seat support your everyday sitting comfort.",
-        "image": "assets/products/sofa-luxe-detail.png"
+        "image": "assets/products/sofa-luxe-detail.webp"
       },
       {
         "title": "Pet-friendly premium fabric",
@@ -1448,7 +1448,7 @@ window.showroomProducts = [
       {
         "title": "Stretch-out chaise",
         "text": "A wide chaise and plush pillow armrests.",
-        "image": "assets/products/showroom-cutouts/luxe.png"
+        "image": "assets/products/showroom-cutouts/luxe.webp"
       }
     ],
     "shop": "https://mattresshub.co/products/luxe-sofa",
@@ -1474,7 +1474,7 @@ window.showroomProducts = [
       39
     ],
     "premium": true,
-    "cutout": "assets/products/showroom-cutouts/oasis.png",
+    "cutout": "assets/products/showroom-cutouts/oasis.webp",
     "fabrics": [
       {
         "code": "LGE 008",
@@ -1693,18 +1693,18 @@ window.showroomProducts = [
     ],
     "referencePhotos": [
       [
-        "photos/oasis-cream-left.png",
-        "photos/oasis-cream-right.png"
+        "photos/oasis-cream-left.webp",
+        "photos/oasis-cream-right.webp"
       ],
       [
-        "photos/oasis-grey-left.png",
-        "photos/oasis-grey-right.png"
+        "photos/oasis-grey-left.webp",
+        "photos/oasis-grey-right.webp"
       ]
     ],
     "views": [
       {
         "label": "Fabric preview",
-        "src": "assets/products/showroom-cutouts/oasis.png"
+        "src": "assets/products/showroom-cutouts/oasis.webp"
       },
       {
         "label": "Room planner",
@@ -1712,7 +1712,7 @@ window.showroomProducts = [
       },
       {
         "label": "Cream reference",
-        "src": "assets/products/showroom-cutouts/oasis.png",
+        "src": "assets/products/showroom-cutouts/oasis.webp",
         "reference": true
       }
     ],
@@ -1720,7 +1720,7 @@ window.showroomProducts = [
       {
         "title": "Zigzag spring seat",
         "text": "High-resilience foam and a zigzag spring seat support your everyday sitting comfort.",
-        "image": "assets/products/sofa-oasis-detail.png"
+        "image": "assets/products/sofa-oasis-detail.webp"
       },
       {
         "title": "Pet-friendly premium fabric",
@@ -1730,7 +1730,7 @@ window.showroomProducts = [
       {
         "title": "Adjustable backrests",
         "text": "Adjustable backrests and a deep chaise.",
-        "image": "assets/products/showroom-cutouts/oasis.png"
+        "image": "assets/products/showroom-cutouts/oasis.webp"
       }
     ],
     "shop": "https://mattresshub.co/products/oasis-sofa",
@@ -1743,4 +1743,4 @@ window.showroomProducts = [
     "fabricAddon": 250
   }
 ];
-window.showroomImageMeta = {"assets/products/showroom-cutouts/cloud.png":{"width":1774,"height":887,"bounds":[49,195,1673,545]},"assets/products/showroom-cutouts/coolmax.png":{"width":2020,"height":779,"bounds":[41,45,1938,618]},"assets/products/showroom-cutouts/cove.png":{"width":1774,"height":887,"bounds":[90,115,1603,757]},"assets/products/showroom-cutouts/durafirm.png":{"width":1774,"height":887,"bounds":[36,213,1699,543]},"assets/products/showroom-cutouts/essential.png":{"width":1536,"height":1024,"bounds":[28,253,1477,565]},"assets/products/showroom-cutouts/luxe.png":{"width":1254,"height":1254,"bounds":[29,398,1209,569]},"assets/products/showroom-cutouts/noir.png":{"width":1774,"height":887,"bounds":[23,109,1720,674]},"assets/products/showroom-cutouts/oasis.png":{"width":1536,"height":1024,"bounds":[34,259,1471,643]},"assets/products/showroom-cutouts/plus.png":{"width":1536,"height":1024,"bounds":[23,225,1484,575]},"assets/products/showroom-cutouts/pure.png":{"width":2146,"height":733,"bounds":[63,104,2016,534]},"assets/products/bed-frames/cozy-cream-side.png":{"width":799,"height":666,"bounds":[22,54,763,550]},"assets/products/bed-frames/cozy-cream-front.png":{"width":800,"height":533,"bounds":[51,25,699,470]},"assets/products/bed-frames/cozy-grey-side.png":{"width":1374,"height":1145,"bounds":[35,88,1319,955]},"assets/products/bed-frames/cozy-grey-front.png":{"width":1536,"height":1024,"bounds":[92,41,1352,915]},"assets/products/bed-frames/haven-side.png":{"width":799,"height":666,"bounds":[23,44,763,556]},"assets/products/bed-frames/haven-front.png":{"width":800,"height":533,"bounds":[38,22,724,470]},"assets/products/bed-frames/aurora-side.png":{"width":799,"height":666,"bounds":[29,89,753,485]},"assets/products/showroom-cutouts/aurora-front.png":{"width":1536,"height":1024,"bounds":[108,52,1320,915]}};
+window.showroomImageMeta = {"assets/products/showroom-cutouts/cloud.webp":{"width":1774,"height":887,"bounds":[49,195,1673,545]},"assets/products/showroom-cutouts/coolmax.webp":{"width":2020,"height":779,"bounds":[41,45,1938,618]},"assets/products/showroom-cutouts/cove.webp":{"width":1774,"height":887,"bounds":[90,115,1603,757]},"assets/products/showroom-cutouts/durafirm.webp":{"width":1774,"height":887,"bounds":[36,213,1699,543]},"assets/products/showroom-cutouts/essential.webp":{"width":1536,"height":1024,"bounds":[28,253,1477,565]},"assets/products/showroom-cutouts/luxe.webp":{"width":1254,"height":1254,"bounds":[29,398,1209,569]},"assets/products/showroom-cutouts/noir.webp":{"width":1774,"height":887,"bounds":[23,109,1720,674]},"assets/products/showroom-cutouts/oasis.webp":{"width":1536,"height":1024,"bounds":[34,259,1471,643]},"assets/products/showroom-cutouts/plus.webp":{"width":1536,"height":1024,"bounds":[23,225,1484,575]},"assets/products/showroom-cutouts/pure.webp":{"width":2146,"height":733,"bounds":[63,104,2016,534]},"assets/products/bed-frames/cozy-cream-side.webp":{"width":799,"height":666,"bounds":[22,54,763,550]},"assets/products/bed-frames/cozy-cream-front.webp":{"width":800,"height":533,"bounds":[51,25,699,470]},"assets/products/bed-frames/cozy-grey-side.webp":{"width":1374,"height":1145,"bounds":[35,88,1319,955]},"assets/products/bed-frames/cozy-grey-front.webp":{"width":1536,"height":1024,"bounds":[92,41,1352,915]},"assets/products/bed-frames/haven-side.webp":{"width":799,"height":666,"bounds":[23,44,763,556]},"assets/products/bed-frames/haven-front.webp":{"width":800,"height":533,"bounds":[38,22,724,470]},"assets/products/bed-frames/aurora-side.webp":{"width":799,"height":666,"bounds":[29,89,753,485]},"assets/products/showroom-cutouts/aurora-front.webp":{"width":1536,"height":1024,"bounds":[108,52,1320,915]}};

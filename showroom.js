@@ -26,22 +26,23 @@ function RadioGroup({ title, name, options, value, onChange }) {
 function CatalogueCard({ product: p, index, rotating }) {
   const variants = p.category === 'Sofas' ? p.fabrics.slice(0, 2) : p.fabrics;
   const [colour, setColour] = useState(variants ? Math.floor(Math.random() * variants.length) : 0);
+  const [ready, setReady] = useState(false);
   const card = useRef(null);
   useEffect(() => {
-    if (!variants || !rotating) return;
+    if (!window.IntersectionObserver) { setReady(true); return; }
     let visible = false;
-    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; });
+    const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible) setReady(true); }, { rootMargin: '240px' });
     observer.observe(card.current);
-    const timer = setInterval(() => {
+    const timer = variants && rotating ? setInterval(() => {
       if (visible && !document.hidden && !card.current.matches(':hover, :focus-within')) setColour(c => (c + 1 + Math.floor(Math.random() * (variants.length - 1))) % variants.length);
-    }, 5500 + index * 120);
+    }, 5500 + index * 120) : null;
     return () => { clearInterval(timer); observer.disconnect(); };
   }, [rotating, variants, index]);
   const tones = ['#e8edf1', '#eee7df', '#e8ece3', '#e4edef', '#e9e6ef', '#e4e8ec', '#f1e5e2'];
   const src = p.colourPhotos ? p.colourPhotos[colour][0] : p.views[0].src;
   return h('article', { className: 'catalogue-card', ref: card },
     h('a', { href: showroomUrl(p.slug, variants ? 'fabric=' + colour : ''), 'aria-label': `Explore ${p.name}` },
-      h('div', { className: 'card-picture', style: { backgroundColor: tones[index % tones.length] } }, h(ProductVisual, { key: colour, src, fabric: p.premium ? variants[colour] : null, alt: `${p.series} ${p.name}${variants ? ' in ' + variants[colour].name : ''}` }), h('span', { className: 'card-category' }, p.category)),
+      h('div', { className: 'card-picture', style: { backgroundColor: tones[index % tones.length] } }, ready && h(ProductVisual, { key: colour, src, fabric: p.premium ? variants[colour] : null, alt: `${p.series} ${p.name}${variants ? ' in ' + variants[colour].name : ''}` }), h('span', { className: 'card-category' }, p.category)),
       h('div', { className: 'card-caption' }, h('div', null, h('span', { className: 'eyebrow' }, p.series), h('h3', null, p.name), h('p', null, p.type), h('strong', {className:'card-price'}, 'From ' + money(p.prices ? Math.min(...Object.values(p.prices)) : p.basePrice))), h(Icon, { type: 'arrow' }))),
     variants && h('p', { className: 'card-fabric' }, variants[colour].name, h('span', null, p.premium ? 'Colour visualisation' : 'Available finish')));
 }
