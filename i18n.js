@@ -57,10 +57,17 @@ Depth|深度|Kedalaman
 Height|高度|Ketinggian
 Your selection|你的选择|Pilihan anda
 Copy your selection|复制你的选择|Salin pilihan anda
+Room studies|房间灵感|Inspirasi bilik
+Explore the Room|探索房间|Terokai Bilik
+See Cove, Haven and Cloud together in one room. Move between four viewpoints, then make it yours.|在同一个房间里看看 Cove、Haven 和 Cloud。切换四个视角，再打造属于你的组合。|Lihat Cove, Haven dan Cloud bersama dalam satu bilik. Terokai empat sudut pandangan, kemudian jadikannya milik anda.
+Step inside the room|走进房间|Masuk ke bilik
+The Quiet Room with the Cove sofa, Haven bed frame and Cloud mattress|静谧之屋：Cove 沙发、Haven 床架和 Cloud 床垫|Bilik Tenang dengan sofa Cove, rangka katil Haven dan tilam Cloud
+Buy directly on mattresshub.co|在 mattresshub.co 直接购买|Beli terus di mattresshub.co
+Opens your cart on mattresshub.co in a new tab.|将在新标签页打开 mattresshub.co 购物车。|Membuka troli anda di mattresshub.co dalam tab baharu.
+Buy this bed set on mattresshub.co|在 mattresshub.co 购买此床组|Beli set katil ini di mattresshub.co
+Buy this SOHO package on mattresshub.co|在 mattresshub.co 购买此 SOHO 配套|Beli pakej SOHO ini di mattresshub.co
+Adds every item to your cart on mattresshub.co, in a new tab.|在新标签页将所有产品加入 mattresshub.co 购物车。|Menambah setiap item ke troli anda di mattresshub.co, dalam tab baharu.
 Selection copied|已复制选择|Pilihan disalin
-See price & order on MattressHub|在 MattressHub 查看并下单|Lihat harga & pesan di MattressHub
-Confirm your fabric and orientation again on the store.|下单时请再次确认面料和方向。|Sahkan semula fabrik dan arah di kedai.
-Keep your choices handy when asking for a quote.|询价时可发送你的选择。|Simpan pilihan anda untuk meminta sebut harga.
 Your choices and a link are ready to paste.|你的选择和链接已准备好粘贴。|Pilihan dan pautan anda sedia untuk ditampal.
 Bed frame only. Mattress sold separately. Confirm fabric using actual swatches.|仅含床架。床垫另售。请以实物色卡确认面料。|Rangka katil sahaja. Tilam dijual berasingan. Sahkan fabrik menggunakan sampel sebenar.
 Mattress only. Bed frame sold separately.|仅含床垫。床架另售。|Tilam sahaja. Rangka katil dijual berasingan.

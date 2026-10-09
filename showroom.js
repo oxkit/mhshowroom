@@ -8,7 +8,7 @@ function routeQuery() { return new URLSearchParams(staticRoute === undefined ? l
 function showroomUrl(slug = '', query = '') {
   const suffix = String(query) ? '?' + query : '';
   if (staticRoute === undefined) return location.href.split('#')[0] + '#' + slug + suffix;
-  const path = !slug ? '' : ['soho', 'build-your-bed'].includes(slug) ? slug + '/' : 'products/' + slug + '/';
+  const path = !slug ? '' : ['soho', 'build-your-bed', 'room-tour'].includes(slug) ? slug + '/' : 'products/' + slug + '/';
   return new URL(path + suffix, document.baseURI).href;
 }
 function redirectLegacy() {
@@ -57,7 +57,10 @@ function Catalogue() {
     h('div', { className: 'preview-controls' }, h('span', null, 'A few ways to make it yours.'), h('button', { type: 'button', 'aria-pressed': !rotating, onClick: () => setRotating(!rotating) }, rotating ? 'Pause colour previews' : 'Resume colour previews')),
     ...categories.slice(1).filter(c => category === 'All products' || c === category).map(c => h('section', { key:c, className:'collection-section', 'aria-label':c },
       h('div',{className:'collection-heading'},h('h2',null,c),h('span',null,products.find(p=>p.series===c).category)),
-      h('div', { className: 'catalogue-grid' }, ...products.filter(p => p.series === c).map(p => h(CatalogueCard, { key: p.slug, product: p, index: products.indexOf(p), rotating }))))));
+      h('div', { className: 'catalogue-grid' }, ...products.filter(p => p.series === c).map(p => h(CatalogueCard, { key: p.slug, product: p, index: products.indexOf(p), rotating }))))),
+    // A still preview only: the tour itself loads on its own page.
+    h('a', { className: 'room-tour-card', href: showroomUrl('room-tour') }, h('img', { src: 'room-tour/preview.jpg', alt: 'The Quiet Room with the Cove sofa, Haven bed frame and Cloud mattress', width: 1200, height: 675, loading: 'lazy' }),
+      h('div', null, h('span', { className: 'eyebrow' }, 'Room studies'), h('h2', null, 'Explore the Room'), h('p', null, 'See Cove, Haven and Cloud together in one room. Move between four viewpoints, then make it yours.'), h('span', { className: 'text-link' }, 'Step inside the room ', h(Icon, { type: 'arrow' })))));
 }
 function SpringDemo() {
   const [pressed, setPressed] = useState(false);
@@ -159,9 +162,9 @@ function Product({ product: p }) {
         p.dimensions && h('div', { className: 'dimension-strip' }, ...['Width', 'Depth', 'Height'].map((label, i) => h('div', { key: label }, h('strong', null, Math.round(p.dimensions[i] * 2.54), h('small', null, ' cm')), h('span', null, label + ' · ' + p.dimensions[i] + '″')))),
         h('div', { className: 'product-price', 'aria-live':'polite' }, h('strong',null,money(priceFor(p,size,fabric))), h('span',null,p.category==='Sofas' ? (p.includedFabrics.includes(selectedFabric.code) ? 'Creamy / Shadow price' : 'Includes RM 250 fabric upgrade') : size + ' price')),
         h('div', { className: 'selection' }, h('span', { className: 'eyebrow' }, 'Your selection'), h('div', { className: 'selection-line', 'aria-live': 'polite' }, h('strong', null, p.name + (size ? ' · ' + size : '')), h('span', null, [selectedFabric?.code, orientation && orientation + ' chaise'].filter(Boolean).join(' / '))),
-          h(Button, { variant: 'solid', full: true, onClick: copy, iconLeft: h(Icon, { type: copied ? 'check' : 'copy' }) }, copied ? 'Selection copied' : 'Copy your selection'),
-          p.shop && h('a', { className: 'shop-link', href: p.shop }, 'See price & order on MattressHub ', h(Icon, { type: 'arrow' })),
-          h('p', { className: 'small-note', role: 'status' }, copied ? 'Your choices and a link are ready to paste.' : p.shop ? 'Confirm your fabric and orientation again on the store.' : 'Keep your choices handy when asking for a quote.'),
+          h('a', { className: 'buy-direct', href: window.mhStore.url([window.mhStore.item(p, { size, fabric, orientation })]), target: '_blank', rel: 'noopener' }, 'Buy directly on mattresshub.co', h(Icon, { type: 'arrow' })),
+          h(Button, { variant: 'secondary', full: true, onClick: copy, iconLeft: h(Icon, { type: copied ? 'check' : 'copy' }) }, copied ? 'Selection copied' : 'Copy your selection'),
+          h('p', { className: 'small-note', role: 'status' }, copied ? 'Your choices and a link are ready to paste.' : 'Opens your cart on mattresshub.co in a new tab.'),
           fallback && h('label', { className: 'copy-fallback' }, 'Select and copy your choices:', h('textarea', { readOnly: true, value: window.mhTranslate(selection), rows: 7, onFocus: e => e.target.select() }))),
         h('a', {className:'build-product-link',href:p.category==='Sofas' ? showroomUrl('soho','sofa='+p.slug+'&sofaFabric='+fabric+'&orientation='+(orientation||'Left')) : showroomUrl('build-your-bed',(p.category==='Mattresses'?'mattress=':'bed=')+p.slug+'&size='+encodeURIComponent(size)+'&bedFabric='+(p.category==='Bed frames'?fabric:0))},p.category==='Sofas'?'Add a bed set · build a SOHO package →':'Match it · Build Your Bed →'),
         h('p', { className: 'colour-note' }, p.category === 'Bed frames' ? 'Bed frame only. Mattress sold separately. Confirm fabric using actual swatches.' : p.category === 'Sofas' ? 'Dimensions are overall measurements. Check delivery access and walking space before ordering.' : 'Mattress only. Bed frame sold separately.'),

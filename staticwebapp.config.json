@@ -49,6 +49,12 @@
       }
     },
     {
+      "route": "/room-tour/*",
+      "headers": {
+        "Cache-Control": "no-cache"
+      }
+    },
+    {
       "route": "/sitemap.xml",
       "headers": {
         "Cache-Control": "no-cache"

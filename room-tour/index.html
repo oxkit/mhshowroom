@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <!-- Production page for showroom.mattresshub.co/room-tour/. build.cjs copies it into
+       export/showroom-site/room-tour/, so its paths are relative to the site root
+       (see the base element); preview it there, not from this source folder. Concept and first build:
+       Codex, interactive/room-tour-prototype. -->
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="../">
+  <meta name="theme-color" content="#f5f2eb">
+  <title>Explore the Room | MattressHub Showroom</title>
+  <meta name="description" content="Step inside the Quiet Room with the SonoLounge Cove sofa, a SonoFrame Haven bed frame and a SonoFlex Signature Cloud mattress. Move between four viewpoints, then plan your own room.">
+  <link rel="canonical" href="https://showroom.mattresshub.co/room-tour/">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="MattressHub Showroom"><meta property="og:title" content="Explore the Room | MattressHub Showroom"><meta property="og:description" content="Step inside the Quiet Room with the SonoLounge Cove sofa, a SonoFrame Haven bed frame and a SonoFlex Signature Cloud mattress. Move between four viewpoints, then plan your own room."><meta property="og:url" content="https://showroom.mattresshub.co/room-tour/"><meta property="og:image" content="https://showroom.mattresshub.co/room-tour/preview.jpg"><meta property="og:image:alt" content="Explore the Room | MattressHub Showroom">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Explore the Room | MattressHub Showroom"><meta name="twitter:image" content="https://showroom.mattresshub.co/room-tour/preview.jpg">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Explore the Room","description":"A 2.5D room with the SonoLounge Cove sofa, SonoFrame Haven bed frame and SonoFlex Signature Cloud mattress.","url":"https://showroom.mattresshub.co/room-tour/","isPartOf":{"@type":"WebSite","name":"MattressHub Showroom","url":"https://showroom.mattresshub.co/"}}</script>
+  <link rel="icon" href="favicon.png" type="image/png" sizes="96x96"><link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180"><link rel="stylesheet" href="room-tour/tour.css">
+</head>
+<body>
+  <header class="header">
+    <a class="brand" href="./" aria-label="MattressHub showroom home"><img src="favicon.svg" alt="" width="34" height="34"><span translate="no">Mattress<b>Hub</b></span></a>
+    <span class="edition">ROOM STUDIES <span>/</span> 01</span>
+    <div class="header-tools">
+      <label class="language-switch"><span class="sr-only">Language</span><select id="language" aria-label="Language"><option value="en">English</option><option value="zh">中文</option><option value="ms">Melayu</option></select></label>
+      <a class="catalogue-link" href="./">All products <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
+  <main>
+    <div class="intro"><div><p class="eyebrow">A little room to imagine</p><h1>The Quiet Room<span>.</span></h1></div><p>A place to lounge.<br>A place to land.</p></div>
+    <div class="experience">
+      <section class="room" aria-label="Interactive room tour">
+        <div class="viewport" id="viewport" tabindex="0" aria-label="Room scene. Use left and right arrow keys to change viewpoint.">
+          <div class="world" id="world">
+            <svg class="architecture" viewBox="0 0 1600 900" aria-hidden="true">
+              <defs>
+                <linearGradient id="wall"><stop stop-color="#e8e3d6"/><stop offset=".52" stop-color="#f1ece2"/><stop offset="1" stop-color="#d4d0c5"/></linearGradient>
+                <linearGradient id="floor" x2="0" y2="1"><stop stop-color="#b3a08a"/><stop offset=".22" stop-color="#d9c9b2"/><stop offset="1" stop-color="#ede1cd"/></linearGradient>
+                <linearGradient id="side"><stop stop-color="#cac8b8"/><stop offset="1" stop-color="#e2dfd3"/></linearGradient>
+                <linearGradient id="curtain"><stop stop-color="#f8f4e8" stop-opacity=".8"/><stop offset=".6" stop-color="#d0c6b1" stop-opacity=".4"/><stop offset="1" stop-color="#faf7ec" stop-opacity=".9"/></linearGradient>
+                <linearGradient id="wood"><stop stop-color="#ac9373"/><stop offset=".45" stop-color="#d6c1a2"/><stop offset="1" stop-color="#b6a084"/></linearGradient>
+                <radialGradient id="glow"><stop stop-color="#fffdf0" stop-opacity=".85"/><stop offset="1" stop-color="#fffdf0" stop-opacity="0"/></radialGradient>
+                <filter id="blur"><feGaussianBlur stdDeviation="16"/></filter>
+                <pattern id="slats" width="22" height="520" patternUnits="userSpaceOnUse"><rect width="22" height="520" fill="#b19c7d"/><rect width="17" height="520" fill="url(#wood)"/></pattern>
+                <pattern id="rug" width="7" height="7" patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#d9d4c5"/><path d="M0 2H7M2 0V7" stroke="#eee8da" stroke-width="1" opacity=".65"/></pattern>
+              </defs>
+              <rect width="1600" height="900" fill="url(#wall)"/>
+              <path d="M0 500H1600V900H0Z" fill="url(#floor)"/>
+              <path d="M0 0H155V500L0 596Z" fill="url(#side)"/>
+              <path d="M155 500H1600" stroke="#eee8da" stroke-width="10"/>
+              <path d="M155 511H1600" stroke="#8d8271" stroke-opacity=".28" stroke-width="3"/>
+              <g stroke="#af9b80" stroke-width="1" opacity=".34"><path d="M-900 900L360 505M-390 900L520 505M130 900L680 505M650 900L840 505M1170 900L1000 505M1690 900L1160 505M2210 900L1320 505M0 587H1600M0 692H1600M0 842H1600"/></g>
+              <path d="M0 470L400 500L980 870L670 900L0 610Z" fill="#fff9de" opacity=".28"/>
+              <path d="M0 485L115 492L700 895L570 900Z" fill="#fffbee" opacity=".3"/>
+              <rect x="65" y="80" width="105" height="473" fill="url(#curtain)"/><path d="M79 80V550M110 80V532M141 80V514" stroke="#fffdf6" opacity=".5" stroke-width="5"/>
+              <rect x="838" y="0" width="78" height="538" fill="url(#slats)"/>
+              <rect x="916" y="0" width="16" height="538" fill="#927d64" opacity=".4"/>
+              <rect x="964" y="44" width="500" height="447" rx="240" fill="#ddd7c9"/>
+              <ellipse cx="270" cy="228" rx="315" ry="275" fill="url(#glow)"/>
+              <rect x="346" y="114" width="213" height="257" fill="#9f8b70"/><rect x="352" y="120" width="201" height="245" fill="#eee7d8"/>
+              <circle cx="456" cy="221" r="57" fill="#c5b28d"/><path d="M375 342V284A40 40 0 0 1 455 284V342Z" fill="#b9bbaa"/><path d="M459 342V266A32 32 0 0 1 523 266V342Z" fill="#ded3bd"/>
+              <path d="M147 605L733 605L864 812L49 812Z" fill="url(#rug)" stroke="#c4bdab" stroke-width="2"/>
+              <path d="M949 621H1401L1530 803H832Z" fill="#e6dfd0" stroke="#c9bdab" stroke-width="2"/>
+              <ellipse cx="445" cy="671" rx="291" ry="30" fill="#51432e" opacity=".25" filter="url(#blur)"/>
+              <ellipse cx="1186" cy="695" rx="240" ry="28" fill="#51432e" opacity=".22" filter="url(#blur)"/>
+              <g fill="#b89f7c"><path d="M755 596V478H804V596Z"/><ellipse cx="780" cy="478" rx="34" ry="10" fill="#d6c2a3"/></g>
+              <g fill="#e9dfcd"><path d="M770 466L766 431Q777 426 789 431L785 466Z"/><ellipse cx="777" cy="431" rx="11" ry="3" fill="#b9a786"/></g>
+              <path d="M777 432Q773 390 755 376M778 420Q801 406 805 386" fill="none" stroke="#8e936f" stroke-width="3"/>
+              <ellipse cx="753" cy="376" rx="7" ry="18" transform="rotate(-32 753 376)" fill="#969a78"/><ellipse cx="805" cy="387" rx="7" ry="17" transform="rotate(28 805 387)" fill="#a8a888"/>
+              <g><path d="M1457 0V267" stroke="#7a705d" stroke-width="3"/><ellipse cx="1457" cy="270" rx="53" ry="12" fill="#bda783"/><path d="M1404 270Q1412 204 1457 204Q1502 204 1510 270Z" fill="#e9ddc5"/><ellipse cx="1457" cy="272" rx="48" ry="6" fill="#f9efda"/></g>
+            </svg>
+            <div class="sofa-product" id="sofa-product"></div>
+            <div class="bed-product" id="bed-product"></div>
+            <button class="hotspot hotspot-cove" data-stop="lounge" aria-label="Explore Cove sofa"><span>01</span><b>Cove <small>SonoLounge</small></b></button>
+            <button class="hotspot hotspot-haven" data-stop="sleep" aria-label="Explore Haven bed frame"><span>02</span><b>Haven <small>SonoFrame</small></b></button>
+            <button class="hotspot hotspot-cloud" data-stop="detail" aria-label="Explore Cloud mattress"><span>03</span><b>Cloud <small>SonoFlex Signature</small></b></button>
+          </div>
+          <div class="scene-caption"><span class="live-dot"></span><span id="scene-label">Room overview</span></div>
+          <button class="reset" id="reset" aria-label="Reset to room overview">↗ <span>Whole room</span></button>
+          <p class="scene-note">Photographic room concept · 2.5D</p>
+        </div>
+        <nav class="tour-nav" aria-label="Room viewpoints">
+          <div class="stops"><button data-stop="room" aria-pressed="true"><small>00</small> <span>Room</span></button><button data-stop="lounge" aria-pressed="false"><small>01</small> <span>Lounge</span></button><button data-stop="sleep" aria-pressed="false"><small>02</small> <span>Sleep</span></button><button data-stop="detail" aria-pressed="false"><small>03</small> <span>Closer</span></button></div>
+          <button id="tour" class="tour-button" aria-pressed="false"><span aria-hidden="true">▶</span> Play tour</button>
+        </nav>
+      </section>
+      <aside class="inspector" aria-label="About this viewpoint">
+        <div class="inspector-top"><p class="eyebrow" id="chapter">00 / Welcome home</p><span class="chapter-mark" aria-hidden="true">↘</span></div>
+        <div id="story" aria-live="polite" aria-atomic="true"><h2 id="story-title">A slower pace.<br>A softer place.</h2><p id="story-copy">Bring three everyday pieces together. Move through the room, then explore what makes each one yours.</p></div>
+        <div id="selection"></div>
+        <a class="primary-link" id="primary-link" href="soho/?mattress=cloud&amp;bed=haven&amp;sofa=cove&amp;size=Queen&amp;bedFabric=1&amp;sofaFabric=0">Build this room <span aria-hidden="true">↗</span></a>
+        <p class="availability">Explore sizes, fabrics and listed prices in the showroom.</p>
+        <div class="inspector-bottom"><span id="progress">01 / 04 viewpoints</span><div><button id="previous" aria-label="Previous viewpoint">←</button><button id="next" aria-label="Next viewpoint">→</button></div></div>
+      </aside>
+    </div>
+    <footer class="footnote"><p>Real product imagery. An imagined setting.</p><details><summary>About this room</summary><p>This 2.5D room uses the showroom’s Cove, Haven and Cloud product photographs. The room, lighting, rug and accessories are illustrative. Camera movement stays within the photographed views; it is not a 360° scan or a measured floor plan. Haven’s 117 cm headboard, 20.32 cm base and Cloud’s 13″ thickness use the showroom’s proportions. Use a product’s room planner to check your space, and confirm finished dimensions and fabrics before ordering. Styling accessories are not included.</p></details><span id="motion-note">Motion begins only when you choose a view.</span></footer>
+    <noscript><p class="no-script">Enable JavaScript for the room tour, or <a href="./">browse all products</a>.</p></noscript>
+  </main>
+  <script src="vendor/react.js"></script><script src="vendor/react-dom.js"></script>
+  <script src="_ds_bundle.js"></script><script src="i18n.js"></script><script src="shared.js"></script><script src="products.js"></script><script src="fabric.js"></script><script src="packages.js"></script><script src="room-tour/tour.js"></script>
+</body></html>
