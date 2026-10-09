@@ -6,13 +6,24 @@ function Image({ src, alt, ...props }) { return h('img', { src, alt, ...props })
 function RadioGroup({ title, name, options, value, onChange }) {
   return h('fieldset', null, h('legend', null, title), h('div', { className: 'size-grid', style: { gridTemplateColumns: `repeat(${Math.min(options.length, 4)},1fr)` } }, ...options.map(option => h('label', { key: option, className: `size-option ${value === option ? 'selected' : ''}` }, h('input', { type: 'radio', name, value: option, checked: value === option, onChange: () => onChange(option) }), h('span', null, option)))));
 }
+function CatalogueCard({ product: p, index }) {
+  const [colour, setColour] = useState(p.colourPhotos && index % 2 ? 1 : 0);
+  const tones = ['#e8edf1', '#eee7df', '#e8ece3', '#e4edef', '#e9e6ef', '#e4e8ec', '#f1e5e2'];
+  const variants = p.colourPhotos && p.fabrics;
+  const src = variants ? p.colourPhotos[colour][0] : p.views[0].src;
+  return h('article', { className: 'catalogue-card' },
+    h('a', { href: '#' + p.slug + (variants ? '?fabric=' + colour : ''), 'aria-label': `Explore ${p.name}` },
+      h('div', { className: `card-picture ${p.category === 'Sofas' ? 'sofa-card' : ''}`, style: { backgroundColor: tones[index % tones.length] } }, h(Image, { src, alt: `${p.series} ${p.name}${variants ? ' in ' + p.fabrics[colour].name : ''}`, loading: 'lazy' }), h('span', { className: 'card-category' }, p.category)),
+      h('div', { className: 'card-caption' }, h('div', null, h('span', { className: 'eyebrow' }, p.series), h('h2', null, p.name), h('p', null, p.type)), h(Icon, { type: 'arrow' }))),
+    variants && h('div', { className: 'card-colours', role: 'group', 'aria-label': p.name + ' colours' }, ...p.fabrics.map((f, i) => h('button', { key: f.code, type: 'button', 'aria-label': `Show ${p.name} in ${f.name}`, 'aria-pressed': colour === i, onClick: () => setColour(i) }, h('span', { className: 'card-colour-dot', style: { backgroundColor: i === 0 ? '#e7dfc9' : '#727975' }, 'aria-hidden': true }), f.name))));
+}
 function Catalogue() {
   const [category, setCategory] = useState('All products');
   return h(React.Fragment, null,
     h('section', { className: 'catalogue-hero' }, h('div', null, h('span', { className: 'eyebrow' }, 'The interactive showroom'), h('h1', null, 'Find your', h('br'), 'kind of comfort.'), h('p', null, 'Explore the layers. Feel out the fabrics. Make room for something that feels like you.'), h('a', { className: 'text-link', href: '#luxe' }, 'Try the sofa room planner ', h(Icon, { type: 'arrow' }))),
       h('a', { className: 'hero-sofa', href: '#luxe', 'aria-label': 'Explore Luxe sofa' }, h(Image, { src: products.find(p => p.slug === 'luxe').views[0].src, alt: 'Luxe sofa in Creamy fabric' }), h('span', null, 'Luxe', h('small', null, 'Room to stretch out.')))),
     h('div', { className: 'catalogue-heading' }, h('div', { role: 'group', 'aria-label': 'Product category', className: 'category-tabs' }, ...categories.map(c => h('button', { key: c, type: 'button', 'aria-pressed': category === c, onClick: () => setCategory(c) }, c))), h('span', { className: 'catalogue-count', 'aria-live': 'polite' }, `${products.filter(p => category === 'All products' || p.category === category).length} products`)),
-    h('section', { className: 'catalogue-grid', 'aria-label': 'Products' }, ...products.filter(p => category === 'All products' || p.category === category).map(p => h('a', { key: p.slug, href: '#' + p.slug, className: 'catalogue-card', 'aria-label': `Explore ${p.name}` }, h('div', { className: `card-picture ${p.category === 'Sofas' ? 'sofa-card' : ''}` }, h(Image, { src: p.views[0].src, alt: `${p.series} ${p.name}`, loading: 'lazy' }), h('span', { className: 'card-category' }, p.category)), h('div', { className: 'card-caption' }, h('div', null, h('span', { className: 'eyebrow' }, p.series), h('h2', null, p.name), h('p', null, p.type)), h(Icon, { type: 'arrow' }))))));
+    h('section', { className: 'catalogue-grid', 'aria-label': 'Products' }, ...products.filter(p => category === 'All products' || p.category === category).map(p => h(CatalogueCard, { key: p.slug, product: p, index: products.indexOf(p) }))));
 }
 function SpringDemo() {
   const [pressed, setPressed] = useState(false);
