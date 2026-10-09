@@ -58,6 +58,7 @@ window.mhValueRoom = (() => {
     noRush:['Change your mind as often as you like.','慢慢挑，随时改。','Ubah pilihan sekerap yang anda mahu.'],
     allSizes:['Sizes use actual centimetres, not just a size name.','尺寸以实际厘米为准，不只看名称。','Saiz menggunakan sentimeter sebenar, bukan sekadar nama.'],
     hook:['KNOW THIS BEFORE YOU KA-CHING!','他们不说 你不会知道的事','JANGAN DAH BELI, BARU MENYESAL.'],
+    guide:['Read the buying checklist','付款前，这份清单先看完','Baca senarai semak sebelum beli'],
     watch:['Watch FAILED Unboxing','看拆箱翻车现场','Tengok unboxing GAGAL'], abroad:['Buying from Pinduoduo?','拼多多买大件？','Beli perabot di Pinduoduo?'],
     videoKicker:['MATTRESS-IN-A-BOX / SOFA-IN-A-BOX','盒装床垫 / 压缩沙发','TILAM / SOFA DALAM KOTAK'],
     abroadKicker:['PINDUODUO / OVERSEAS BUYING','拼多多 / 海外网购','PINDUODUO / BELIAN LUAR NEGARA'],
@@ -117,7 +118,7 @@ window.mhValueRoom = (() => {
         e('div',{className:'vr-warning-body'},open==='video'?e('div',{className:'vr-video-content'},
           e('div',{className:'vr-player'},e('iframe',{className:'vr-video',src:'https://www.youtube-nocookie.com/embed/eLAztzPlb1I?rel=0',title:t('watch'),allow:'encrypted-media; picture-in-picture; fullscreen',allowFullScreen:true,referrerPolicy:'strict-origin-when-cross-origin'}),e('div',{className:'vr-hook-source'},e('small',null,t('videoNote')),e('a',{href:'https://www.youtube.com/shorts/eLAztzPlb1I',target:'_blank',rel:'noopener'},t('videoSource')))),
           e('div',{className:'vr-video-copy'},e('h3',null,t('videoPain')),e('p',null,t('videoSetup')),e('details',{className:'vr-tradeoff'},e('summary',null,t('tradeoff')),e('p',null,t('tradeoffCopy')),e('small',null,t('compareNote'))))):
-          e(React.Fragment,null,e('p',{className:'vr-warning-intro'},t('abroadIntro')),e('ol',{className:'vr-overseas-list'},...['Size','Cost','Claim'].map(key=>e('li',{key},e('h3',null,t('abroad'+key)),e('p',null,t('abroad'+key+'Copy'))))),e('small',null,t('abroadFoot')))),
+          e(React.Fragment,null,e('p',{className:'vr-warning-intro'},t('abroadIntro')),e('ol',{className:'vr-overseas-list'},...['Size','Cost','Claim'].map(key=>e('li',{key},e('h3',null,t('abroad'+key)),e('p',null,t('abroad'+key+'Copy'))))),e('small',null,t('abroadFoot'))),e('p',{className:'vr-guide-link'},e('a',{href:guideUrl(open==='video'?'mattress-in-a-box-malaysia':'pinduoduo-furniture-malaysia')},t('guide'),' →'))),
         e('div',{className:'vr-warning-footer'},open==='abroad'?(onReview?button(t('abroadCta')+' ↗',()=>{setOpen(null);onReview();},'vr-primary vr-wide'):e('a',{className:'vr-primary vr-wide',href:showroomUrl('your-space')},t('abroadCta'),' ↗')):
           onInside?button(t('lookActual')+' ↗',()=>{setOpen(null);onInside();},'vr-primary vr-wide'):e('a',{className:'vr-primary vr-wide',href:showroomUrl('your-space','step=1&view=inside')},t('lookActual'),' ↗'))));
   }

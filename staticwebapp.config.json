@@ -61,6 +61,24 @@
       }
     },
     {
+      "route": "/guides/*",
+      "headers": {
+        "Cache-Control": "no-cache"
+      }
+    },
+    {
+      "route": "/zh/guides/*",
+      "headers": {
+        "Cache-Control": "no-cache"
+      }
+    },
+    {
+      "route": "/ms/guides/*",
+      "headers": {
+        "Cache-Control": "no-cache"
+      }
+    },
+    {
       "route": "/sitemap.xml",
       "headers": {
         "Cache-Control": "no-cache"

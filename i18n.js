@@ -1,4 +1,4 @@
-window.showroomLanguage = (() => { try { return ['en','zh','ms'].includes(localStorage.getItem('mh-language')) ? localStorage.getItem('mh-language') : 'en'; } catch { return 'en'; } })();
+window.showroomLanguage = (() => { const linked = new URLSearchParams(location.search).get('lang'); if (['en','zh','ms'].includes(linked)) return linked; try { return ['en','zh','ms'].includes(localStorage.getItem('mh-language')) ? localStorage.getItem('mh-language') : 'en'; } catch { return 'en'; } })();
 const showroomTranslations = `
 The interactive showroom|互动展厅|Bilik pameran interaktif
 Find your|寻找属于你的|Temui

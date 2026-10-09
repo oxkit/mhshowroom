@@ -6,10 +6,19 @@ const productFacts = document.getElementById('product-facts')?.innerHTML;
 function route() { return staticRoute === undefined ? location.hash.slice(1).split('?')[0] : staticRoute; }
 function routeQuery() { return new URLSearchParams(staticRoute === undefined ? location.hash.split('?')[1] || '' : location.search); }
 function showroomUrl(slug = '', query = '') {
-  const suffix = String(query) ? '?' + query : '';
+  const params = new URLSearchParams(query);
+  if (window.showroomLanguage !== 'en' || new URLSearchParams(location.search).has('lang')) params.set('lang', window.showroomLanguage);
+  const suffix = String(params) ? '?' + params : '';
   if (staticRoute === undefined) return location.href.split('#')[0] + '#' + slug + suffix;
   const path = !slug ? '' : ['soho', 'build-your-bed', 'room-tour', 'your-space'].includes(slug) ? slug + '/' : 'products/' + slug + '/';
   return new URL(path + suffix, document.baseURI).href;
+}
+function guideUrl(topic) { return new URL(`${window.showroomLanguage === 'en' ? '' : window.showroomLanguage + '/'}guides/${topic}/`, document.baseURI).href; }
+function BuyingGuides() {
+  const column = {en:0,zh:1,ms:2}[window.showroomLanguage];
+  return h('nav', {className:'buying-guides', 'aria-label':['Before you buy','付款前看清楚','Sebelum anda beli'][column]},
+    h('a', {href:guideUrl('mattress-in-a-box-malaysia')}, ['Mattress-in-a-box: what to check','盒装床垫：拆开之后，谁来负责？','Tilam dalam kotak: apa risikonya?'][column]),
+    h('a', {href:guideUrl('pinduoduo-furniture-malaysia')}, ['Pinduoduo furniture: size, shipping and returns','拼多多买大件：送到家，到底多少钱？','Perabot Pinduoduo: saiz, kos hantar dan pemulangan'][column]));
 }
 function redirectLegacy() {
   const [slug, query = ''] = location.hash.slice(1).split('?');
@@ -178,12 +187,12 @@ function Product({ product: p }) {
 function Showroom() {
   const [slug, setSlug] = useState(route);
   const [language,setLanguage] = useState(window.showroomLanguage);
-  const switchLanguage = value => { window.showroomLanguage=value; document.documentElement.lang={en:'en',zh:'zh-Hans',ms:'ms'}[value]; try { localStorage.setItem('mh-language',value); } catch {} setLanguage(value); };
+  const switchLanguage = value => { window.showroomLanguage=value; document.documentElement.lang={en:'en',zh:'zh-Hans',ms:'ms'}[value]; try { localStorage.setItem('mh-language',value); } catch {} const url=new URL(location.href);url.searchParams.set('lang',value);history.replaceState(null,'',url);setLanguage(value); };
   useEffect(() => { const changed = () => { if (!redirectLegacy()) { setSlug(route()); window.scrollTo(0, 0); } }; window.addEventListener('hashchange', changed); return () => window.removeEventListener('hashchange', changed); }, []);
   const product = products.find(p => p.slug === slug);
   useEffect(() => { if (!product && staticRoute === undefined) document.title = 'MattressHub | The interactive showroom'; }, [product]);
   return h(React.Fragment, null, h('a', { className: 'skip', href: '#main', onClick: e => { e.preventDefault(); document.getElementById('main').focus(); } }, 'Skip to showroom'),
     h('header', { className: 'header' }, h('a', { href: showroomUrl(), 'aria-label': 'MattressHub showroom home' }, h(Logo)), h('span', { className: 'header-label' }, 'The interactive showroom'), h('label',{className:'language-switch'}, h('span',{className:'sr-only'},'Language'),h('select',{'aria-label':'Language',value:language,onChange:e=>switchLanguage(e.target.value)},h('option',{value:'en'},'English'),h('option',{value:'zh'},'中文'),h('option',{value:'ms'},'Melayu'))), h('a', { className: 'store-link', href: 'https://mattresshub.co' }, 'Visit the store ', h(Icon, { type: 'arrow' }))),
-    h('main', { id: 'main', tabIndex: -1 }, slug === 'your-space' ? h(window.mhValueRoom.Room,{language}) : slug === 'build-your-bed' || slug === 'soho' ? h(PackageBuilder,{key:slug,soho:slug==='soho'}) : product ? h(Product, { key: product.slug, product }) : h(Catalogue), product && productFacts && h('details', {className:'product-facts', lang:'en', dangerouslySetInnerHTML:{__html:productFacts}}), h('footer', null, h('strong', null, 'Dealer price for everyone.'), h('a', { href: showroomUrl() }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'))));
+    h('main', { id: 'main', tabIndex: -1 }, slug === 'your-space' ? h(window.mhValueRoom.Room,{language}) : slug === 'build-your-bed' || slug === 'soho' ? h(PackageBuilder,{key:slug,soho:slug==='soho'}) : product ? h(Product, { key: product.slug, product }) : h(Catalogue), product && productFacts && h('details', {className:'product-facts', lang:'en', dangerouslySetInnerHTML:{__html:productFacts}}), h(BuyingGuides), h('footer', null, h('strong', null, 'Dealer price for everyone.'), h('a', { href: showroomUrl() }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'))));
 }
 if (!redirectLegacy()) ReactDOM.createRoot(document.getElementById('root')).render(h(Showroom));
