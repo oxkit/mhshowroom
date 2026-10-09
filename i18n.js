@@ -37,6 +37,11 @@ Room planner|空间规划器|Perancang ruang
 Enlarge image|放大图片|Besarkan imej
 Close enlarged image|关闭大图|Tutup imej besar
 Explore the layers|探索内部结构|Terokai lapisan
+Custom fabrics · +RM250|定制面料 · +RM250|Fabrik pilihan · +RM250
+Included premium colours|精选高级配色（已含在售价内）|Warna premium termasuk dalam harga
+Creamy or Shadow, included in the sofa price.|Creamy 或 Shadow，已含在沙发售价内。|Creamy atau Shadow, termasuk dalam harga sofa.
+Explore custom fabrics · +RM250|探索定制面料 · +RM250|Terokai fabrik pilihan · +RM250
+More colours and textures. Add RM250 per sofa.|更多颜色与纹理。每张沙发加 RM250。|Lebih banyak warna dan tekstur. Tambah RM250 bagi setiap sofa.
 Choose your fabric|选择面料|Pilih fabrik anda
 Choose your size|选择尺寸|Pilih saiz anda
 Choose your chaise|选择贵妃位方向|Pilih arah chaise

@@ -1,13 +1,13 @@
 const products = window.showroomProducts;
 const { useEffect } = React;
-const categories = ['All products', 'Mattresses', 'Bed frames', 'Sofas'];
+const categories = ['All products', 'SonoFlex Signature', 'SonoFrame', 'SonoLounge'];
 function route() { return location.hash.slice(1).split('?')[0]; }
 function Image({ src, alt, ...props }) { return h('img', { src, alt, ...props }); }
 function RadioGroup({ title, name, options, value, onChange }) {
   return h('fieldset', null, h('legend', null, title), h('div', { className: 'size-grid', style: { gridTemplateColumns: `repeat(${Math.min(options.length, 4)},1fr)` } }, ...options.map(option => h('label', { key: option, className: `size-option ${value === option ? 'selected' : ''}` }, h('input', { type: 'radio', name, value: option, checked: value === option, onChange: () => onChange(option) }), h('span', null, option)))));
 }
 function CatalogueCard({ product: p, index, rotating }) {
-  const variants = p.fabrics;
+  const variants = p.category === 'Sofas' ? p.fabrics.slice(0, 2) : p.fabrics;
   const [colour, setColour] = useState(variants ? Math.floor(Math.random() * variants.length) : 0);
   const card = useRef(null);
   useEffect(() => {
@@ -25,7 +25,7 @@ function CatalogueCard({ product: p, index, rotating }) {
   return h('article', { className: 'catalogue-card', ref: card },
     h('a', { href: '#' + p.slug + (variants ? '?fabric=' + colour : ''), 'aria-label': `Explore ${p.name}` },
       h('div', { className: 'card-picture', style: { backgroundColor: tones[index % tones.length] } }, h(ProductVisual, { key: colour, src, fabric: p.premium ? variants[colour] : null, alt: `${p.series} ${p.name}${variants ? ' in ' + variants[colour].name : ''}` }), h('span', { className: 'card-category' }, p.category)),
-      h('div', { className: 'card-caption' }, h('div', null, h('span', { className: 'eyebrow' }, p.series), h('h2', null, p.name), h('p', null, p.type), h('strong', {className:'card-price'}, 'From ' + money(p.prices ? Math.min(...Object.values(p.prices)) : p.basePrice))), h(Icon, { type: 'arrow' }))),
+      h('div', { className: 'card-caption' }, h('div', null, h('span', { className: 'eyebrow' }, p.series), h('h3', null, p.name), h('p', null, p.type), h('strong', {className:'card-price'}, 'From ' + money(p.prices ? Math.min(...Object.values(p.prices)) : p.basePrice))), h(Icon, { type: 'arrow' }))),
     variants && h('p', { className: 'card-fabric' }, variants[colour].name, h('span', null, p.premium ? 'Colour visualisation' : 'Available finish')));
 }
 function Catalogue() {
@@ -36,9 +36,11 @@ function Catalogue() {
     h('section', { className: 'catalogue-hero' }, h('div', null, h('span', { className: 'eyebrow' }, 'The interactive showroom'), h('h1', null, 'Find your', h('br'), 'kind of comfort.'), h('p', null, 'Explore the layers. Feel out the fabrics. Make room for something that feels like you.'), h('a', { className: 'text-link', href: '#luxe' }, 'Try the sofa room planner ', h(Icon, { type: 'arrow' }))),
       h('a', { className: 'hero-sofa', href: '#luxe', 'aria-label': 'Explore Luxe sofa' }, h(ProductVisual, { src: products.find(p => p.slug === 'luxe').views[0].src, alt: 'Luxe sofa in cream' }), h('span', null, 'Luxe', h('small', null, 'Room to stretch out.')))),
     h('nav', {className:'package-links', 'aria-label':'Build a package'}, h('a',{href:'#build-your-bed'},h('strong',null,'Build Your Bed'),h('span',null,'Mattress + bed frame →')),h('a',{href:'#soho'},h('strong',null,'The SOHO package'),h('span',null,'Bed set + sofa →'))),
-    h('div', { className: 'catalogue-heading' }, h('div', { role: 'group', 'aria-label': 'Product category', className: 'category-tabs' }, ...categories.map(c => h('button', { key: c, type: 'button', 'aria-pressed': category === c, onClick: () => setCategory(c) }, c))), h('span', { className: 'catalogue-count', 'aria-live': 'polite' }, `${products.filter(p => category === 'All products' || p.category === category).length} products`)),
+    h('div', { className: 'catalogue-heading' }, h('div', { role: 'group', 'aria-label': 'Product category', className: 'category-tabs' }, ...categories.map(c => h('button', { key: c, type: 'button', 'aria-pressed': category === c, onClick: () => setCategory(c) }, c))), h('span', { className: 'catalogue-count', 'aria-live': 'polite' }, `${products.filter(p => category === 'All products' || p.series === category).length} products`)),
     h('div', { className: 'preview-controls' }, h('span', null, 'A few ways to make it yours.'), h('button', { type: 'button', 'aria-pressed': !rotating, onClick: () => setRotating(!rotating) }, rotating ? 'Pause colour previews' : 'Resume colour previews')),
-    h('section', { className: 'catalogue-grid', 'aria-label': 'Products' }, ...products.filter(p => category === 'All products' || p.category === category).map(p => h(CatalogueCard, { key: p.slug, product: p, index: products.indexOf(p), rotating }))));
+    ...categories.slice(1).filter(c => category === 'All products' || c === category).map(c => h('section', { key:c, className:'collection-section', 'aria-label':c },
+      h('div',{className:'collection-heading'},h('h2',null,c),h('span',null,products.find(p=>p.series===c).category)),
+      h('div', { className: 'catalogue-grid' }, ...products.filter(p => p.series === c).map(p => h(CatalogueCard, { key: p.slug, product: p, index: products.indexOf(p), rotating }))))));
 }
 function SpringDemo() {
   const [pressed, setPressed] = useState(false);
@@ -90,6 +92,15 @@ function Product({ product: p }) {
   const [copied, setCopied] = useState(false), [fallback, setFallback] = useState(false);
   const dialog = useRef(null);
   const selectedFabric = p.fabrics?.[fabric];
+  const isSofa = p.category === 'Sofas';
+  const [customOpen, setCustomOpen] = useState(() => isSofa && !p.includedFabrics.includes(selectedFabric.code));
+  const fabricCards = entries => entries.map(({ f, i }) => h('label', { key:f.code, className:`fabric-option ${fabric === i ? 'selected' : ''}`, title:`${f.name} ${f.code}` },
+    h('input',{type:'radio',name:'fabric',value:f.code,checked:fabric === i,onChange:()=>setFabric(i)}),
+    h('span',{className:`fabric-swatch ${f.tone || ''}`,style:f.swatch ? {backgroundImage:`url("${f.swatch}")`} : {},'aria-hidden':true},fabric === i && h('span',{className:'selected-check'},h(Icon,{type:'check'}))),
+    h('strong',null,f.name),h('span',{className:'fabric-code'},f.code)));
+  const fabrics = p.fabrics?.map((f,i)=>({f,i}));
+  const familyTabs = h('div',{className:'family-tabs',role:'group','aria-label':'Fabric family'},...['All','Lego','Reka','Costa'].map(f=>h('button',{key:f,type:'button','aria-pressed':family===f,onClick:()=>setFamily(f)},f)));
+
   const planner = Boolean(p.views[view]?.planner);
   const photo = p.colourPhotos ? p.colourPhotos[fabric][p.orientations ? p.orientations.indexOf(orientation) : p.category === 'Sofas' ? 0 : view] : p.views[view].src;
   const currentPhoto = photo || p.views[0].src;
@@ -117,9 +128,15 @@ function Product({ product: p }) {
         h('p', { className: 'photo-note' }, p.premium ? (p.views[view].reference ? 'Cream reference cutout. ' : 'Colour and texture visualisation. Pattern scale is illustrative; confirm an actual swatch. ') + (p.orientations ? 'Right chaise is a mirrored preview, shown as you face the sofa.' : '') : p.category === 'Sofas' ? 'Chaise left/right is shown as you face the sofa. Colours are a guide.' : 'Images show design and construction; proportions vary by size.')),
       h('aside', { className: 'controls', id: 'configure', 'aria-label': 'Product options' }, h('div', { className: 'product-title' }, h('span', { className: 'eyebrow' }, p.category), h('h2', null, p.name + ', your way.'), h('p', null, p.description)),
         p.layers && h('div', { className: 'layer-selector' }, h('div', { className: 'layer-heading' }, h('strong', null, 'Explore the layers'), h('span', null, p.thickness + '″ thick')), ...p.layers.map((layer, i) => h('button', { key: layer, className: 'layer-button', type: 'button', 'aria-pressed': detail === i, onClick: () => { setDetail(i); setView(1); } }, h('span', null, String(i + 1).padStart(2, '0')), layer, h(Icon, { type: 'arrow' }))), h('p', { className: 'small-note', 'aria-live': 'polite' }, `Selected layer ${detail + 1}: ${p.layers[detail]}`)),
-        p.fabrics && h('fieldset', { className: 'fabric-options' }, h('legend', null, 'Choose your fabric'), p.fabrics.length > 2 && h('div', { className: 'family-tabs', role: 'group', 'aria-label': 'Fabric family' }, ...['All', 'Lego', 'Reka', 'Costa'].map((f, i) => h('button', { key: f, type: 'button', 'aria-pressed': family === f, onClick: () => setFamily(f) }, f))),
-          h('div', { className: p.fabrics.length > 2 ? 'premium-swatches' : 'swatch-grid' }, ...p.fabrics.map((f, i) => ({ f, i })).filter(({ f }) => family === 'All' || f.family === family).map(({ f, i }) => h('label', { key: f.code, className: `fabric-option ${fabric === i ? 'selected' : ''}`, title: `${f.name} ${f.code}` }, h('input', { type: 'radio', name: 'fabric', checked: fabric === i, onChange: () => setFabric(i) }), h('span', { className: `fabric-swatch ${f.tone || ''}`, style: f.swatch ? { backgroundImage: `url("${f.swatch}")` } : {}, 'aria-hidden': true }, fabric === i && h('span', { className: 'selected-check' }, h(Icon, { type: 'check' }))), h('strong', null, f.name), h('span', { className: 'fabric-code' }, f.code)))),
-          h('p', { className: 'fabric-mood', 'aria-live': 'polite' }, `${selectedFabric.name} · ${selectedFabric.code}`)),
+        p.fabrics && h('fieldset', {className:'fabric-options'},h('legend',null,isSofa ? 'Included premium colours' : 'Choose your fabric'),
+          isSofa ? h(React.Fragment,null,
+            h('p',{className:'small-note'},'Creamy or Shadow, included in the sofa price.'),
+            h('div',{className:'swatch-grid included-fabrics'},...fabricCards(fabrics.filter(({f})=>p.includedFabrics.includes(f.code)))),
+            h('button',{className:'custom-fabric-toggle',type:'button','aria-expanded':customOpen,'aria-controls':'custom-fabrics',onClick:()=>setCustomOpen(!customOpen)},'Explore custom fabrics · +RM250',h('span',{'aria-hidden':true},customOpen ? '−' : '+')),
+            customOpen && h('div',{id:'custom-fabrics'},h('p',{className:'small-note'},'More colours and textures. Add RM250 per sofa.'),familyTabs,
+              h('div',{className:'premium-swatches'},...fabricCards(fabrics.filter(({f})=>!p.includedFabrics.includes(f.code) && (family==='All' || f.family===family)))))) :
+            h(React.Fragment,null,p.fabrics.length>2 && familyTabs,h('div',{className:p.fabrics.length>2 ? 'premium-swatches' : 'swatch-grid'},...fabricCards(fabrics.filter(({f})=>family==='All' || f.family===family)))),
+          h('p',{className:'fabric-mood','aria-live':'polite'},`${selectedFabric.name} · ${selectedFabric.code}`)),
         p.orientations && h(RadioGroup, { title: 'Choose your chaise', name: 'orientation', options: p.orientations, value: orientation, onChange: setOrientation }),
         p.sizes && h(RadioGroup, { title: 'Choose your size', name: 'size', options: p.sizes, value: size, onChange: setSize }),
         p.dimensions && h('div', { className: 'dimension-strip' }, ...['Width', 'Depth', 'Height'].map((label, i) => h('div', { key: label }, h('strong', null, Math.round(p.dimensions[i] * 2.54), h('small', null, ' cm')), h('span', null, label + ' · ' + p.dimensions[i] + '″')))),
