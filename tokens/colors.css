@@ -1,0 +1,94 @@
+/* MattressHub — Color tokens
+   Brand: deep navy + gold (from the real MH logo), tagline "Better Sleep, Better Life".
+   Navy = trust/sleep/depth; gold = premium quality + value. Clay kept as an
+   optional secondary "sale" pop only. Prices are Malaysian Ringgit (RM). */
+
+:root {
+  /* --- Brand scales --- */
+
+  /* Night — primary. Sleep, trust, depth. */
+  --night-900: #11182e;
+  --night-800: #1a2440;
+  --night-700: #233052;
+  --night-600: #2f3f6b;
+  --night-500: #3d5187;
+  --night-400: #6678a6;
+  --night-300: #9aa7c4;
+  --night-200: #c8d0e0;
+  --night-100: #e7eaf2;
+  --night-50:  #f4f6fa;
+
+  /* Gold — primary brand accent (logo gold). Premium, quality, value. */
+  --gold-700: #9a7521;
+  --gold-600: #b8901f;
+  --gold-500: #d8a72b;
+  --gold-400: #e7bd54;
+  --gold-300: #f0d68a;
+  --gold-200: #f6e6b0;
+  --gold-100: #fbf3d8;
+
+  /* Clay — optional sale pop (use sparingly). */
+  --clay-700: #9c3a26;
+  --clay-600: #c04a30;
+  --clay-500: #de5a3c;
+  --clay-400: #e87a60;
+  --clay-300: #f1a791;
+  --clay-100: #fbe4dc;
+
+  /* Sage — calm secondary. In-stock, trust badges, soft fills. */
+  --sage-700: #3a6152;
+  --sage-500: #5f9079;
+  --sage-300: #a7c8b8;
+  --sage-100: #e3efe9;
+
+  /* Sand — warm neutral surfaces. */
+  --sand-100: #faf7f1;
+  --sand-200: #f3ede2;
+  --sand-300: #e8dfce;
+
+  /* Amber — savings highlight / price-drop. */
+  --amber-500: #e6a23c;
+  --amber-100: #fbeed3;
+
+  /* Ink / neutral text scale (warm-tinted grays). */
+  --ink-900: #1b1d22;
+  --ink-700: #3c3f48;
+  --ink-500: #686c78;
+  --ink-400: #8b8f9c;
+  --ink-300: #c2c5cd;
+  --ink-200: #e2e3e8;
+  --ink-100: #f1f2f5;
+  --white:   #ffffff;
+
+  /* --- Semantic aliases --- */
+  --brand:            var(--night-800);
+  --brand-strong:     var(--night-900);
+  --brand-soft:       var(--night-50);
+  --accent:           var(--gold-500);
+  --accent-strong:    var(--gold-600);
+  --accent-soft:      var(--gold-100);
+  --sale:             var(--clay-500);
+  --sale-strong:      var(--clay-600);
+  --positive:         var(--sage-700);
+  --positive-soft:    var(--sage-100);
+  --savings:          var(--amber-500);
+  --savings-soft:     var(--amber-100);
+
+  --text-strong:      var(--ink-900);
+  --text-body:        var(--ink-700);
+  --text-muted:       var(--ink-500);
+  --text-on-brand:    #eef1f8;
+  --text-on-accent:   var(--night-900);
+
+  --surface-page:     var(--sand-100);
+  --surface-card:     var(--white);
+  --surface-sunken:   var(--sand-200);
+  --surface-brand:    var(--night-800);
+  --surface-accent:   var(--gold-500);
+
+  --border-subtle:    var(--ink-200);
+  --border-default:   var(--ink-300);
+  --border-strong:    var(--night-200);
+
+  --focus-ring:       var(--night-500);
+}

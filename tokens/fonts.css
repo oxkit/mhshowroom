@@ -1,0 +1,7 @@
+/* MattressHub — Webfonts
+   SUBSTITUTION NOTE: No brand font files were provided. These are the nearest
+   Google Fonts matches for the intended voice (characterful humanist display +
+   clean humanist body + tabular mono for prices). Swap for licensed brand fonts
+   when available. Loaded via Google Fonts CSS, which emits the @font-face rules. */
+
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesque:wght@400;500;600;700;800&family=Spline+Sans+Mono:wght@400;500;600&display=swap");
