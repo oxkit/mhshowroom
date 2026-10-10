@@ -301,6 +301,13 @@ Pause the 3D loop|暂停 3D 动画|Jeda animasi 3D
 Play the 3D loop|播放 3D 动画|Main animasi 3D
 Mattress layers lifting apart and settling back, 3D illustration|床垫各层分开再合拢的 3D 示意动画|Lapisan tilam terpisah dan kembali bercantum, ilustrasi 3D
 Rendered 3D illustration. Layer names and order are Cloud's; layer thicknesses, springs and fabrics are illustrative.|3D 渲染示意。各层名称与顺序与 Cloud 一致；各层厚度、弹簧与面料仅作示意。|Ilustrasi 3D. Nama dan susunan lapisan mengikut Cloud; ketebalan lapisan, spring dan fabrik hanya ilustrasi.
+360° view|360° 视图|Paparan 360°
+See it in your room|在你的房间里看看|Lihat di bilik anda
+Drag to turn. Pinch or scroll to zoom.|拖动旋转，双指或滚轮缩放。|Seret untuk pusing. Cubit atau tatal untuk zum.
+On a phone, open this page to see it in your room at real size.|用手机打开此页面，即可按真实尺寸在你的房间里查看。|Buka halaman ini di telefon untuk melihatnya di bilik anda pada saiz sebenar.
+The 3D view could not load.|3D 视图无法加载。|Paparan 3D tidak dapat dimuatkan.
+3D model|3D 模型|model 3D
+Real size and thickness for the size you choose. Fabric and colours are a guide.|按你所选尺寸呈现真实大小与厚度。面料与颜色仅供参考。|Saiz dan ketebalan sebenar mengikut saiz pilihan anda. Fabrik dan warna sebagai panduan.
 `.trim().split('\n').map(line=>line.split('|'));
 const translationMap = new Map(showroomTranslations.map(row=>[row[0],row.slice(1)]));
 const translationFragments = [...translationMap.keys()].sort((a,b)=>b.length-a.length).map(key=>[key,new RegExp((/^[A-Za-z]/.test(key)?'(?<![A-Za-z])':'')+key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+(/[A-Za-z]$/.test(key)?'(?![A-Za-z])':''),'g')]);
