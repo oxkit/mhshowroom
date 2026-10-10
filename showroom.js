@@ -111,6 +111,29 @@ function RoomPlanner({ product, orientation, fabric }) {
     h('div', { className: `fit-status ${fits ? '' : 'does-not-fit'}`, role: 'status' }, fits ? `Fits within this empty room · ${Math.round(roomWidth - boxW)} cm width and ${Math.round(roomDepth - boxD)} cm depth remaining in total.` : 'The sofa footprint exceeds this room. Increase the room dimensions or rotate it.'),
     h('p', { className: 'small-note' }, 'Schematic plan. Outer dimensions are to scale; internal cushion and chaise shapes are illustrative. Allow space for doors, walking routes and other furniture.'));
 }
+// Rendered 3D loops (Blender; source, notes and build_cloud.py in export/proposals/3d-cloud).
+// An extra view after the photo, so the page's first load is unchanged. Muted and inline,
+// paused off screen; visitors who turn off motion get the poster and a Play button.
+const motionLoops = { cloud: 'cloud-layers' };
+function MotionLoop({ src, alt }) {
+  const video = useRef(null);
+  const [playing, setPlaying] = useState(() => !matchMedia('(prefers-reduced-motion: reduce)').matches);
+  useEffect(() => {
+    const v = video.current; v.muted = true;
+    let visible = true;
+    const sync = () => { if (playing && visible && !document.hidden) v.play().catch(() => setPlaying(false)); else v.pause(); };
+    const observer = window.IntersectionObserver && new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); });
+    observer?.observe(v);
+    document.addEventListener('visibilitychange', sync);
+    sync();
+    return () => { observer?.disconnect(); document.removeEventListener('visibilitychange', sync); };
+  }, [playing]);
+  return h('div', { className: 'motion-loop' },
+    h('video', { ref: video, muted: true, loop: true, playsInline: true, preload: playing ? 'auto' : 'none', poster: src + '-poster.jpg', width: 1080, height: 1080, 'aria-label': alt },
+      h('source', { src: src + '-loop.webm', type: 'video/webm' }), h('source', { src: src + '-loop.mp4', type: 'video/mp4' })),
+    h('button', { type: 'button', className: 'motion-toggle', 'aria-label': playing ? 'Pause the 3D loop' : 'Play the 3D loop', onClick: () => setPlaying(!playing) },
+      h('svg', { viewBox: '0 0 24 24', width: 20, height: 20, 'aria-hidden': true }, playing ? h('path', { d: 'M7 5V19M17 5V19', stroke: 'currentColor', strokeWidth: 4 }) : h('path', { d: 'M7 4L20 12L7 20Z', fill: 'currentColor' }))));
+}
 function Product({ product: p }) {
   const query = routeQuery();
   const bounded = (key, count) => { const n = query.has(key) ? Number(query.get(key)) : (p.defaultFabric || 0); return Number.isInteger(n) && n >= 0 && n < count ? n : (p.defaultFabric || 0); };
@@ -130,10 +153,12 @@ function Product({ product: p }) {
   const fabrics = p.fabrics?.map((f,i)=>({f,i}));
   const familyTabs = h('div',{className:'family-tabs',role:'group','aria-label':'Fabric family'},...['All','Lego','Reka','Costa'].map(f=>h('button',{key:f,type:'button','aria-pressed':family===f,onClick:()=>setFamily(f)},f)));
 
-  const planner = Boolean(p.views[view]?.planner);
-  const photo = p.colourPhotos ? p.colourPhotos[fabric][p.orientations ? p.orientations.indexOf(orientation) : p.category === 'Sofas' ? 0 : view] : p.views[view].src;
+  // The loop sits next to the layer illustration, which is in the same asset folder.
+  const views = motionLoops[p.slug] ? [...p.views, { label: '3D layers', loop: p.views[1].src.replace(/[^/]+$/, '') + motionLoops[p.slug] }] : p.views;
+  const planner = Boolean(views[view]?.planner);
+  const photo = p.colourPhotos ? p.colourPhotos[fabric][p.orientations ? p.orientations.indexOf(orientation) : p.category === 'Sofas' ? 0 : view] : views[view].src;
   const currentPhoto = photo || p.views[0].src;
-  const previewFabric = p.premium && !p.views[view].reference ? selectedFabric : null;
+  const previewFabric = p.premium && !views[view].reference ? selectedFabric : null;
   const mirrored = Boolean(p.orientations && orientation === 'Right');
   const selectionQuery = new URLSearchParams();
   if (p.fabrics) selectionQuery.set('fabric', fabric);
@@ -153,9 +178,9 @@ function Product({ product: p }) {
     h('div', { className: 'configurator' },
       h('section', { className: `showroom ${p.category === 'Sofas' ? 'sofa-showroom' : ''}`, 'aria-label': p.name + ' preview' },
         h('div', { className: 'showroom-heading' }, h('span', { className: 'eyebrow' }, p.series + ' / ' + p.type), h('h1', null, p.name, h('span', { className: 'gold-dot' }, '.')), h('p', { className: 'stage-headline' }, p.headline)),
-        planner ? h(RoomPlanner, { product: p, orientation, fabric }) : h('div', { className: `product-stage ${p.category === 'Sofas' ? 'sofa-stage' : ''} ${view === 1 && p.layers ? 'layer-stage' : ''}` }, h(ProductVisual, { key: currentPhoto, className: 'product-image', src: currentPhoto, fabric: previewFabric, mirror: mirrored, alt: `${p.name} ${p.referencePhoto ? 'reference photo' : selectedFabric?.name || ''} ${orientation || ''} ${p.views[view].label}` }), h('button', { className: 'zoom-button', type: 'button', onClick: () => dialog.current.showModal(), 'aria-label': 'Enlarge image' }, h(Icon, { type: 'zoom' }))),
-        h('div', { className: 'view-toolbar' }, h('div', { role: 'group', 'aria-label': 'Preview mode', className: 'view-buttons' }, ...p.views.map((v, i) => h('button', { key: v.label, type: 'button', 'aria-pressed': view === i, onClick: () => setView(i) }, v.label)))),
-        h('p', { className: 'photo-note' }, p.premium ? (p.views[view].reference ? 'Cream reference cutout. ' : 'Colour and texture visualisation. Pattern scale is illustrative; confirm an actual swatch. ') + (p.orientations ? 'Right chaise is a mirrored preview, shown as you face the sofa.' : '') : p.category === 'Sofas' ? 'Chaise left/right is shown as you face the sofa. Colours are a guide.' : 'Images show design and construction; proportions vary by size.')),
+        planner ? h(RoomPlanner, { product: p, orientation, fabric }) : views[view].loop ? h('div', { className: 'product-stage motion-stage' }, h(MotionLoop, { src: views[view].loop, alt: 'Mattress layers lifting apart and settling back, 3D illustration' })) : h('div', { className: `product-stage ${p.category === 'Sofas' ? 'sofa-stage' : ''} ${view === 1 && p.layers ? 'layer-stage' : ''}` }, h(ProductVisual, { key: currentPhoto, className: 'product-image', src: currentPhoto, fabric: previewFabric, mirror: mirrored, alt: `${p.name} ${p.referencePhoto ? 'reference photo' : selectedFabric?.name || ''} ${orientation || ''} ${views[view].label}` }), h('button', { className: 'zoom-button', type: 'button', onClick: () => dialog.current.showModal(), 'aria-label': 'Enlarge image' }, h(Icon, { type: 'zoom' }))),
+        h('div', { className: 'view-toolbar' }, h('div', { role: 'group', 'aria-label': 'Preview mode', className: 'view-buttons' }, ...views.map((v, i) => h('button', { key: v.label, type: 'button', 'aria-pressed': view === i, onClick: () => setView(i) }, v.label)))),
+        h('p', { className: 'photo-note' }, views[view].loop ? "Rendered 3D illustration. Layer names and order are Cloud's; layer thicknesses, springs and fabrics are illustrative." : p.premium ? (views[view].reference ? 'Cream reference cutout. ' : 'Colour and texture visualisation. Pattern scale is illustrative; confirm an actual swatch. ') + (p.orientations ? 'Right chaise is a mirrored preview, shown as you face the sofa.' : '') : p.category === 'Sofas' ? 'Chaise left/right is shown as you face the sofa. Colours are a guide.' : 'Images show design and construction; proportions vary by size.')),
       h('aside', { className: 'controls', id: 'configure', 'aria-label': 'Product options' }, h('div', { className: 'product-title' }, h('span', { className: 'eyebrow' }, p.category), h('h2', null, p.name + ', your way.'), h('p', null, p.description)),
         p.firmness && h('div', { className: 'finder-prompt' }, h('span', null, 'Not sure this is the one?'), h(MattressFinder, null)),
         p.layers && h('div', { className: 'layer-selector' }, h('div', { className: 'layer-heading' }, h('strong', null, 'Explore the layers'), h('span', null, p.thickness + '″ thick')), ...p.layers.map((layer, i) => h('button', { key: layer, className: 'layer-button', type: 'button', 'aria-pressed': detail === i, onClick: () => { setDetail(i); setView(1); } }, h('span', null, String(i + 1).padStart(2, '0')), layer, h(Icon, { type: 'arrow' }))), h('p', { className: 'small-note', 'aria-live': 'polite' }, `Selected layer ${detail + 1}: ${p.layers[detail]}`)),

@@ -296,6 +296,11 @@ Same feel, more premium|软硬度相同，更高端|Rasa sama, lebih premium
 See |查看 |Lihat 
 Start again|重新开始|Mulakan semula
 Suggested from MattressHub's feel ratings and Queen prices. Your weight and sleeping position affect the feel.|根据 MattressHub 的软硬度评分和 Queen 尺寸价格推荐。体重和睡姿会影响实际感受。|Dicadangkan berdasarkan penarafan ketegangan MattressHub dan harga saiz Queen. Berat dan posisi tidur mempengaruhi rasa.
+3D layers|3D 结构|Lapisan 3D
+Pause the 3D loop|暂停 3D 动画|Jeda animasi 3D
+Play the 3D loop|播放 3D 动画|Main animasi 3D
+Mattress layers lifting apart and settling back, 3D illustration|床垫各层分开再合拢的 3D 示意动画|Lapisan tilam terpisah dan kembali bercantum, ilustrasi 3D
+Rendered 3D illustration. Layer names and order are Cloud's; layer thicknesses, springs and fabrics are illustrative.|3D 渲染示意。各层名称与顺序与 Cloud 一致；各层厚度、弹簧与面料仅作示意。|Ilustrasi 3D. Nama dan susunan lapisan mengikut Cloud; ketebalan lapisan, spring dan fabrik hanya ilustrasi.
 `.trim().split('\n').map(line=>line.split('|'));
 const translationMap = new Map(showroomTranslations.map(row=>[row[0],row.slice(1)]));
 const translationFragments = [...translationMap.keys()].sort((a,b)=>b.length-a.length).map(key=>[key,new RegExp((/^[A-Za-z]/.test(key)?'(?<![A-Za-z])':'')+key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+(/[A-Za-z]$/.test(key)?'(?![A-Za-z])':''),'g')]);
