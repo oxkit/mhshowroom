@@ -1,6 +1,8 @@
 const products = window.showroomProducts;
 const { useEffect } = React;
 const categories = ['All products', 'SonoFlex Signature', 'SonoFrame', 'SonoLounge'];
+// Filter buttons say what the products are; the brand names stay on the section headings.
+const categoryLabels = { 'SonoFlex Signature': 'Mattresses', 'SonoFrame': 'Bed frames', 'SonoLounge': 'Sofas' };
 const staticRoute = document.documentElement.dataset.showroomRoute;
 const productFacts = document.getElementById('product-facts')?.innerHTML;
 function route() { return staticRoute === undefined ? location.hash.slice(1).split('?')[0] : staticRoute; }
@@ -55,13 +57,26 @@ function CatalogueCard({ product: p, index, rotating }) {
       h('div', { className: 'card-caption' }, h('div', null, h('span', { className: 'eyebrow' }, p.series), h('h3', null, p.name), h('p', null, p.type), h('strong', {className:'card-price'}, 'From ' + money(p.prices ? Math.min(...Object.values(p.prices)) : p.basePrice))), h(Icon, { type: 'arrow' }))),
     variants && h('p', { className: 'card-fabric' }, variants[colour].name, h('span', null, p.premium ? 'Colour visualisation' : 'Available finish')));
 }
+// Ways to shop: the four guided paths, straight after the hero so they are on the first screens on a phone.
+// 2x2 on phones (all four visible, no sideways swipe), 4 across on wider screens. Pictures from make-home-tiles.cjs.
+function WaysToShop() {
+  const tile = (picture, title, line) => [h('img', { src: 'home/' + picture + '.webp', alt: '', width: 640, height: 400, loading: 'lazy', decoding: 'async' }), h('strong', null, title), h('span', null, line)];
+  return h('section', { className: 'ways-to-shop', 'aria-labelledby': 'ways-to-shop' },
+    h('h2', { id: 'ways-to-shop' }, 'Ways to shop'),
+    h('ul', null,
+      h('li', null, h(MattressFinder, { className: 'shop-tile' }, ...tile('help-me-choose', 'Help me choose', 'Three questions to your mattress.'))),
+      h('li', null, h('a', { className: 'shop-tile', href: showroomUrl('build-your-bed') }, ...tile('build-your-bed', 'Build Your Bed', 'Mattress + bed frame, one total.'))),
+      h('li', null, h('a', { className: 'shop-tile', href: showroomUrl('soho') }, ...tile('soho', 'The SOHO package', 'Bed set + sofa, planned together.'))),
+      h('li', null, h('a', { className: 'shop-tile', href: showroomUrl('room-tour') }, ...tile('explore-the-room', 'Explore the Room', 'Cove, Haven and Cloud in one room.')))));
+}
 function Catalogue() {
   const [category, setCategory] = useState('All products');
   const [rotating, setRotating] = useState(() => !matchMedia('(prefers-reduced-motion: reduce)').matches);
   useEffect(() => { const media = matchMedia('(prefers-reduced-motion: reduce)'); const changed = () => { if (media.matches) setRotating(false); }; media.addEventListener('change', changed); return () => media.removeEventListener('change', changed); }, []);
   return h(React.Fragment, null,
     h(window.mhValueRoom.Teaser),
-    h('div', { className: 'catalogue-heading', id:'catalogue' }, h('div', { role: 'group', 'aria-label': 'Product category', className: 'category-tabs' }, ...categories.map(c => h('button', { key: c, type: 'button', 'aria-pressed': category === c, onClick: () => setCategory(c) }, c))), h('span', { className: 'catalogue-count', 'aria-live': 'polite' }, `${products.filter(p => category === 'All products' || p.series === category).length} products`)),
+    h(WaysToShop),
+    h('div', { className: 'catalogue-heading', id:'catalogue' }, h('div', { role: 'group', 'aria-label': 'Product category', className: 'category-tabs' }, ...categories.map(c => h('button', { key: c, type: 'button', 'aria-pressed': category === c, onClick: () => setCategory(c) }, categoryLabels[c] || c))), h('span', { className: 'catalogue-count', 'aria-live': 'polite' }, `${products.filter(p => category === 'All products' || p.series === category).length} products`)),
     h('div', { className: 'preview-controls' }, h('span', null, 'A few ways to make it yours.'), h('button', { type: 'button', 'aria-pressed': !rotating, onClick: () => setRotating(!rotating) }, rotating ? 'Pause colour previews' : 'Resume colour previews')),
     ...categories.slice(1).filter(c => category === 'All products' || c === category).map(c => h('section', { key:c, className:'collection-section', 'aria-label':c },
       h('div',{className:'collection-heading'},h('h2',null,c),h('span',null,products.find(p=>p.series===c).category),c==='SonoFlex Signature'&&h(MattressFinder,{label:'Help me choose a mattress'})),

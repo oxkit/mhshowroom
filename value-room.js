@@ -9,7 +9,7 @@ window.mhValueRoom = (() => {
     promise:['DEALER PRICE. FOR EVERYONE.','人人享有经销商价格。','HARGA PENGEDAR. UNTUK SEMUA.'],
     title:['See what your budget brings home.','看看你的预算，能带回怎样的家。','Lihat apa yang bajet anda boleh bawa pulang.'],
     intro:['Match your mattress and bed frame, with every price in view.','床垫与床架一起搭，每一笔价格都清清楚楚。','Padankan tilam dan rangka katil, dengan harga yang jelas.'],
-    start:['Build my space','打造我的空间','Bina ruang saya'], all:['Shop all products','浏览所有产品','Lihat semua produk'],
+    start:['Start with my budget','从我的预算开始','Mula dengan bajet saya'], all:['Shop all products','浏览所有产品','Lihat semua produk'],
     queenSet:['Queen bed set from','Queen 床组起价','Set katil Queen dari'],
     yourSpace:['Your space, your budget.','你的空间，你的预算。','Ruang anda, bajet anda.'],
     sub:['Start simple. Change what matters to you.','从简单开始，把预算花在你在意的地方。','Mulakan dengan asas. Pilih apa yang penting bagi anda.'],

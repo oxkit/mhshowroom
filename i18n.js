@@ -308,6 +308,11 @@ On a phone, open this page to see it in your room at real size.|用手机打开�
 The 3D view could not load.|3D 视图无法加载。|Paparan 3D tidak dapat dimuatkan.
 3D model|3D 模型|model 3D
 Real size and thickness for the size you choose. Fabric and colours are a guide.|按你所选尺寸呈现真实大小与厚度。面料与颜色仅供参考。|Saiz dan ketebalan sebenar mengikut saiz pilihan anda. Fabrik dan warna sebagai panduan.
+Ways to shop|选购方式|Cara membeli-belah
+Three questions to your mattress.|回答三个问题，找到你的床垫。|Tiga soalan untuk tilam anda.
+Mattress + bed frame, one total.|床垫 + 床架，一个总价。|Tilam + rangka katil, satu jumlah.
+Bed set + sofa, planned together.|床组 + 沙发，一起规划。|Set katil + sofa, dirancang bersama.
+Cove, Haven and Cloud in one room.|Cove、Haven 和 Cloud 同处一室。|Cove, Haven dan Cloud dalam satu bilik.
 `.trim().split('\n').map(line=>line.split('|'));
 const translationMap = new Map(showroomTranslations.map(row=>[row[0],row.slice(1)]));
 const translationFragments = [...translationMap.keys()].sort((a,b)=>b.length-a.length).map(key=>[key,new RegExp((/^[A-Za-z]/.test(key)?'(?<![A-Za-z])':'')+key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+(/[A-Za-z]$/.test(key)?'(?![A-Za-z])':''),'g')]);

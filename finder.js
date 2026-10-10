@@ -51,7 +51,8 @@ function FeelRating({ value }) {
     h('div', { className: 'finder-feel-bar', 'aria-hidden': true }, ...Array.from({ length: 10 }, (_, i) => h('span', { key: i, className: i < value ? 'filled' : '' }))),
     h('span', null, 'Feel rating ', String(value), ' out of 10'));
 }
-function MattressFinder({ label = 'Help me choose' }) {
+// The launcher is a small button by default; pass className and children to use another look (a home tile).
+function MattressFinder({ label = 'Help me choose', className = 'finder-launch', children }) {
   const dialog = useRef(null), heading = useRef(null), id = React.useId();
   const [step, setStep] = useState(0), [answers, setAnswers] = useState([]);
   React.useEffect(() => { if (dialog.current?.open) heading.current?.focus(); }, [step]);
@@ -62,7 +63,7 @@ function MattressFinder({ label = 'Help me choose' }) {
   const result = step === finderQuestions.length ? findMattress(answers) : null;
   const productLink = p => showroomUrl(p.slug, 'size=Queen');
   return h(React.Fragment, null,
-    h('button', { type: 'button', className: 'finder-launch', onClick: open }, label, h(Icon, { type: 'arrow' })),
+    h('button', { type: 'button', className, onClick: open }, ...(children ? [].concat(children) : [label, h(Icon, { type: 'arrow' })])),
     h('dialog', { ref: dialog, className: 'finder-dialog', 'aria-labelledby': id, onClick: e => { if (e.target === dialog.current) close(); } },
       h('div', { className: 'finder-body' },
         h('div', { className: 'finder-top' }, h('span', { className: 'eyebrow' }, result ? 'Your match' : 'Help me choose'), !result && h('span', { className: 'finder-step' }, `${step + 1} / ${finderQuestions.length}`),

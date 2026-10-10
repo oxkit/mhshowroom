@@ -84,3 +84,11 @@
 .model-ar-note{position:absolute;left:12px;right:12px;bottom:12px;text-align:center;font-size:12px;color:#5d616c;pointer-events:none}
 .ar-button{position:absolute;left:50%;bottom:16px;transform:translateX(-50%);min-height:46px;padding:0 20px;border:0;border-radius:var(--radius-pill);background:var(--surface-brand);color:var(--text-on-brand);font:600 15px var(--font-body);white-space:nowrap;cursor:pointer}.ar-button:focus-visible{outline:3px solid var(--gold-500);outline-offset:2px}
 @media(max-width:1050px){.model-stage{height:400px}}@media(max-width:760px){.model-stage{height:360px}}
+.ways-to-shop{margin:30px 0 40px}.ways-to-shop>h2{margin:0 0 14px;font-size:27px;letter-spacing:-.035em}
+.ways-to-shop>ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.ways-to-shop>ul>li{display:flex;min-width:0}
+.shop-tile{display:flex;flex-direction:column;width:100%;margin:0;padding:0;border:1px solid #e6e0d5;border-radius:18px;overflow:hidden;background:#fffdf9;color:var(--brand);font:inherit;text-align:left;cursor:pointer;transition:border-color .2s ease,transform .2s ease}
+.shop-tile:hover{text-decoration:none;border-color:#cfc6b5;transform:translateY(-2px)}.shop-tile:focus-visible{outline:3px solid var(--gold-500);outline-offset:2px}
+.shop-tile img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;background:#f1ece3}
+.shop-tile strong{display:block;padding:12px 14px 3px;font:700 19px/1.2 var(--font-display);letter-spacing:-.02em}.shop-tile span{display:block;padding:0 14px 14px;font-size:14px;line-height:1.45;color:#5d616c}
+@media(max-width:760px){.ways-to-shop{margin:22px 0 30px}.ways-to-shop>h2{font-size:23px;margin-bottom:12px}.ways-to-shop>ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.shop-tile{border-radius:16px}.shop-tile strong{padding:10px 12px 2px;font-size:16px}.shop-tile span{padding:0 12px 12px;font-size:13px}}
+@media(prefers-reduced-motion:reduce){.shop-tile{transition:none}.shop-tile:hover{transform:none}}
