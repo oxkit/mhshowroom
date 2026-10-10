@@ -258,6 +258,15 @@ function Product({ product: p }) {
     h(StickyBuy, { watch: selectionBox, label: [p.name, size, selectedFabric?.code, orientation && orientation + ' chaise'].filter(Boolean).join(' · '), price: money(priceFor(p, size, fabric)), buyUrl, askUrl }),
     h('dialog', { ref: dialog, className: 'image-dialog', 'aria-label': 'Enlarged product image', onClick: e => { if (e.target === dialog.current) dialog.current.close(); } }, h('div', { className: 'dialog-top' }, h('span', null, p.name), h('button', { className: 'dialog-close', type: 'button', onClick: () => dialog.current.close(), 'aria-label': 'Close enlarged image' }, h(Icon, { type: 'close' }))), h(ProductVisual, { src: currentPhoto, fabric: previewFabric, mirror: mirrored, alt: p.name + ' enlarged product image' })));
 }
+// Delivery strip on every showroom page (owner's terms, 2026-10-10): free in West Malaysia; Singapore
+// delivered from JB, priced and paid in ringgit, 20% surcharge on every order, RM150 under RM599.
+function DeliveryBar() {
+  const [open, setOpen] = useState(false);
+  return h('div', { className: 'delivery-bar', role: 'note' },
+    h('p', null, h('span', null, 'Free delivery in West Malaysia · Singapore: delivered from JB, no delivery fee from RM599, pay in ringgit'), ' ',
+      h('button', { type: 'button', 'aria-expanded': open, 'aria-controls': 'singapore-delivery', onClick: () => { setOpen(!open); if (!open) window.mhTrack?.('singapore_details'); } }, 'Singapore details')),
+    open && h('p', { id: 'singapore-delivery', className: 'delivery-details' }, "Singapore orders: prices are in ringgit and you pay in ringgit. A flat 20% surcharge on every Singapore order covers GST, duties and the rest. Orders under RM599 also pay RM150 delivery. Delivered from Johor Bahru in 5 to 8 business days, so you don't need to cross the Causeway."));
+}
 function Showroom() {
   const [slug, setSlug] = useState(route);
   const [language,setLanguage] = useState(window.showroomLanguage);
@@ -266,7 +275,7 @@ function Showroom() {
   const product = products.find(p => p.slug === slug);
   useEffect(() => { if (!product && staticRoute === undefined) document.title = 'MattressHub | The interactive showroom'; }, [product]);
   return h(React.Fragment, null, h('a', { className: 'skip', href: '#main', onClick: e => { e.preventDefault(); document.getElementById('main').focus(); } }, 'Skip to showroom'),
-    h('header', { className: 'header' }, h('a', { href: showroomUrl(), 'aria-label': 'MattressHub showroom home' }, h(Logo)), h('span', { className: 'header-label' }, 'The interactive showroom'), h('label',{className:'language-switch'}, h('span',{className:'sr-only'},'Language'),h('select',{'aria-label':'Language',value:language,onChange:e=>switchLanguage(e.target.value)},h('option',{value:'en'},'English'),h('option',{value:'zh'},'中文'),h('option',{value:'ms'},'Melayu'))), h('a', { className: 'store-link', href: 'https://mattresshub.co' }, 'Visit the store ', h(Icon, { type: 'arrow' }))),
+    h(DeliveryBar), h('header', { className: 'header' }, h('a', { href: showroomUrl(), 'aria-label': 'MattressHub showroom home' }, h(Logo)), h('span', { className: 'header-label' }, 'The interactive showroom'), h('label',{className:'language-switch'}, h('span',{className:'sr-only'},'Language'),h('select',{'aria-label':'Language',value:language,onChange:e=>switchLanguage(e.target.value)},h('option',{value:'en'},'English'),h('option',{value:'zh'},'中文'),h('option',{value:'ms'},'Melayu'))), h('a', { className: 'store-link', href: 'https://mattresshub.co' }, 'Visit the store ', h(Icon, { type: 'arrow' }))),
     h('main', { id: 'main', tabIndex: -1 }, slug === 'your-space' ? h(window.mhValueRoom.Room,{language}) : slug === 'build-your-bed' || slug === 'soho' ? h(PackageBuilder,{key:slug,soho:slug==='soho'}) : product ? h(Product, { key: product.slug, product }) : h(Catalogue), product && productFacts && h('details', {className:'product-facts', lang:'en', dangerouslySetInnerHTML:{__html:productFacts}}), h(BuyingGuides), h('footer', null, h('strong', null, 'Dealer price for everyone.'), h('a', { href: showroomUrl() }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'), h('small', { className: 'analytics-note' }, 'We use Google Analytics to see how the showroom is used. ', h('a', { href: 'https://mattresshub.co/policies/privacy-policy' }, 'Privacy policy')))));
 }
 if (!redirectLegacy()) ReactDOM.createRoot(document.getElementById('root')).render(h(Showroom));

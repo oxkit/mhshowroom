@@ -315,6 +315,9 @@ Bed set + sofa, planned together.|床组 + 沙发，一起规划。|Set katil + 
 Cove, Haven and Cloud in one room.|Cove、Haven 和 Cloud 同处一室。|Cove, Haven dan Cloud dalam satu bilik.
 We use Google Analytics to see how the showroom is used. |我们使用 Google Analytics 了解展厅的使用情况。|Kami menggunakan Google Analytics untuk memahami penggunaan bilik pameran ini. 
 Privacy policy|隐私政策|Dasar privasi
+Free delivery in West Malaysia · Singapore: delivered from JB, no delivery fee from RM599, pay in ringgit|西马免运费 · 新加坡：从新山送货，满 RM599 免运费，以令吉付款|Penghantaran percuma di Semenanjung Malaysia · Singapura: dihantar dari JB, tiada caj penghantaran dari RM599, bayar dalam ringgit
+Singapore details|新加坡详情|Butiran Singapura
+Singapore orders: prices are in ringgit and you pay in ringgit. A flat 20% surcharge on every Singapore order covers GST, duties and the rest. Orders under RM599 also pay RM150 delivery. Delivered from Johor Bahru in 5 to 8 business days, so you don't need to cross the Causeway.|新加坡订单：价格以令吉标示，并以令吉付款。所有新加坡订单统一加收 20%，已包含消费税（GST）、关税及其他费用。订单低于 RM599 另收 RM150 运费。从新山送货，5 至 8 个工作日送达，无需跨越长堤。|Pesanan Singapura: harga dalam ringgit dan anda bayar dalam ringgit. Caj tambahan rata 20% bagi setiap pesanan Singapura merangkumi GST, duti dan lain-lain. Pesanan bawah RM599 turut dikenakan penghantaran RM150. Dihantar dari Johor Bahru dalam 5 hingga 8 hari bekerja, jadi anda tidak perlu menyeberangi Tambak.
 `.trim().split('\n').map(line=>line.split('|'));
 const translationMap = new Map(showroomTranslations.map(row=>[row[0],row.slice(1)]));
 const translationFragments = [...translationMap.keys()].sort((a,b)=>b.length-a.length).map(key=>[key,new RegExp((/^[A-Za-z]/.test(key)?'(?<![A-Za-z])':'')+key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+(/[A-Za-z]$/.test(key)?'(?![A-Za-z])':''),'g')]);

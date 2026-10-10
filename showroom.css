@@ -93,3 +93,7 @@
 @media(max-width:760px){.ways-to-shop{margin:22px 0 30px}.ways-to-shop>h2{font-size:23px;margin-bottom:12px}.ways-to-shop>ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.shop-tile{border-radius:16px}.shop-tile strong{padding:10px 12px 2px;font-size:16px}.shop-tile span{padding:0 12px 12px;font-size:13px}}
 @media(prefers-reduced-motion:reduce){.shop-tile{transition:none}.shop-tile:hover{transform:none}}
 .analytics-note{display:block;flex-basis:100%;font-size:12px;color:#686c78}.analytics-note a{color:inherit;text-decoration:underline}
+.delivery-bar{margin:0;padding:8px 14px;border-radius:0 0 14px 14px;background:var(--surface-brand);color:var(--text-on-brand);font-size:13px;line-height:1.45;text-align:center}.delivery-bar p{margin:0}
+.delivery-bar button{padding:0;border:0;background:none;color:inherit;font:inherit;font-weight:600;text-decoration:underline;cursor:pointer;white-space:nowrap}.delivery-bar button:focus-visible{outline:2px solid var(--gold-500);outline-offset:2px}
+.delivery-bar .delivery-details{max-width:760px;margin:6px auto 2px;color:#d9deea}
+@media(max-width:760px){.delivery-bar{padding:8px 12px;font-size:12.5px}}
