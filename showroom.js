@@ -64,7 +64,7 @@ function Catalogue() {
     h('div', { className: 'catalogue-heading', id:'catalogue' }, h('div', { role: 'group', 'aria-label': 'Product category', className: 'category-tabs' }, ...categories.map(c => h('button', { key: c, type: 'button', 'aria-pressed': category === c, onClick: () => setCategory(c) }, c))), h('span', { className: 'catalogue-count', 'aria-live': 'polite' }, `${products.filter(p => category === 'All products' || p.series === category).length} products`)),
     h('div', { className: 'preview-controls' }, h('span', null, 'A few ways to make it yours.'), h('button', { type: 'button', 'aria-pressed': !rotating, onClick: () => setRotating(!rotating) }, rotating ? 'Pause colour previews' : 'Resume colour previews')),
     ...categories.slice(1).filter(c => category === 'All products' || c === category).map(c => h('section', { key:c, className:'collection-section', 'aria-label':c },
-      h('div',{className:'collection-heading'},h('h2',null,c),h('span',null,products.find(p=>p.series===c).category)),
+      h('div',{className:'collection-heading'},h('h2',null,c),h('span',null,products.find(p=>p.series===c).category),c==='SonoFlex Signature'&&h(MattressFinder,{label:'Help me choose a mattress'})),
       h('div', { className: 'catalogue-grid' }, ...products.filter(p => p.series === c).map(p => h(CatalogueCard, { key: p.slug, product: p, index: products.indexOf(p), rotating }))))),
     // A still preview only: the tour itself loads on its own page.
     h('nav', {className:'package-links', 'aria-label':'Build a package'}, h('a',{href:showroomUrl('build-your-bed')},h('strong',null,'Build Your Bed'),h('span',null,'Mattress + bed frame →')),h('a',{href:showroomUrl('soho')},h('strong',null,'The SOHO package'),h('span',null,'Bed set + sofa →'))),
@@ -119,7 +119,7 @@ function Product({ product: p }) {
   const [orientation, setOrientation] = useState(() => p.orientations?.includes(query.get('orientation')) ? query.get('orientation') : p.orientations?.[0]);
   const [view, setView] = useState(0), [detail, setDetail] = useState(0), [family, setFamily] = useState('All');
   const [copied, setCopied] = useState(false), [fallback, setFallback] = useState(false);
-  const dialog = useRef(null);
+  const dialog = useRef(null), selectionBox = useRef(null);
   const selectedFabric = p.fabrics?.[fabric];
   const isSofa = p.category === 'Sofas';
   const [customOpen, setCustomOpen] = useState(() => isSofa && !p.includedFabrics.includes(selectedFabric.code));
@@ -146,6 +146,7 @@ function Product({ product: p }) {
     setCopied(false); setFallback(false);
   }, [fabric, size, orientation, p.slug]);
   useEffect(() => { if (staticRoute === undefined) document.title = `${p.series} ${p.name} | MattressHub showroom`; }, [p.slug]);
+  const buyUrl = window.mhStore.url([window.mhStore.item(p, { size, fabric, orientation })]), askUrl = window.mhStore.ask(selection);
   async function copy() { try { await navigator.clipboard.writeText(window.mhTranslate(selection)); setCopied(true); } catch { setFallback(true); } }
   return h(React.Fragment, null,
     h('div', { className: 'intro' }, h('a', { href: showroomUrl() }, '← All products'), h('span', null, p.series, ' / ', p.name)),
@@ -156,6 +157,7 @@ function Product({ product: p }) {
         h('div', { className: 'view-toolbar' }, h('div', { role: 'group', 'aria-label': 'Preview mode', className: 'view-buttons' }, ...p.views.map((v, i) => h('button', { key: v.label, type: 'button', 'aria-pressed': view === i, onClick: () => setView(i) }, v.label)))),
         h('p', { className: 'photo-note' }, p.premium ? (p.views[view].reference ? 'Cream reference cutout. ' : 'Colour and texture visualisation. Pattern scale is illustrative; confirm an actual swatch. ') + (p.orientations ? 'Right chaise is a mirrored preview, shown as you face the sofa.' : '') : p.category === 'Sofas' ? 'Chaise left/right is shown as you face the sofa. Colours are a guide.' : 'Images show design and construction; proportions vary by size.')),
       h('aside', { className: 'controls', id: 'configure', 'aria-label': 'Product options' }, h('div', { className: 'product-title' }, h('span', { className: 'eyebrow' }, p.category), h('h2', null, p.name + ', your way.'), h('p', null, p.description)),
+        p.firmness && h('div', { className: 'finder-prompt' }, h('span', null, 'Not sure this is the one?'), h(MattressFinder, null)),
         p.layers && h('div', { className: 'layer-selector' }, h('div', { className: 'layer-heading' }, h('strong', null, 'Explore the layers'), h('span', null, p.thickness + '″ thick')), ...p.layers.map((layer, i) => h('button', { key: layer, className: 'layer-button', type: 'button', 'aria-pressed': detail === i, onClick: () => { setDetail(i); setView(1); } }, h('span', null, String(i + 1).padStart(2, '0')), layer, h(Icon, { type: 'arrow' }))), h('p', { className: 'small-note', 'aria-live': 'polite' }, `Selected layer ${detail + 1}: ${p.layers[detail]}`)),
         p.fabrics && h('fieldset', {className:'fabric-options'},h('legend',null,isSofa ? 'Included premium colours' : 'Choose your fabric'),
           isSofa ? h(React.Fragment,null,
@@ -170,10 +172,11 @@ function Product({ product: p }) {
         p.sizes && h(RadioGroup, { title: 'Choose your size', name: 'size', options: p.sizes, value: size, onChange: setSize }),
         p.dimensions && h('div', { className: 'dimension-strip' }, ...['Width', 'Depth', 'Height'].map((label, i) => h('div', { key: label }, h('strong', null, Math.round(p.dimensions[i] * 2.54), h('small', null, ' cm')), h('span', null, label + ' · ' + p.dimensions[i] + '″')))),
         h('div', { className: 'product-price', 'aria-live':'polite' }, h('strong',null,money(priceFor(p,size,fabric))), h('span',null,p.category==='Sofas' ? (p.includedFabrics.includes(selectedFabric.code) ? 'Creamy / Shadow price' : 'Includes RM 250 fabric upgrade') : size + ' price')),
-        h('div', { className: 'selection' }, h('span', { className: 'eyebrow' }, 'Your selection'), h('div', { className: 'selection-line', 'aria-live': 'polite' }, h('strong', null, p.name + (size ? ' · ' + size : '')), h('span', null, [selectedFabric?.code, orientation && orientation + ' chaise'].filter(Boolean).join(' / '))),
-          h('a', { className: 'buy-direct', href: window.mhStore.url([window.mhStore.item(p, { size, fabric, orientation })]), target: '_blank', rel: 'noopener' }, 'Buy directly on mattresshub.co', h(Icon, { type: 'arrow' })),
+        h('div', { className: 'selection', ref: selectionBox }, h('span', { className: 'eyebrow' }, 'Your selection'), h('div', { className: 'selection-line', 'aria-live': 'polite' }, h('strong', null, p.name + (size ? ' · ' + size : '')), h('span', null, [selectedFabric?.code, orientation && orientation + ' chaise'].filter(Boolean).join(' / '))),
+          h('a', { className: 'buy-direct', href: buyUrl, target: '_blank', rel: 'noopener' }, 'Buy directly on mattresshub.co', h(Icon, { type: 'arrow' })),
+          h('a', { className: 'ask-whatsapp', href: askUrl, target: '_blank', rel: 'noopener' }, h(ChatIcon), 'Ask on WhatsApp'),
           h(Button, { variant: 'secondary', full: true, onClick: copy, iconLeft: h(Icon, { type: copied ? 'check' : 'copy' }) }, copied ? 'Selection copied' : 'Copy your selection'),
-          h('p', { className: 'small-note', role: 'status' }, copied ? 'Your choices and a link are ready to paste.' : 'Opens your cart on mattresshub.co in a new tab.'),
+          h('p', { className: 'small-note', role: 'status' }, copied ? 'Your choices and a link are ready to paste.' : 'Buy opens your cart on mattresshub.co. WhatsApp opens a chat with your choices filled in.'),
           fallback && h('label', { className: 'copy-fallback' }, 'Select and copy your choices:', h('textarea', { readOnly: true, value: window.mhTranslate(selection), rows: 7, onFocus: e => e.target.select() }))),
         h('a', {className:'build-product-link',href:p.category==='Sofas' ? showroomUrl('soho','sofa='+p.slug+'&sofaFabric='+fabric+'&orientation='+(orientation||'Left')) : showroomUrl('build-your-bed',(p.category==='Mattresses'?'mattress=':'bed=')+p.slug+'&size='+encodeURIComponent(size)+'&bedFabric='+(p.category==='Bed frames'?fabric:0))},p.category==='Sofas'?'Add a bed set · build a SOHO package →':'Match it · Build Your Bed →'),
         h('p', { className: 'colour-note' }, p.category === 'Bed frames' ? 'Bed frame only. Mattress sold separately. Confirm fabric using actual swatches.' : p.category === 'Sofas' ? 'Dimensions are overall measurements. Check delivery access and walking space before ordering.' : 'Mattress only. Bed frame sold separately.'),
@@ -182,6 +185,7 @@ function Product({ product: p }) {
     p.premium && h(PetFabric, { fabric: selectedFabric }),
     (p.firmness || p.feel) && h(FeelGuide, { product: p }),
     p.features.length > 0 && h('section', { className: 'construction' }, h('div', { className: 'construction-heading' }, h('div', null, h('span', { className: 'eyebrow' }, 'A closer look'), h('h2', null, 'The details make the difference.'))), h('div', { className: 'construction-body' }, h('div', { className: 'feature-list', role: 'group', 'aria-label': 'Construction details' }, ...p.features.map((f, i) => h('button', { key: f.title, type: 'button', className: 'feature-button', 'aria-pressed': detail === i, onClick: () => setDetail(i), 'aria-controls': 'feature-detail' }, h('span', { className: 'feature-number' }, String(i + 1).padStart(2, '0')), h('strong', null, f.title), h(Icon, { type: 'arrow' })))), h('div', { className: 'feature-detail', id: 'feature-detail', 'aria-live': 'polite' }, p.category === 'Sofas' && detail === 0 ? h(SpringDemo) : h(ProductVisual, { src: p.features[detail].image, alt: p.features[detail].title }), h('div', null, h('span', { className: 'eyebrow' }, 'Detail ' + String(detail + 1).padStart(2, '0')), h('h3', null, p.features[detail].title), h('p', null, p.features[detail].text))))),
+    h(StickyBuy, { watch: selectionBox, label: [p.name, size, selectedFabric?.code, orientation && orientation + ' chaise'].filter(Boolean).join(' · '), price: money(priceFor(p, size, fabric)), buyUrl, askUrl }),
     h('dialog', { ref: dialog, className: 'image-dialog', 'aria-label': 'Enlarged product image', onClick: e => { if (e.target === dialog.current) dialog.current.close(); } }, h('div', { className: 'dialog-top' }, h('span', null, p.name), h('button', { className: 'dialog-close', type: 'button', onClick: () => dialog.current.close(), 'aria-label': 'Close enlarged image' }, h(Icon, { type: 'close' }))), h(ProductVisual, { src: currentPhoto, fabric: previewFabric, mirror: mirrored, alt: p.name + ' enlarged product image' })));
 }
 function Showroom() {

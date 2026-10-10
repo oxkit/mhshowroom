@@ -39,5 +39,9 @@ window.mhStore = (() => {
     query.set('items', base64url(json));
     return cart + '?' + query;
   }
-  return { handles, item, url };
+  // Ask on WhatsApp: the owner's number (also used by the value room), with the
+  // translated selection already typed into the chat.
+  const whatsapp = '601121789076';
+  const ask = text => `https://wa.me/${whatsapp}?text=${encodeURIComponent(window.mhTranslate('Hi MattressHub, I\'m interested in this:') + '\n' + window.mhTranslate(text))}`;
+  return { handles, item, url, ask };
 })();

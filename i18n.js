@@ -253,6 +253,49 @@ Language|Language|Language
 mattress|床垫|tilam
 A 9 mm MDF board supports the upholstered divan top.|9 毫米 MDF 板支撑软包底座顶部。|Papan MDF 9 mm menyokong bahagian atas divan berupholsteri.
 A 12 mm MDF board supports the upholstered divan top.|12 毫米 MDF 板支撑软包底座顶部。|Papan MDF 12 mm menyokong bahagian atas divan berupholsteri.
+Ask on WhatsApp|在 WhatsApp 咨询|Tanya di WhatsApp
+Ask about this package on WhatsApp|在 WhatsApp 咨询此配套|Tanya tentang pakej ini di WhatsApp
+Hi MattressHub, I'm interested in this:|你好 MattressHub，我想了解这个：|Hai MattressHub, saya berminat dengan ini:
+Buy opens your cart on mattresshub.co. WhatsApp opens a chat with your choices filled in.|“购买”会在 mattresshub.co 打开你的购物车。WhatsApp 会打开聊天，并已填好你的选择。|Beli membuka troli anda di mattresshub.co. WhatsApp membuka sembang dengan pilihan anda sudah diisi.
+Buy now|立即购买|Beli sekarang
+Help me choose|帮我挑选|Bantu saya pilih
+Help me choose a mattress|帮我挑选床垫|Bantu saya pilih tilam
+Not sure this is the one?|不确定是不是这款？|Tidak pasti ini pilihan anda?
+Close the finder|关闭挑选助手|Tutup pembantu pilihan
+How do you usually sleep?|你通常怎么睡？|Bagaimana anda biasa tidur?
+We use it to fine-tune the feel.|我们会据此微调推荐的软硬度。|Kami gunakannya untuk memperhalusi tahap ketegangan.
+On my side|侧睡|Mengiring
+On my back|仰睡|Terlentang
+On my front|趴睡|Meniarap
+A mix|都有|Campuran
+A touch softer|稍软一些|Lembut sedikit
+A touch firmer|稍硬一些|Tegang sedikit
+As you choose|按你的选择|Ikut pilihan anda
+Which feel do you like?|你喜欢什么软硬度？|Tahap ketegangan mana yang anda suka?
+Our feel ratings go from 1 to 10, where 10 is the firmest.|我们的软硬度评分从 1 到 10，10 为最硬。|Penarafan kami dari 1 hingga 10, dan 10 paling tegang.
+Around 4|约 4|Sekitar 4
+Around 6|约 6|Sekitar 6
+Around 9|约 9|Sekitar 9
+7 to 8|7 至 8|7 hingga 8
+Your budget for a Queen?|Queen 尺寸的预算是多少？|Bajet anda untuk saiz Queen?
+Queen prices. You can pick any size after.|以上为 Queen 尺寸价格，之后可选择任何尺寸。|Harga saiz Queen. Anda boleh pilih saiz lain kemudian.
+Up to RM 600|RM 600 以内|Sehingga RM 600
+RM 600 to RM 1,000|RM 600 至 RM 1,000|RM 600 hingga RM 1,000
+RM 1,000 and up|RM 1,000 以上|RM 1,000 ke atas
+Previous question|上一题|Soalan sebelumnya
+Your match|为你推荐|Padanan anda
+Feel rating |软硬度 |Penarafan 
+ out of 10|/10| daripada 10
+Within your budget|在你的预算内|Dalam bajet anda
+Above your budget|超出你的预算|Melebihi bajet anda
+Below your budget|低于你的预算|Di bawah bajet anda
+A little firmer|稍硬一些|Lebih tegang sedikit
+A little softer|稍软一些|Lebih lembut sedikit
+Same feel, lower price|软硬度相同，价格更低|Rasa sama, harga lebih rendah
+Same feel, more premium|软硬度相同，更高端|Rasa sama, lebih premium
+See |查看 |Lihat 
+Start again|重新开始|Mulakan semula
+Suggested from MattressHub's feel ratings and Queen prices. Your weight and sleeping position affect the feel.|根据 MattressHub 的软硬度评分和 Queen 尺寸价格推荐。体重和睡姿会影响实际感受。|Dicadangkan berdasarkan penarafan ketegangan MattressHub dan harga saiz Queen. Berat dan posisi tidur mempengaruhi rasa.
 `.trim().split('\n').map(line=>line.split('|'));
 const translationMap = new Map(showroomTranslations.map(row=>[row[0],row.slice(1)]));
 const translationFragments = [...translationMap.keys()].sort((a,b)=>b.length-a.length).map(key=>[key,new RegExp((/^[A-Za-z]/.test(key)?'(?<![A-Za-z])':'')+key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+(/[A-Za-z]$/.test(key)?'(?![A-Za-z])':''),'g')]);
