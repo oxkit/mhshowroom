@@ -58,7 +58,11 @@ function MattressFinder({ label = 'Help me choose', className = 'finder-launch',
   React.useEffect(() => { if (dialog.current?.open) heading.current?.focus(); }, [step]);
   const open = () => { setStep(0); setAnswers([]); dialog.current.showModal(); heading.current?.focus(); };
   const close = () => dialog.current?.close();
-  const choose = i => { setAnswers([...answers.slice(0, step), i]); setStep(step + 1); };
+  const choose = i => {
+    const next = [...answers.slice(0, step), i];
+    setAnswers(next); setStep(step + 1);
+    if (next.length === finderQuestions.length) { const r = findMattress(next); window.mhTrack?.('finder_result', { match: r.match.slug, runner_up: r.runnerUp.slug }); }
+  };
   const question = finderQuestions[step];
   const result = step === finderQuestions.length ? findMattress(answers) : null;
   const productLink = p => showroomUrl(p.slug, 'size=Queen');

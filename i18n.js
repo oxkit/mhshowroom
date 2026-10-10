@@ -313,6 +313,8 @@ Three questions to your mattress.|回答三个问题，找到你的床垫。|Tig
 Mattress + bed frame, one total.|床垫 + 床架，一个总价。|Tilam + rangka katil, satu jumlah.
 Bed set + sofa, planned together.|床组 + 沙发，一起规划。|Set katil + sofa, dirancang bersama.
 Cove, Haven and Cloud in one room.|Cove、Haven 和 Cloud 同处一室。|Cove, Haven dan Cloud dalam satu bilik.
+We use Google Analytics to see how the showroom is used. |我们使用 Google Analytics 了解展厅的使用情况。|Kami menggunakan Google Analytics untuk memahami penggunaan bilik pameran ini. 
+Privacy policy|隐私政策|Dasar privasi
 `.trim().split('\n').map(line=>line.split('|'));
 const translationMap = new Map(showroomTranslations.map(row=>[row[0],row.slice(1)]));
 const translationFragments = [...translationMap.keys()].sort((a,b)=>b.length-a.length).map(key=>[key,new RegExp((/^[A-Za-z]/.test(key)?'(?<![A-Za-z])':'')+key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+(/[A-Za-z]$/.test(key)?'(?![A-Za-z])':''),'g')]);

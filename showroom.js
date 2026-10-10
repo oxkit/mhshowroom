@@ -133,6 +133,7 @@ const motionLoops = { cloud: 'cloud-layers' };
 function MotionLoop({ src, alt }) {
   const video = useRef(null);
   const [playing, setPlaying] = useState(() => !matchMedia('(prefers-reduced-motion: reduce)').matches);
+  useEffect(() => { window.mhTrack?.('view_3d_layers', { product: src.split('/').pop().replace(/-layers$/, '') }); }, []);
   useEffect(() => {
     const v = video.current; v.muted = true;
     let visible = true;
@@ -157,6 +158,7 @@ function Model360({ src, size, alt }) {
   const viewer = useRef(null);
   const [ready, setReady] = useState(() => Boolean(window.customElements?.get('model-viewer')));
   const [failed, setFailed] = useState(false), [ar, setAr] = useState(false);
+  useEffect(() => { window.mhTrack?.('view_360', { product: src.split('/').pop(), size }); }, []);
   useEffect(() => { if (!ready) import(new URL('vendor/model-viewer.min.js', document.baseURI).href).then(() => setReady(true), () => setFailed(true)); }, []);
   useEffect(() => {
     const el = viewer.current;
@@ -265,6 +267,6 @@ function Showroom() {
   useEffect(() => { if (!product && staticRoute === undefined) document.title = 'MattressHub | The interactive showroom'; }, [product]);
   return h(React.Fragment, null, h('a', { className: 'skip', href: '#main', onClick: e => { e.preventDefault(); document.getElementById('main').focus(); } }, 'Skip to showroom'),
     h('header', { className: 'header' }, h('a', { href: showroomUrl(), 'aria-label': 'MattressHub showroom home' }, h(Logo)), h('span', { className: 'header-label' }, 'The interactive showroom'), h('label',{className:'language-switch'}, h('span',{className:'sr-only'},'Language'),h('select',{'aria-label':'Language',value:language,onChange:e=>switchLanguage(e.target.value)},h('option',{value:'en'},'English'),h('option',{value:'zh'},'中文'),h('option',{value:'ms'},'Melayu'))), h('a', { className: 'store-link', href: 'https://mattresshub.co' }, 'Visit the store ', h(Icon, { type: 'arrow' }))),
-    h('main', { id: 'main', tabIndex: -1 }, slug === 'your-space' ? h(window.mhValueRoom.Room,{language}) : slug === 'build-your-bed' || slug === 'soho' ? h(PackageBuilder,{key:slug,soho:slug==='soho'}) : product ? h(Product, { key: product.slug, product }) : h(Catalogue), product && productFacts && h('details', {className:'product-facts', lang:'en', dangerouslySetInnerHTML:{__html:productFacts}}), h(BuyingGuides), h('footer', null, h('strong', null, 'Dealer price for everyone.'), h('a', { href: showroomUrl() }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'))));
+    h('main', { id: 'main', tabIndex: -1 }, slug === 'your-space' ? h(window.mhValueRoom.Room,{language}) : slug === 'build-your-bed' || slug === 'soho' ? h(PackageBuilder,{key:slug,soho:slug==='soho'}) : product ? h(Product, { key: product.slug, product }) : h(Catalogue), product && productFacts && h('details', {className:'product-facts', lang:'en', dangerouslySetInnerHTML:{__html:productFacts}}), h(BuyingGuides), h('footer', null, h('strong', null, 'Dealer price for everyone.'), h('a', { href: showroomUrl() }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'), h('small', { className: 'analytics-note' }, 'We use Google Analytics to see how the showroom is used. ', h('a', { href: 'https://mattresshub.co/policies/privacy-policy' }, 'Privacy policy')))));
 }
 if (!redirectLegacy()) ReactDOM.createRoot(document.getElementById('root')).render(h(Showroom));
