@@ -150,12 +150,14 @@ function Model360({ src, size, alt }) {
     el.addEventListener('load', loaded);
     return () => el.removeEventListener('load', loaded);
   }, [ready]);
-  const file = src + '-' + modelSize(size);
+  // Full addresses: model-viewer resolves AR files (Scene Viewer, Quick Look) against the page URL,
+  // not <base href>, so relative paths 404 from /products/<slug>/.
+  const file = new URL(src + '-' + modelSize(size), document.baseURI).href, poster = new URL(src + '-poster.jpg', document.baseURI).href;
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   return h('div', { className: 'model-360' },
-    ready ? h('model-viewer', { ref: viewer, src: file + '.glb', 'ios-src': file + '.usdz', poster: src + '-poster.jpg', alt, 'camera-controls': '', 'touch-action': 'pan-y', ar: '', 'ar-modes': 'webxr scene-viewer quick-look', 'ar-scale': 'fixed', 'shadow-intensity': '1', exposure: '0.8', 'camera-orbit': '-35deg 70deg auto', 'interaction-prompt': still ? 'none' : 'auto' },
+    ready ? h('model-viewer', { ref: viewer, src: file + '.glb', 'ios-src': file + '.usdz', poster, alt, 'camera-controls': '', 'touch-action': 'pan-y', ar: '', 'ar-modes': 'webxr scene-viewer quick-look', 'ar-scale': 'fixed', 'shadow-intensity': '1', exposure: '0.8', 'camera-orbit': '-35deg 70deg auto', 'interaction-prompt': still ? 'none' : 'auto' },
       h('button', { slot: 'ar-button', type: 'button', className: 'ar-button' }, 'See it in your room')) :
-      h('img', { src: src + '-poster.jpg', alt, width: 1080, height: 1080 }),
+      h('img', { src: poster, alt, width: 1080, height: 1080 }),
     h('span', { className: 'model-hint' }, failed ? 'The 3D view could not load.' : 'Drag to turn. Pinch or scroll to zoom.'),
     ready && !ar && h('span', { className: 'model-ar-note' }, 'On a phone, open this page to see it in your room at real size.'));
 }
