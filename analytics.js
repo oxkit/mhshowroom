@@ -27,7 +27,8 @@
     const el = e.target.closest('a, button');
     if (!el) return;
     const tiles = ['help_me_choose', 'build_your_bed', 'soho', 'room_tour'];
-    if (el.matches('.ways-to-shop .shop-tile')) return window.mhTrack('ways_to_shop', { tile: tiles[[...document.querySelectorAll('.ways-to-shop .shop-tile')].indexOf(el)] });
+    const group = el.matches('.shop-tile') && el.closest('.ways-to-shop, .still-deciding');
+    if (group) return window.mhTrack('ways_to_shop', { tile: (group.matches('.still-deciding') ? ['budget', ...tiles] : tiles)[[...group.querySelectorAll('.shop-tile')].indexOf(el)], place: group.matches('.still-deciding') ? 'catalogue_end' : 'top' });
     const href = el.getAttribute('href') || '';
     const source = el.closest('.sticky-buy') ? 'phone_bar' : el.closest('.package-options') ? 'package' : el.closest('.selection') ? 'product' : 'other';
     if (/^https:\/\/mattresshub\.co\/cart\?showroom=1/.test(href)) return window.mhTrack('buy_direct', { source, product: productSlug(), package: (href.match(/[?&]ref=([^&]+)/) || [])[1] });

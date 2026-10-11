@@ -78,3 +78,6 @@ html[lang=zh-Hans] .vr-warning h2{line-height:1.2;letter-spacing:0}html[lang=zh-
 .vr-teaser-price>span,.vr-teaser-price>small,.vr-fabric-sample>span{font-size:13px}.vr-cart-bar>a span{font-size:14px}.vr-cart-selection{font-size:13px}
 .vr-steps button{min-width:0}.vr-steps button span{font-size:11px}.vr-tally>div>span{max-width:145px}.vr-warning-body{scrollbar-gutter:stable}
 @media(max-width:760px){.vr-options>button{grid-template-columns:60px minmax(0,1fr) auto}.vr-options .product-visual{width:60px}.vr-delta{max-width:80px}.vr-scene.is-inside{width:100%;aspect-ratio:auto}.vr-scene.is-inside .vr-cutaway{position:relative;inset:auto;min-height:345px;padding:18px 14px 46px;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}.vr-teaser-actions{flex-wrap:wrap}.vr-steps button{font-size:13px}.vr-cart-bar>a{padding:10px 12px}.vr-stage-message{flex-wrap:wrap}}
+
+/* Owner 2026-10-11: the warning heading on one line on desktop when it fits (the 440px cap forced two lines). */
+@media(min-width:761px){.vr-hook strong{max-width:none}}

@@ -69,6 +69,21 @@ function WaysToShop() {
       h('li', null, h('a', { className: 'shop-tile', href: showroomUrl('soho') }, ...tile('soho', 'The SOHO package', 'Bed set + sofa, planned together.'))),
       h('li', null, h('a', { className: 'shop-tile', href: showroomUrl('room-tour') }, ...tile('explore-the-room', 'Explore the Room', 'Cove, Haven and Cloud in one room.')))));
 }
+// End of the catalogue (owner approved 2026-10-11): Start with my budget first (the owner's strongest path, the
+// same planner as the hero button), then the four paths from Ways to shop in the same order and names,
+// as compact text tiles, so someone who scrolled every product still has a next step. Replaces the old
+// package links and the large room-tour card, which repeated three tiles and left out Help me choose.
+function StillDeciding() {
+  const tile = (title, line) => [h('strong', null, title), h('span', null, line)];
+  return h('section', { className: 'still-deciding', 'aria-labelledby': 'still-deciding' },
+    h('h2', { id: 'still-deciding' }, 'Still deciding?'),
+    h('ul', null,
+      h('li', { className: 'budget-tile' }, h('a', { className: 'shop-tile', href: showroomUrl('your-space') }, ...tile('Start with my budget', 'Set a budget, see the bed set it buys.'))),
+      h('li', null, h(MattressFinder, { className: 'shop-tile' }, ...tile('Help me choose', 'Three questions to your mattress.'))),
+      h('li', null, h('a', { className: 'shop-tile', href: showroomUrl('build-your-bed') }, ...tile('Build Your Bed', 'Mattress + bed frame, one total.'))),
+      h('li', null, h('a', { className: 'shop-tile', href: showroomUrl('soho') }, ...tile('The SOHO package', 'Bed set + sofa, planned together.'))),
+      h('li', null, h('a', { className: 'shop-tile', href: showroomUrl('room-tour') }, ...tile('Explore the Room', 'Cove, Haven and Cloud in one room.')))));
+}
 function Catalogue() {
   const [category, setCategory] = useState('All products');
   const [rotating, setRotating] = useState(() => !matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -81,10 +96,7 @@ function Catalogue() {
     ...categories.slice(1).filter(c => category === 'All products' || c === category).map(c => h('section', { key:c, className:'collection-section', 'aria-label':c },
       h('div',{className:'collection-heading'},h('h2',null,c),h('span',null,products.find(p=>p.series===c).category),c==='SonoFlex Signature'&&h(MattressFinder,{label:'Help me choose a mattress'})),
       h('div', { className: 'catalogue-grid' }, ...products.filter(p => p.series === c).map(p => h(CatalogueCard, { key: p.slug, product: p, index: products.indexOf(p), rotating }))))),
-    // A still preview only: the tour itself loads on its own page.
-    h('nav', {className:'package-links', 'aria-label':'Build a package'}, h('a',{href:showroomUrl('build-your-bed')},h('strong',null,'Build Your Bed'),h('span',null,'Mattress + bed frame →')),h('a',{href:showroomUrl('soho')},h('strong',null,'The SOHO package'),h('span',null,'Bed set + sofa →'))),
-    h('a', { className: 'room-tour-card', href: showroomUrl('room-tour') }, h('img', { src: 'room-tour/preview.jpg', alt: 'The Quiet Room with the Cove sofa, Haven bed frame and Cloud mattress', width: 1200, height: 675, loading: 'lazy' }),
-      h('div', null, h('span', { className: 'eyebrow' }, 'Room studies'), h('h2', null, 'Explore the Room'), h('p', null, 'See Cove, Haven and Cloud together in one room. Move between four viewpoints, then make it yours.'), h('span', { className: 'text-link' }, 'Step inside the room ', h(Icon, { type: 'arrow' })))));
+    h(StillDeciding));
 }
 function SpringDemo() {
   const [pressed, setPressed] = useState(false);
@@ -290,6 +302,6 @@ function Showroom() {
   useEffect(() => { if (!product && staticRoute === undefined) document.title = 'MattressHub | The interactive showroom'; }, [product]);
   return h(React.Fragment, null, h('a', { className: 'skip', href: '#main', onClick: e => { e.preventDefault(); document.getElementById('main').focus(); } }, 'Skip to showroom'),
     h(DeliveryBar), h('header', { className: 'header' }, h('a', { href: showroomUrl(), 'aria-label': 'MattressHub showroom home' }, h(Logo)), h('span', { className: 'header-label' }, 'The interactive showroom'), h('label',{className:'language-switch'}, h('span',{className:'sr-only'},'Language'),h('select',{'aria-label':'Language',value:language,onChange:e=>switchLanguage(e.target.value)},h('option',{value:'en'},'English'),h('option',{value:'zh'},'中文'),h('option',{value:'ms'},'Melayu'))), h('a', { className: 'store-link', href: 'https://mattresshub.co' }, 'Visit the store ', h(Icon, { type: 'arrow' }))),
-    h('main', { id: 'main', tabIndex: -1 }, slug === 'your-space' ? h(window.mhValueRoom.Room,{language}) : slug === 'build-your-bed' || slug === 'soho' ? h(PackageBuilder,{key:slug,soho:slug==='soho'}) : product ? h(Product, { key: product.slug, product }) : h(Catalogue), product && productFacts && h('details', {className:'product-facts', lang:'en', dangerouslySetInnerHTML:{__html:productFacts}}), h(BuyingGuides), h('footer', null, h('strong', null, 'Dealer price for everyone.'), h('a', { href: showroomUrl() }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'), h('small', { className: 'analytics-note' }, 'We use Google Analytics to see how the showroom is used. ', h('a', { href: 'https://mattresshub.co/policies/privacy-policy' }, 'Privacy policy')))));
+    h('main', { id: 'main', tabIndex: -1 }, slug === 'your-space' ? h(window.mhValueRoom.Room,{language}) : slug === 'build-your-bed' || slug === 'soho' ? h(PackageBuilder,{key:slug,soho:slug==='soho'}) : product ? h(Product, { key: product.slug, product }) : h(Catalogue), product && productFacts && h('details', {className:'product-facts', lang:'en', dangerouslySetInnerHTML:{__html:productFacts}}), h(BuyingGuides), h('footer', null, h('strong', null, 'Dealer price for everyone.'), (product || ['your-space', 'build-your-bed', 'soho'].includes(slug)) && h('a', { href: showroomUrl() }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'), h('small', { className: 'analytics-note' }, 'We use Google Analytics to see how the showroom is used. ', h('a', { href: 'https://mattresshub.co/policies/privacy-policy' }, 'Privacy policy')))));
 }
 if (!redirectLegacy()) ReactDOM.createRoot(document.getElementById('root')).render(h(Showroom));
