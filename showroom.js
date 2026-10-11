@@ -30,7 +30,6 @@ function redirectLegacy() {
   }
   return false;
 }
-function Image({ src, alt, ...props }) { return h('img', { src, alt, ...props }); }
 function RadioGroup({ title, name, options, value, onChange }) {
   return h('fieldset', null, h('legend', null, title), h('div', { className: 'size-grid', style: { gridTemplateColumns: `repeat(${Math.min(options.length, 4)},1fr)` } }, ...options.map(option => h('label', { key: option, className: `size-option ${value === option ? 'selected' : ''}` }, h('input', { type: 'radio', name, value: option, checked: value === option, onChange: () => onChange(option) }), h('span', null, option)))));
 }
