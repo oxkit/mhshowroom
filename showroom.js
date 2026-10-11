@@ -258,12 +258,26 @@ function Product({ product: p }) {
     h(StickyBuy, { watch: selectionBox, label: [p.name, size, selectedFabric?.code, orientation && orientation + ' chaise'].filter(Boolean).join(' · '), price: money(priceFor(p, size, fabric)), buyUrl, askUrl }),
     h('dialog', { ref: dialog, className: 'image-dialog', 'aria-label': 'Enlarged product image', onClick: e => { if (e.target === dialog.current) dialog.current.close(); } }, h('div', { className: 'dialog-top' }, h('span', null, p.name), h('button', { className: 'dialog-close', type: 'button', onClick: () => dialog.current.close(), 'aria-label': 'Close enlarged image' }, h(Icon, { type: 'close' }))), h(ProductVisual, { src: currentPhoto, fabric: previewFabric, mirror: mirrored, alt: p.name + ' enlarged product image' })));
 }
-// Delivery strip on every showroom page (owner's terms, 2026-10-10): free in West Malaysia; Singapore
-// delivered from JB, priced and paid in ringgit, 20% surcharge on every order, RM150 under RM599.
+// Delivery strip on every showroom page (owner's wording, 2026-10-10): one line per country, flag first.
+// Singapore: delivered from JB, priced and paid in ringgit, 20% surcharge on every order, RM150 under RM599.
+const starPoints = (cx, cy, n, outer, inner) => Array.from({ length: n * 2 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / n, d = i % 2 ? inner : outer; return (cx + d * Math.cos(a)).toFixed(2) + ',' + (cy + d * Math.sin(a)).toFixed(2); }).join(' ');
+function Flag({ country }) {
+  if (country === 'my') return h('svg', { className: 'flag', viewBox: '0 0 28 14', role: 'img', 'aria-label': 'Malaysia' },
+    h('rect', { width: 28, height: 14, fill: '#fff' }),
+    ...[0, 2, 4, 6, 8, 10, 12].map(y => h('rect', { key: y, y, width: 28, height: 1, fill: '#cc0001' })),
+    h('rect', { width: 14, height: 8, fill: '#010066' }),
+    h('circle', { cx: 5.6, cy: 4, r: 3, fill: '#fc0' }), h('circle', { cx: 6.5, cy: 4, r: 2.55, fill: '#010066' }),
+    h('polygon', { points: starPoints(10.4, 4, 14, 2.5, 1.05), fill: '#fc0' }));
+  return h('svg', { className: 'flag', viewBox: '0 0 21 14', role: 'img', 'aria-label': 'Singapore' },
+    h('rect', { width: 21, height: 7, fill: '#ef3340' }), h('rect', { y: 7, width: 21, height: 7, fill: '#fff' }),
+    h('circle', { cx: 4.6, cy: 3.5, r: 2.6, fill: '#fff' }), h('circle', { cx: 5.6, cy: 3.5, r: 2.4, fill: '#ef3340' }),
+    ...[0, 1, 2, 3, 4].map(i => { const a = -Math.PI / 2 + i * 2 * Math.PI / 5; return h('polygon', { key: i, points: starPoints(6.9 + 1.5 * Math.cos(a), 3.6 + 1.5 * Math.sin(a), 5, 0.62, 0.25), fill: '#fff' }); }));
+}
 function DeliveryBar() {
   const [open, setOpen] = useState(false);
   return h('div', { className: 'delivery-bar', role: 'note' },
-    h('p', null, h('span', null, 'Free delivery in West Malaysia · Singapore: delivered from JB, no delivery fee from RM599, pay in ringgit'), ' ',
+    h('p', null, h(Flag, { country: 'my' }), h('span', null, 'FREE DELIVERY')),
+    h('p', null, h(Flag, { country: 'sg' }), h('span', null, 'FREE DELIVERY FROM RM599 + 20% SURCHARGE'), ' ',
       h('button', { type: 'button', 'aria-expanded': open, 'aria-controls': 'singapore-delivery', onClick: () => { setOpen(!open); if (!open) window.mhTrack?.('singapore_details'); } }, 'Singapore details')),
     open && h('p', { id: 'singapore-delivery', className: 'delivery-details' }, "Singapore orders: prices are in ringgit and you pay in ringgit. A flat 20% surcharge on every Singapore order covers GST, duties and the rest. Orders under RM599 also pay RM150 delivery. Delivered from Johor Bahru in 5 to 8 business days, so you don't need to cross the Causeway."));
 }
