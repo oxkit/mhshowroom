@@ -53,7 +53,7 @@ function CatalogueCard({ product: p, index, rotating }) {
   return h('article', { className: 'catalogue-card', ref: card },
     h('a', { href: showroomUrl(p.slug, variants ? 'fabric=' + colour : ''), 'aria-label': `Explore ${p.name}` },
       h('div', { className: 'card-picture', style: { backgroundColor: tones[index % tones.length] } }, ready && h(ProductVisual, { key: colour, src, fabric: p.premium ? variants[colour] : null, alt: `${p.series} ${p.name}${variants ? ' in ' + variants[colour].name : ''}` }), h('span', { className: 'card-category' }, p.category)),
-      h('div', { className: 'card-caption' }, h('div', null, h('span', { className: 'eyebrow' }, p.series), h('h3', null, p.name), h('p', null, p.type), h('strong', {className:'card-price'}, 'From ' + money(p.prices ? Math.min(...Object.values(p.prices)) : p.basePrice))), h(Icon, { type: 'arrow' }))),
+      h('div', { className: 'card-caption' }, h('div', null, h('span', { className: 'eyebrow' }, p.series), h('h3', null, p.name), h('p', null, p.type), h('strong', {className:'card-price'}, 'From ' + money(regional(p.prices ? Math.min(...Object.values(p.prices)) : p.basePrice)))), h(Icon, { type: 'arrow' }))),
     variants && h('p', { className: 'card-fabric' }, variants[colour].name, h('span', null, p.premium ? 'Colour visualisation' : 'Available finish')));
 }
 // Ways to shop: the four guided paths, straight after the hero so they are on the first screens on a phone.
@@ -209,8 +209,16 @@ function Product({ product: p }) {
   const familyTabs = h('div',{className:'family-tabs',role:'group','aria-label':'Fabric family'},...['All','Lego','Reka','Costa'].map(f=>h('button',{key:f,type:'button','aria-pressed':family===f,onClick:()=>setFamily(f)},f)));
 
   // The loop sits next to the layer illustration, which is in the same asset folder.
-  const assetDir = p.views[1]?.src?.replace(/[^/]+$/, '');
-  const views = [...p.views, ...(motionLoops[p.slug] ? [{ label: '3D layers', loop: assetDir + motionLoops[p.slug] }] : []), ...(models360.has(p.slug) ? [{ label: '360° view', model: assetDir + '3d/' + p.slug }] : [])];
+  // 3D models and the Cloud loop come from Azure storage when the build sets window.mhMediaBase (same paths).
+  const assetDir = p.views[1]?.src?.replace(/[^/]+$/, ''), mediaDir = window.mhMediaBase && assetDir ? window.mhMediaBase + assetDir.replace(/^(\.\.\/)+/, '') : assetDir;
+  // Open the connection to storage early on pages with a 3D view or loop, so the first tap loads faster.
+  useEffect(() => {
+    if (!mediaDir?.startsWith('https://') || !(motionLoops[p.slug] || models360.has(p.slug))) return;
+    const link = Object.assign(document.createElement('link'), { rel: 'preconnect', href: new URL(mediaDir).origin, crossOrigin: 'anonymous' });
+    document.head.appendChild(link);
+    return () => link.remove();
+  }, [p.slug]);
+  const views = [...p.views, ...(motionLoops[p.slug] ? [{ label: '3D layers', loop: mediaDir + motionLoops[p.slug] }] : []), ...(models360.has(p.slug) ? [{ label: '360° view', model: mediaDir + '3d/' + p.slug }] : [])];
   const planner = Boolean(views[view]?.planner);
   const photo = p.colourPhotos ? p.colourPhotos[fabric][p.orientations ? p.orientations.indexOf(orientation) : p.category === 'Sofas' ? 0 : view] : views[view].src;
   const currentPhoto = photo || p.views[0].src;
@@ -244,15 +252,15 @@ function Product({ product: p }) {
           isSofa ? h(React.Fragment,null,
             h('p',{className:'small-note'},'Creamy or Shadow, included in the sofa price.'),
             h('div',{className:'swatch-grid included-fabrics'},...fabricCards(fabrics.filter(({f})=>p.includedFabrics.includes(f.code)))),
-            h('button',{className:'custom-fabric-toggle',type:'button','aria-expanded':customOpen,'aria-controls':'custom-fabrics',onClick:()=>setCustomOpen(!customOpen)},'Explore custom fabrics · +RM250',h('span',{'aria-hidden':true},customOpen ? '−' : '+')),
-            customOpen && h('div',{id:'custom-fabrics'},h('p',{className:'small-note'},'More colours and textures. Add RM250 per sofa.'),familyTabs,
+            h('button',{className:'custom-fabric-toggle',type:'button','aria-expanded':customOpen,'aria-controls':'custom-fabrics',onClick:()=>setCustomOpen(!customOpen)},withUpgrade('Explore custom fabrics · +RM250', fabricUpgrade(p)),h('span',{'aria-hidden':true},customOpen ? '−' : '+')),
+            customOpen && h('div',{id:'custom-fabrics'},h('p',{className:'small-note'},withUpgrade('More colours and textures. Add RM250 per sofa.', fabricUpgrade(p))),familyTabs,
               h('div',{className:'premium-swatches'},...fabricCards(fabrics.filter(({f})=>!p.includedFabrics.includes(f.code) && (family==='All' || f.family===family)))))) :
             h(React.Fragment,null,p.fabrics.length>2 && familyTabs,h('div',{className:p.fabrics.length>2 ? 'premium-swatches' : 'swatch-grid'},...fabricCards(fabrics.filter(({f})=>family==='All' || f.family===family)))),
           h('p',{className:'fabric-mood','aria-live':'polite'},`${selectedFabric.name} · ${selectedFabric.code}`)),
         p.orientations && h(RadioGroup, { title: 'Choose your chaise', name: 'orientation', options: p.orientations, value: orientation, onChange: setOrientation }),
         p.sizes && h(RadioGroup, { title: 'Choose your size', name: 'size', options: p.sizes, value: size, onChange: setSize }),
         p.dimensions && h('div', { className: 'dimension-strip' }, ...['Width', 'Depth', 'Height'].map((label, i) => h('div', { key: label }, h('strong', null, Math.round(p.dimensions[i] * 2.54), h('small', null, ' cm')), h('span', null, label + ' · ' + p.dimensions[i] + '″')))),
-        h('div', { className: 'product-price', 'aria-live':'polite' }, h('strong',null,money(priceFor(p,size,fabric))), h('span',null,p.category==='Sofas' ? (p.includedFabrics.includes(selectedFabric.code) ? 'Creamy / Shadow price' : 'Includes RM 250 fabric upgrade') : size + ' price')),
+        h('div', { className: 'product-price', 'aria-live':'polite' }, h('strong',null,money(priceFor(p,size,fabric))), h('span',null,p.category==='Sofas' ? (p.includedFabrics.includes(selectedFabric.code) ? 'Creamy / Shadow price' : withUpgrade('Includes RM 250 fabric upgrade', fabricUpgrade(p))) : size + ' price')),
         h('div', { className: 'selection', ref: selectionBox }, h('span', { className: 'eyebrow' }, 'Your selection'), h('div', { className: 'selection-line', 'aria-live': 'polite' }, h('strong', null, p.name + (size ? ' · ' + size : '')), h('span', null, [selectedFabric?.code, orientation && orientation + ' chaise'].filter(Boolean).join(' / '))),
           h('a', { className: 'buy-direct', href: buyUrl, target: '_blank', rel: 'noopener' }, 'Buy directly on mattresshub.co', h(Icon, { type: 'arrow' })),
           h('a', { className: 'ask-whatsapp', href: askUrl, target: '_blank', rel: 'noopener' }, h(ChatIcon), 'Ask on WhatsApp'),
@@ -269,8 +277,8 @@ function Product({ product: p }) {
     h(StickyBuy, { watch: selectionBox, label: [p.name, size, selectedFabric?.code, orientation && orientation + ' chaise'].filter(Boolean).join(' · '), price: money(priceFor(p, size, fabric)), buyUrl, askUrl }),
     h('dialog', { ref: dialog, className: 'image-dialog', 'aria-label': 'Enlarged product image', onClick: e => { if (e.target === dialog.current) dialog.current.close(); } }, h('div', { className: 'dialog-top' }, h('span', null, p.name), h('button', { className: 'dialog-close', type: 'button', onClick: () => dialog.current.close(), 'aria-label': 'Close enlarged image' }, h(Icon, { type: 'close' }))), h(ProductVisual, { src: currentPhoto, fabric: previewFabric, mirror: mirrored, alt: p.name + ' enlarged product image' })));
 }
-// Delivery strip on every showroom page (owner's wording, 2026-10-10): one line per country, flag first.
-// Singapore: delivered from JB, priced and paid in ringgit, 20% surcharge on every order, RM150 under RM599.
+// Delivery strip on every showroom page (owner's wording, 2026-10-10; Singapore mode 2026-10-11): flag first.
+// Singapore: delivered from JB, priced and paid in ringgit (Singapore prices, see packages.js), RM150 under RM600.
 const starPoints = (cx, cy, n, outer, inner) => Array.from({ length: n * 2 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / n, d = i % 2 ? inner : outer; return (cx + d * Math.cos(a)).toFixed(2) + ',' + (cy + d * Math.sin(a)).toFixed(2); }).join(' ');
 function Flag({ country }) {
   if (country === 'my') return h('svg', { className: 'flag', viewBox: '0 0 28 14', role: 'img', 'aria-label': 'Malaysia' },
@@ -285,12 +293,18 @@ function Flag({ country }) {
     ...[0, 1, 2, 3, 4].map(i => { const a = -Math.PI / 2 + i * 2 * Math.PI / 5; return h('polygon', { key: i, points: starPoints(6.9 + 1.5 * Math.cos(a), 3.6 + 1.5 * Math.sin(a), 5, 0.62, 0.25), fill: '#fff' }); }));
 }
 function DeliveryBar() {
-  const [open, setOpen] = useState(false);
-  return h('div', { className: 'delivery-bar', role: 'note' },
-    h('p', null, h(Flag, { country: 'my' }), h('span', null, 'FREE DELIVERY')),
-    h('p', null, h(Flag, { country: 'sg' }), h('span', null, 'FREE DELIVERY FROM RM599 + 20% SURCHARGE'), ' ',
-      h('button', { type: 'button', 'aria-expanded': open, 'aria-controls': 'singapore-delivery', onClick: () => { setOpen(!open); if (!open) window.mhTrack?.('singapore_details'); } }, 'Singapore details')),
-    open && h('p', { id: 'singapore-delivery', className: 'delivery-details' }, "Singapore orders: prices are in ringgit and you pay in ringgit. A flat 20% surcharge on every Singapore order covers GST, duties and the rest. Orders under RM599 also pay RM150 delivery. Delivered from Johor Bahru in 5 to 8 business days, so you don't need to cross the Causeway."));
+  const [open, setOpen] = useState(false), sg = window.mhRegion === 'sg';
+  const details = h('button', { type: 'button', 'aria-expanded': open, 'aria-controls': 'singapore-delivery', onClick: () => { setOpen(!open); if (!open) window.mhTrack?.('singapore_details'); } }, 'Singapore details');
+  const regionSwitch = h('button', { type: 'button', className: 'region-switch', onClick: () => window.mhSetRegion(sg ? 'my' : 'sg') }, sg ? 'Deliver within Malaysia' : 'Deliver to Singapore');
+  return h('div', { className: 'delivery-bar' + (sg ? ' region-sg' : ''), role: 'note' },
+    sg ? h(React.Fragment, null,
+      h('p', null, h(Flag, { country: 'sg' }), h('span', null, 'SINGAPORE PRICES · FREE DELIVERY FROM RM600')),
+      h('p', { className: 'delivery-note' }, 'Charged in MYR. The ~S$ is a guide only.')) :
+    h(React.Fragment, null,
+      h('p', null, h(Flag, { country: 'my' }), h('span', null, 'FREE DELIVERY')),
+      h('p', null, h(Flag, { country: 'sg' }), h('span', null, 'FREE DELIVERY FROM RM600'))),
+    h('p', { className: 'delivery-actions' }, regionSwitch, ' ', details),
+    open && h('p', { id: 'singapore-delivery', className: 'delivery-details' }, "Singapore orders: prices are in ringgit and you pay in ringgit. The ~S$ is only a guide; your bank sets the final rate. Orders under RM600 also pay RM150 delivery. Delivered from Johor Bahru in 5 to 8 business days, so you don't need to cross the Causeway."));
 }
 function Showroom() {
   const [slug, setSlug] = useState(route);

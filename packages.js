@@ -1,7 +1,34 @@
-const money = value => 'RM ' + value.toLocaleString('en-MY');
-function priceFor(product, size = 'Queen', fabric = 0) {
+// Prices by region (owner, 2026-10-11). Shopify's Singapore market charges MYR x 1.2, rounded up to the next
+// whole ringgit ending in 9 (fixed prices in the "Singapore pricing" catalog; refresh-offers.cjs checks every
+// live Singapore price against this rule). Singapore mode shows those prices with an approximate SGD from the
+// ECB rate written into products.js at build time. Customers are always charged in MYR.
+const sgPrice = myr => { let n = Math.ceil(Math.round(myr * 120) / 100 - 1e-9); while (n % 10 !== 9) n++; return n; };
+// ?country=SG|MY (ads, links) wins and is remembered; then the remembered choice; then a Singapore time zone.
+window.mhRegion = (() => {
+  let asked = '';
+  try { asked = (new URLSearchParams(location.search).get('country') || '').toLowerCase(); } catch {}
+  if (asked === 'sg' || asked === 'my') { try { localStorage.setItem('mh-region', asked); } catch {} return asked; }
+  try { const saved = localStorage.getItem('mh-region'); if (saved === 'sg' || saved === 'my') return saved; } catch {}
+  try { return Intl.DateTimeFormat().resolvedOptions().timeZone === 'Asia/Singapore' ? 'sg' : 'my'; } catch { return 'my'; }
+})();
+window.mhSetRegion = region => {
+  try { localStorage.setItem('mh-region', region); } catch {}
+  window.mhTrack?.('price_region', { region });
+  const url = new URL(location.href); url.searchParams.delete('country'); location.replace(url.toString());
+};
+const regional = myr => window.mhRegion === 'sg' ? sgPrice(myr) : myr;
+const sgd = value => window.mhSgdPerMyr ? ' (~S$' + Math.round(value * window.mhSgdPerMyr).toLocaleString('en-SG') + ')' : '';
+const money = value => 'RM ' + value.toLocaleString('en-MY') + (window.mhRegion === 'sg' ? sgd(value) : '');
+function basePriceFor(product, size = 'Queen', fabric = 0) {
   return product.prices ? product.prices[size] : product.basePrice + (product.includedFabrics.includes(product.fabrics[fabric].code) ? 0 : product.fabricAddon);
 }
+function priceFor(product, size = 'Queen', fabric = 0) { return regional(basePriceFor(product, size, fabric)); }
+// The custom-fabric upgrade as the customer pays it (RM250 in Malaysia; the rounded difference in Singapore).
+function fabricUpgrade(product, size = 'Queen') {
+  const included = product.fabrics.findIndex(f => product.includedFabrics.includes(f.code)), custom = product.fabrics.findIndex(f => !product.includedFabrics.includes(f.code));
+  return priceFor(product, size, custom) - priceFor(product, size, included);
+}
+const withUpgrade = (text, amount) => window.mhTranslate(text).replace(/RM ?250/, m => m.replace('250', amount));
 function BedSetVisual({ bed, mattress, fabric, size }) {
   // Photo landmarks: rear deck, front deck and rear/front perspective scale, not physical dimensions.
   const [rear, front, perspective] = { cozy: [247,375,.715], haven: [242,367,.706], aurora: [493,727,.77] }[bed.slug];
@@ -92,7 +119,7 @@ function PackageBuilder({ soho = false }) {
         select('Bed frame',bedSlug,v=>{setBed(v);setBedFabric(beds.find(p=>p.slug===v).defaultFabric||0);},beds.map(p=>[p.slug,`${p.name} · ${money(priceFor(p,size))}`])),
         select('Bed fabric',bedFabric,v=>setBedFabric(Number(v)),bed.fabrics.map((f,i)=>[i,`${f.family||''} ${f.name} · ${f.code}`])),
         h('div',{className:'builder-swatch',style:bed.fabrics[bedFabric].swatch?{backgroundImage:`url("${bed.fabrics[bedFabric].swatch}")`}:{backgroundColor:'#e6dec5'}},h('span',null,bed.fabrics[bedFabric].code)),
-        soho&&h(React.Fragment,null,select('Sofa',sofaSlug,setSofa,sofas.map(p=>[p.slug,`${p.name} · ${money(priceFor(p,size,sofaFabric))}`])),h('label',{className:'builder-select'},'Sofa fabric',h('select',{'aria-label':'Sofa fabric',value:sofaFabric,onChange:e=>setSofaFabric(Number(e.target.value))},...[true,false].map(included=>h('optgroup',{key:String(included),label:window.mhTranslate(included?'Included premium colours':'Custom fabrics · +RM250')},...sofa.fabrics.map((f,i)=>({f,i})).filter(({f})=>sofa.includedFabrics.includes(f.code)===included).map(({f,i})=>h('option',{key:f.code,value:i},`${f.family} ${f.name} · ${f.code}${included?'':' +RM 250'}`)))))),sofa.orientations&&h(RadioGroup,{title:'Choose your chaise',name:'package-chaise',options:sofa.orientations,value:orientation,onChange:setOrientation})),
+        soho&&h(React.Fragment,null,select('Sofa',sofaSlug,setSofa,sofas.map(p=>[p.slug,`${p.name} · ${money(priceFor(p,size,sofaFabric))}`])),h('label',{className:'builder-select'},'Sofa fabric',h('select',{'aria-label':'Sofa fabric',value:sofaFabric,onChange:e=>setSofaFabric(Number(e.target.value))},...[true,false].map(included=>h('optgroup',{key:String(included),label:included?window.mhTranslate('Included premium colours'):withUpgrade('Custom fabrics · +RM250', fabricUpgrade(sofa))},...sofa.fabrics.map((f,i)=>({f,i})).filter(({f})=>sofa.includedFabrics.includes(f.code)===included).map(({f,i})=>h('option',{key:f.code,value:i},`${f.family} ${f.name} · ${f.code}${included?'':' +RM '+fabricUpgrade(sofa)}`)))))),sofa.orientations&&h(RadioGroup,{title:'Choose your chaise',name:'package-chaise',options:sofa.orientations,value:orientation,onChange:setOrientation})),
         h('div',{className:'package-total','aria-live':'polite'},h('div',null,h('span',null,mattress.name+' · '+size),h('strong',null,money(priceFor(mattress,size)))),h('div',null,h('span',null,bed.name+' · '+size),h('strong',null,money(priceFor(bed,size)))),soho&&h('div',null,h('span',null,sofa.name),h('strong',null,money(priceFor(sofa,size,sofaFabric)))),h('div',{className:'total-row'},h('span',null,'Package total'),h('strong',{'data-total':total},money(total))),h('p',{className:'small-note'},'Sum of selected items. Delivery, availability and any bed-fabric surcharge to confirm. No package discount applied.')),
         h('a',{className:'buy-direct',href:buyUrl,target:'_blank',rel:'noopener',ref:buyBox},soho?'Buy this SOHO package on mattresshub.co':'Buy this bed set on mattresshub.co',h(Icon,{type:'arrow'})),
         h('a',{className:'ask-whatsapp',href:askUrl,target:'_blank',rel:'noopener'},h(ChatIcon),'Ask about this package on WhatsApp'),

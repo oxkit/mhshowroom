@@ -29,7 +29,7 @@ const finderQuestions = [
 ];
 function findMattress(answers) {
   const [position, feel, [low, high]] = answers.map((a, i) => finderQuestions[i].options[a][2]);
-  const target = feel + position, mattresses = products.filter(p => p.firmness), price = p => p.prices.Queen;
+  const target = feel + position, mattresses = products.filter(p => p.firmness), price = p => priceFor(p, 'Queen');
   const feelGap = p => Math.abs(p.firmness - target);
   // Positive above the budget, negative below it.
   const budgetGap = p => price(p) - Math.min(Math.max(price(p), low), high);
@@ -45,7 +45,7 @@ function findMattress(answers) {
 const feelWords = { Soft: ['柔软', 'Lembut'], Medium: ['适中', 'Sederhana'], Firm: ['偏硬', 'Tegang'], 'Extra firm': ['特硬', 'Ekstra tegang'] };
 const optionLabel = text => feelWords[text] && window.showroomLanguage !== 'en' ? h('span', { translate: 'no' }, feelWords[text][window.showroomLanguage === 'zh' ? 0 : 1]) : text;
 const budgetNote = gap => gap > 0 ? 'Above your budget' : gap < 0 ? 'Below your budget' : 'Within your budget';
-const compareNote = (p, match) => p.firmness > match.firmness ? 'A little firmer' : p.firmness < match.firmness ? 'A little softer' : p.prices.Queen < match.prices.Queen ? 'Same feel, lower price' : 'Same feel, more premium';
+const compareNote = (p, match) => p.firmness > match.firmness ? 'A little firmer' : p.firmness < match.firmness ? 'A little softer' : priceFor(p, 'Queen') < priceFor(match, 'Queen') ? 'Same feel, lower price' : 'Same feel, more premium';
 function FeelRating({ value }) {
   return h('div', { className: 'finder-feel' },
     h('div', { className: 'finder-feel-bar', 'aria-hidden': true }, ...Array.from({ length: 10 }, (_, i) => h('span', { key: i, className: i < value ? 'filled' : '' }))),
@@ -76,7 +76,7 @@ function MattressFinder({ label = 'Help me choose', className = 'finder-launch',
           h('p', { className: 'finder-answers' }, ...answers.map((a, i) => h('span', { key: i }, optionLabel(finderQuestions[i].options[a][0])))),
           h('section', { className: 'finder-match' },
             h(ProductVisual, { src: result.match.views[0].src, alt: result.match.series + ' ' + result.match.name }),
-            h('div', { className: 'finder-match-title' }, h('h2', { id, ref: heading, tabIndex: -1 }, result.match.name), h('strong', null, money(result.match.prices.Queen))),
+            h('div', { className: 'finder-match-title' }, h('h2', { id, ref: heading, tabIndex: -1 }, result.match.name), h('strong', null, money(priceFor(result.match, 'Queen')))),
             h('p', { className: 'finder-meta' }, 'Queen', ' · ', result.match.thickness + '″', ' · ', budgetNote(result.budgetGap(result.match))),
             h('p', null, result.match.headline, ' ', result.match.description),
             h(FeelRating, { value: result.match.firmness }),
@@ -84,7 +84,7 @@ function MattressFinder({ label = 'Help me choose', className = 'finder-launch',
           h('a', { className: 'finder-runner', href: productLink(result.runnerUp), onClick: close },
             h('span', { className: 'eyebrow' }, compareNote(result.runnerUp, result.match)),
             h('strong', null, result.runnerUp.name, ' · ', 'Feel rating ', String(result.runnerUp.firmness), ' out of 10'),
-            h('span', null, 'Queen', ' · ', money(result.runnerUp.prices.Queen), ' · ', budgetNote(result.budgetGap(result.runnerUp))), h(Icon, { type: 'arrow' })),
+            h('span', null, 'Queen', ' · ', money(priceFor(result.runnerUp, 'Queen')), ' · ', budgetNote(result.budgetGap(result.runnerUp))), h(Icon, { type: 'arrow' })),
           h('p', { className: 'small-note' }, 'Suggested from MattressHub\'s feel ratings and Queen prices. Your weight and sleeping position affect the feel.'),
           h('button', { type: 'button', className: 'finder-back', onClick: () => { setAnswers([]); setStep(0); } }, 'Start again')) :
         h(React.Fragment, null,

@@ -37,6 +37,8 @@ window.mhStore = (() => {
     const query = new URLSearchParams({ showroom: '1' });
     if (pack) query.set('ref', 'SR' + reference(json));
     query.set('items', base64url(json));
+    // Shopify prices the cart for this country, so checkout matches the showroom's Malaysia or Singapore prices.
+    query.set('country', window.mhRegion === 'sg' ? 'SG' : 'MY');
     return cart + '?' + query;
   }
   // Ask on WhatsApp: the owner's number (also used by the value room), with the
