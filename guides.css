@@ -38,3 +38,4 @@ html[lang=zh-Hans] .latech-hero h1{font-family:'Microsoft YaHei','PingFang SC',s
 .latech-compare,.latech-products,.latech-faq{margin-bottom:44px}
 @media(max-width:900px){.latech-benefits,.latech-products ul{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:700px){.latech-hero{grid-template-columns:1fr;padding:32px 20px;gap:24px}.latech-lead{font-size:18px}.latech-benefits,.latech-products ul{grid-template-columns:1fr}}
+.latech-compare-img{display:block;width:100%;height:auto;border-radius:16px;margin:6px 0 14px}.latech-toggle summary{cursor:pointer;font-weight:750;color:var(--lt-gold);min-height:44px;display:flex;align-items:center}.latech-toggle[open] summary{margin-bottom:10px}
