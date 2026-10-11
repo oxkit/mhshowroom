@@ -315,17 +315,13 @@ Bed set + sofa, planned together.|床组 + 沙发，一起规划。|Set katil + 
 Cove, Haven and Cloud in one room.|Cove、Haven 和 Cloud 同处一室。|Cove, Haven dan Cloud dalam satu bilik.
 We use Google Analytics to see how the showroom is used. |我们使用 Google Analytics 了解展厅的使用情况。|Kami menggunakan Google Analytics untuk memahami penggunaan bilik pameran ini. 
 Privacy policy|隐私政策|Dasar privasi
-FREE DELIVERY|免运费|PENGHANTARAN PERCUMA
-FREE DELIVERY FROM RM600|满 RM600 免运费|PENGHANTARAN PERCUMA DARI RM600
 SINGAPORE PRICES · FREE DELIVERY FROM RM600|新加坡价格 · 满 RM600 免运费|HARGA SINGAPURA · PENGHANTARAN PERCUMA DARI RM600
-Charged in MYR. The ~S$ is a guide only.|以令吉收费，~S$ 仅供参考。|Dicaj dalam ringgit. ~S$ hanya sebagai panduan.
-Deliver to Singapore|送货到新加坡|Hantar ke Singapura
-Deliver within Malaysia|马来西亚境内送货|Hantar dalam Malaysia
 Singapore details|新加坡详情|Butiran Singapura
 Still deciding?|还在犹豫？|Masih belum pasti?
 Start with my budget|从我的预算开始|Mula dengan bajet saya
 Set a budget, see the bed set it buys.|设定预算，看看能买到哪套床组。|Tetapkan bajet, lihat set katil yang anda dapat.
-Singapore orders: prices are in ringgit and you pay in ringgit. The ~S$ is only a guide; your bank sets the final rate. Orders under RM600 also pay RM150 delivery. Delivered from Johor Bahru in 5 to 8 business days, so you don't need to cross the Causeway.|新加坡订单：价格以令吉标示，并以令吉付款。~S$ 仅供参考，最终汇率以您的银行为准。订单低于 RM600 另收 RM150 运费。从新山送货，5 至 8 个工作日送达，无需跨越长堤。|Pesanan Singapura: harga dalam ringgit dan anda bayar dalam ringgit. ~S$ hanya panduan; bank anda menetapkan kadar akhir. Pesanan bawah RM600 turut dikenakan penghantaran RM150. Dihantar dari Johor Bahru dalam 5 hingga 8 hari bekerja, jadi anda tidak perlu menyeberangi Tambak.
+FREE DELIVERY ACROSS WEST MALAYSIA|西马全境免运费|PENGHANTARAN PERCUMA SELURUH SEMENANJUNG MALAYSIA
+Singapore prices are all-in: GST and import duties are already included, with nothing extra to pay on delivery. You pay in ringgit; the ~S$ is only a guide and your bank sets the final rate. Orders under RM600 add RM150 delivery. Delivered from Johor Bahru in 5 to 8 business days, so you don't need to cross the Causeway.|新加坡价格已含一切：消费税（GST）与进口关税均已包含，送货时无需另付。您以令吉付款，~S$ 仅供参考，最终汇率以您的银行为准。订单低于 RM600 另收 RM150 运费。从新山送货，5 至 8 个工作日送达，无需跨越长堤。|Harga Singapura ialah harga penuh: GST dan duti import sudah termasuk, tiada bayaran tambahan semasa penghantaran. Anda bayar dalam ringgit; ~S$ hanya panduan dan bank anda menetapkan kadar akhir. Pesanan bawah RM600 ditambah penghantaran RM150. Dihantar dari Johor Bahru dalam 5 hingga 8 hari bekerja, jadi anda tidak perlu menyeberangi Tambak.
 `.trim().split('\n').map(line=>line.split('|'));
 const translationMap = new Map(showroomTranslations.map(row=>[row[0],row.slice(1)]));
 const translationFragments = [...translationMap.keys()].sort((a,b)=>b.length-a.length).map(key=>[key,new RegExp((/^[A-Za-z]/.test(key)?'(?<![A-Za-z])':'')+key.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+(/[A-Za-z]$/.test(key)?'(?![A-Za-z])':''),'g')]);

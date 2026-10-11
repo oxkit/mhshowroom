@@ -277,8 +277,6 @@ function Product({ product: p }) {
     h(StickyBuy, { watch: selectionBox, label: [p.name, size, selectedFabric?.code, orientation && orientation + ' chaise'].filter(Boolean).join(' · '), price: money(priceFor(p, size, fabric)), buyUrl, askUrl }),
     h('dialog', { ref: dialog, className: 'image-dialog', 'aria-label': 'Enlarged product image', onClick: e => { if (e.target === dialog.current) dialog.current.close(); } }, h('div', { className: 'dialog-top' }, h('span', null, p.name), h('button', { className: 'dialog-close', type: 'button', onClick: () => dialog.current.close(), 'aria-label': 'Close enlarged image' }, h(Icon, { type: 'close' }))), h(ProductVisual, { src: currentPhoto, fabric: previewFabric, mirror: mirrored, alt: p.name + ' enlarged product image' })));
 }
-// Delivery strip on every showroom page (owner's wording, 2026-10-10; Singapore mode 2026-10-11): flag first.
-// Singapore: delivered from JB, priced and paid in ringgit (Singapore prices, see packages.js), RM150 under RM600.
 const starPoints = (cx, cy, n, outer, inner) => Array.from({ length: n * 2 }, (_, i) => { const a = -Math.PI / 2 + i * Math.PI / n, d = i % 2 ? inner : outer; return (cx + d * Math.cos(a)).toFixed(2) + ',' + (cy + d * Math.sin(a)).toFixed(2); }).join(' ');
 function Flag({ country }) {
   if (country === 'my') return h('svg', { className: 'flag', viewBox: '0 0 28 14', role: 'img', 'aria-label': 'Malaysia' },
@@ -292,19 +290,26 @@ function Flag({ country }) {
     h('circle', { cx: 4.6, cy: 3.5, r: 2.6, fill: '#fff' }), h('circle', { cx: 5.6, cy: 3.5, r: 2.4, fill: '#ef3340' }),
     ...[0, 1, 2, 3, 4].map(i => { const a = -Math.PI / 2 + i * 2 * Math.PI / 5; return h('polygon', { key: i, points: starPoints(6.9 + 1.5 * Math.cos(a), 3.6 + 1.5 * Math.sin(a), 5, 0.62, 0.25), fill: '#fff' }); }));
 }
+// Owner, 2026-10-11: the bar shows only the chosen delivery country's message; the country is picked in the
+// header (DeliverySwitch, next to Language). Singapore prices are all-in (GST and duties included).
 function DeliveryBar() {
-  const [open, setOpen] = useState(false), sg = window.mhRegion === 'sg';
-  const details = h('button', { type: 'button', 'aria-expanded': open, 'aria-controls': 'singapore-delivery', onClick: () => { setOpen(!open); if (!open) window.mhTrack?.('singapore_details'); } }, 'Singapore details');
-  const regionSwitch = h('button', { type: 'button', className: 'region-switch', onClick: () => window.mhSetRegion(sg ? 'my' : 'sg') }, sg ? 'Deliver within Malaysia' : 'Deliver to Singapore');
-  return h('div', { className: 'delivery-bar' + (sg ? ' region-sg' : ''), role: 'note' },
-    sg ? h(React.Fragment, null,
-      h('p', null, h(Flag, { country: 'sg' }), h('span', null, 'SINGAPORE PRICES · FREE DELIVERY FROM RM600')),
-      h('p', { className: 'delivery-note' }, 'Charged in MYR. The ~S$ is a guide only.')) :
-    h(React.Fragment, null,
-      h('p', null, h(Flag, { country: 'my' }), h('span', null, 'FREE DELIVERY')),
-      h('p', null, h(Flag, { country: 'sg' }), h('span', null, 'FREE DELIVERY FROM RM600'))),
-    h('p', { className: 'delivery-actions' }, regionSwitch, ' ', details),
-    open && h('p', { id: 'singapore-delivery', className: 'delivery-details' }, "Singapore orders: prices are in ringgit and you pay in ringgit. The ~S$ is only a guide; your bank sets the final rate. Orders under RM600 also pay RM150 delivery. Delivered from Johor Bahru in 5 to 8 business days, so you don't need to cross the Causeway."));
+  const [open, setOpen] = useState(false);
+  if (window.mhRegion !== 'sg') return h('div', { className: 'delivery-bar', role: 'note' },
+    h('p', null, h(Flag, { country: 'my' }), h('span', null, 'FREE DELIVERY ACROSS WEST MALAYSIA')));
+  return h('div', { className: 'delivery-bar region-sg', role: 'note' },
+    h('p', null, h(Flag, { country: 'sg' }), h('span', null, 'SINGAPORE PRICES · FREE DELIVERY FROM RM600')),
+    h('p', { className: 'delivery-actions' }, h('button', { type: 'button', 'aria-expanded': open, 'aria-controls': 'singapore-delivery', onClick: () => { setOpen(!open); if (!open) window.mhTrack?.('singapore_details'); } }, 'Singapore details')),
+    open && h('p', { id: 'singapore-delivery', className: 'delivery-details' }, "Singapore prices are all-in: GST and import duties are already included, with nothing extra to pay on delivery. You pay in ringgit; the ~S$ is only a guide and your bank sets the final rate. Orders under RM600 add RM150 delivery. Delivered from Johor Bahru in 5 to 8 business days, so you don't need to cross the Causeway."));
+}
+// "Deliver [flag]" next to Language: a native select under the label, so touch, keyboard and screen readers work.
+function DeliverySwitch() {
+  const sg = window.mhRegion === 'sg', lang = window.showroomLanguage;
+  const pick = (en, zh, ms) => lang === 'zh' ? zh : lang === 'ms' ? ms : en;
+  return h('label', { className: 'delivery-switch' },
+    h('span', { 'aria-hidden': true }, pick('Deliver', '送货', 'Hantar')), h(Flag, { country: sg ? 'sg' : 'my' }),
+    h('svg', { className: 'delivery-switch-arrow', viewBox: '0 0 10 6', width: 9, height: 6, 'aria-hidden': true }, h('path', { d: 'M1 1l4 4 4-4', fill: 'none', stroke: 'currentColor', strokeWidth: 1.5 })),
+    h('select', { 'aria-label': pick('Deliver to', '送货到', 'Hantar ke'), value: sg ? 'sg' : 'my', onChange: e => window.mhSetRegion(e.target.value) },
+      h('option', { value: 'my' }, pick('Malaysia', '马来西亚', 'Malaysia')), h('option', { value: 'sg' }, pick('Singapore', '新加坡', 'Singapura'))));
 }
 function Showroom() {
   const [slug, setSlug] = useState(route);
@@ -314,7 +319,7 @@ function Showroom() {
   const product = products.find(p => p.slug === slug);
   useEffect(() => { if (!product && staticRoute === undefined) document.title = 'MattressHub | The interactive showroom'; }, [product]);
   return h(React.Fragment, null, h('a', { className: 'skip', href: '#main', onClick: e => { e.preventDefault(); document.getElementById('main').focus(); } }, 'Skip to showroom'),
-    h(DeliveryBar), h('header', { className: 'header' }, h('a', { href: showroomUrl(), 'aria-label': 'MattressHub showroom home' }, h(Logo)), h('span', { className: 'header-label' }, 'The interactive showroom'), h('label',{className:'language-switch'}, h('span',{className:'sr-only'},'Language'),h('select',{'aria-label':'Language',value:language,onChange:e=>switchLanguage(e.target.value)},h('option',{value:'en'},'English'),h('option',{value:'zh'},'中文'),h('option',{value:'ms'},'Melayu'))), h('a', { className: 'store-link', href: 'https://mattresshub.co' }, 'Visit the store ', h(Icon, { type: 'arrow' }))),
+    h(DeliveryBar), h('header', { className: 'header' }, h('a', { href: showroomUrl(), 'aria-label': 'MattressHub showroom home' }, h(Logo)), h('span', { className: 'header-label' }, 'The interactive showroom'), h(DeliverySwitch), h('label',{className:'language-switch'}, h('span',{className:'sr-only'},'Language'),h('select',{'aria-label':'Language',value:language,onChange:e=>switchLanguage(e.target.value)},h('option',{value:'en'},'English'),h('option',{value:'zh'},'中文'),h('option',{value:'ms'},'Melayu'))), h('a', { className: 'store-link', href: 'https://mattresshub.co' }, 'Visit the store ', h(Icon, { type: 'arrow' }))),
     h('main', { id: 'main', tabIndex: -1 }, slug === 'your-space' ? h(window.mhValueRoom.Room,{language}) : slug === 'build-your-bed' || slug === 'soho' ? h(PackageBuilder,{key:slug,soho:slug==='soho'}) : product ? h(Product, { key: product.slug, product }) : h(Catalogue), product && productFacts && h('details', {className:'product-facts', lang:'en', dangerouslySetInnerHTML:{__html:productFacts}}), h(BuyingGuides), h('footer', null, h('strong', null, 'Dealer price for everyone.'), (product || ['your-space', 'build-your-bed', 'soho'].includes(slug)) && h('a', { href: showroomUrl() }, 'Explore the collection'), h('span', null, 'MattressHub · Better Sleep, Better Life'), h('small', { className: 'analytics-note' }, 'We use Google Analytics to see how the showroom is used. ', h('a', { href: 'https://mattresshub.co/policies/privacy-policy' }, 'Privacy policy')))));
 }
 if (!redirectLegacy()) ReactDOM.createRoot(document.getElementById('root')).render(h(Showroom));
