@@ -15,12 +15,12 @@ function showroomUrl(slug = '', query = '') {
   const path = !slug ? '' : ['soho', 'build-your-bed', 'room-tour', 'your-space'].includes(slug) ? slug + '/' : 'products/' + slug + '/';
   return new URL(path + suffix, document.baseURI).href;
 }
-// LATECH® (owner, 2026-10-11): one page on the store; the showroom links to it from the homepage card, Cloud's
-// layers and the guides row. Chinese name 科技胶; Malay keeps LATECH.
-const latechUrl = 'https://mattresshub.co/pages/latech';
+// LATECH® (owner, 2026-10-11): the English page is on the store; Chinese and Malay pages are on the showroom
+// (latech.cjs). Links from the homepage card, Cloud's layers and the guides row follow the language.
+const latechHref = () => window.showroomLanguage === 'zh' || window.showroomLanguage === 'ms' ? new URL(window.showroomLanguage + '/guides/latech/', document.baseURI).href : 'https://mattresshub.co/pages/latech';
 const pickLang = (en, zh, ms) => ({ en, zh, ms })[window.showroomLanguage] || en;
 function LatechCard() {
-  return h('a', { className: 'latech-card', href: latechUrl, 'data-place': 'catalogue' },
+  return h('a', { className: 'latech-card', href: latechHref(), 'data-place': 'catalogue' },
     h('span', { className: 'latech-card-kicker' }, pickLang('Made with LATECH®', 'LATECH® 科技胶', 'Dibuat dengan LATECH®')),
     h('strong', null, pickLang('The latex feel, without the latex price.', '乳胶般的实感，比乳胶更经济实惠。', 'Rasa seperti lateks, tanpa harga lateks.')),
     h('span', { className: 'latech-card-link' }, pickLang('What is LATECH®?', 'LATECH® 科技胶是什么？', 'Apa itu LATECH®?'), ' ', h(Icon, { type: 'arrow' })));
@@ -31,7 +31,7 @@ function BuyingGuides() {
   return h('nav', {className:'buying-guides', 'aria-label':['Before you buy','付款前看清楚','Sebelum anda beli'][column]},
     h('a', {href:guideUrl('mattress-in-a-box-malaysia')}, ['Mattress-in-a-box: what to check','盒装床垫：拆开之后，谁来负责？','Tilam dalam kotak: apa risikonya?'][column]),
     h('a', {href:guideUrl('pinduoduo-furniture-malaysia')}, ['Pinduoduo furniture: size, shipping and returns','拼多多买大件：送到家，到底多少钱？','Perabot Pinduoduo: saiz, kos hantar dan pemulangan'][column]),
-    h('a', {href:latechUrl, 'data-place':'guides'}, ['LATECH®: the latex alternative','LATECH® 科技胶：乳胶以外的选择','LATECH®: alternatif kepada lateks'][column]));
+    h('a', {href:latechHref(), 'data-place':'guides'}, ['LATECH®: the latex alternative','LATECH® 科技胶：乳胶以外的选择','LATECH®: alternatif kepada lateks'][column]));
 }
 function redirectLegacy() {
   const [slug, query = ''] = location.hash.slice(1).split('?');
@@ -259,7 +259,7 @@ function Product({ product: p }) {
         h('p', { className: 'photo-note' }, views[view].model ? 'Real size and thickness for the size you choose. Fabric and colours are a guide.' : views[view].loop ? "Rendered 3D illustration. Layer names and order are Cloud's; layer thicknesses, springs and fabrics are illustrative." : p.premium ? (views[view].reference ? 'Cream reference cutout. ' : 'Colour and texture visualisation. Pattern scale is illustrative; confirm an actual swatch. ') + (p.orientations ? 'Right chaise is a mirrored preview, shown as you face the sofa.' : '') : p.category === 'Sofas' ? 'Chaise left/right is shown as you face the sofa. Colours are a guide.' : 'Images show design and construction; proportions vary by size.')),
       h('aside', { className: 'controls', id: 'configure', 'aria-label': 'Product options' }, h('div', { className: 'product-title' }, h('span', { className: 'eyebrow' }, p.category), h('h2', null, p.name + ', your way.'), h('p', null, p.description)),
         p.firmness && h('div', { className: 'finder-prompt' }, h('span', null, 'Not sure this is the one?'), h(MattressFinder, null)),
-        p.layers && h('div', { className: 'layer-selector' }, h('div', { className: 'layer-heading' }, h('strong', null, 'Explore the layers'), h('span', null, p.thickness + '″ thick')), ...p.layers.map((layer, i) => h('button', { key: layer, className: 'layer-button', type: 'button', 'aria-pressed': detail === i, onClick: () => { setDetail(i); setView(1); } }, h('span', null, String(i + 1).padStart(2, '0')), layer, h(Icon, { type: 'arrow' }))), h('p', { className: 'small-note', 'aria-live': 'polite' }, `Selected layer ${detail + 1}: ${p.layers[detail]}`), p.layers.some(layer => /LATECH/.test(layer)) && h('a', { className: 'latech-link', href: latechUrl, 'data-place': 'product_layers' }, pickLang('What is LATECH®? See how it compares with natural latex', 'LATECH® 科技胶是什么？看看它和天然乳胶的分别', 'Apa itu LATECH®? Lihat perbandingannya dengan lateks asli'), ' ', h(Icon, { type: 'arrow' }))),
+        p.layers && h('div', { className: 'layer-selector' }, h('div', { className: 'layer-heading' }, h('strong', null, 'Explore the layers'), h('span', null, p.thickness + '″ thick')), ...p.layers.map((layer, i) => h('button', { key: layer, className: 'layer-button', type: 'button', 'aria-pressed': detail === i, onClick: () => { setDetail(i); setView(1); } }, h('span', null, String(i + 1).padStart(2, '0')), layer, h(Icon, { type: 'arrow' }))), h('p', { className: 'small-note', 'aria-live': 'polite' }, `Selected layer ${detail + 1}: ${p.layers[detail]}`), p.layers.some(layer => /LATECH/.test(layer)) && h('a', { className: 'latech-link', href: latechHref(), 'data-place': 'product_layers' }, pickLang('What is LATECH®? See how it compares with natural latex', 'LATECH® 科技胶是什么？看看它和天然乳胶的分别', 'Apa itu LATECH®? Lihat perbandingannya dengan lateks asli'), ' ', h(Icon, { type: 'arrow' }))),
         p.fabrics && h('fieldset', {className:'fabric-options'},h('legend',null,isSofa ? 'Included premium colours' : 'Choose your fabric'),
           isSofa ? h(React.Fragment,null,
             h('p',{className:'small-note'},'Creamy or Shadow, included in the sofa price.'),

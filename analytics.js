@@ -35,7 +35,7 @@
     if (href.startsWith('https://wa.me/')) return window.mhTrack('whatsapp', { source, product: productSlug() });
     if (el.matches('.finder-launch')) return window.mhTrack('finder_open', { place: el.closest('.finder-prompt') ? 'product_page' : 'catalogue' });
     if (el.matches('[slot="ar-button"]')) return window.mhTrack('ar_view', { product: productSlug() });
-    if (href.startsWith('https://mattresshub.co/pages/latech')) return window.mhTrack('latech_link', { place: el.dataset.place || 'other', product: productSlug() });
+    if (href.startsWith('https://mattresshub.co/pages/latech') || /\/guides\/latech\//.test(href)) return window.mhTrack('latech_link', { place: el.dataset.place || 'other', product: productSlug() });
   }, true);
   // Codex's budget planner already announces its steps.
   window.addEventListener('mh:value-room', e => window.mhTrack('budget_planner', { action: e.detail.action, mode: e.detail.mode, size: e.detail.size }));
