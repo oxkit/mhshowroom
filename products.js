@@ -274,7 +274,7 @@ window.showroomProducts = [
     ],
     "layers": [
       "CloudSilk™ cooling fabric",
-      "SonoLatex™ comfort layer",
+      "LATECH® Foam comfort layer",
       "Ultra-density foam",
       "5-zone pocket springs",
       "EdgeGuard™ foam encasement"

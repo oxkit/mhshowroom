@@ -230,6 +230,7 @@ Poweredge foam box|Poweredge 泡棉护边|Kotak buih Poweredge
 support core|支撑核心|teras sokongan
 premium knitted fabric|高级针织面料|fabrik rajutan premium
 cooling fabric|清凉面料|fabrik penyejuk
+LATECH® Foam comfort layer|LATECH® Foam 舒适层|Lapisan keselesaan LATECH® Foam
 comfort layer|舒适层|lapisan keselesaan
 foam encasement|泡棉护边|bingkai buih
 fabric|面料|fabrik
